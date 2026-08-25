@@ -133,6 +133,24 @@ export function EditorHost(props: {
     useCallback((callback: () => void) => store.subscribe(callback), [store]),
     useCallback(() => store.getSnapshot().prefs.editorExplorer, [store]),
   )
+  // Re-evaluate an already-open file when a viewer plugin registers after this
+  // host mounts (for example Office, Excel, or Document Workbench at startup).
+  const viewerRegistryRevision = useSyncExternalStore(
+    useCallback(
+      (callback: () => void) => ctx.get('betterSidebar')?.subscribe(callback) ?? (() => {}),
+      [ctx],
+    ),
+    useCallback(
+      () =>
+        ctx
+          .get('betterSidebar')
+          ?.getFileViewers()
+          .map((viewer) => viewer.id)
+          .sort()
+          .join('|') ?? '',
+      [ctx],
+    ),
+  )
   // The file tree's "open with" configuration (pluginSettings['editor']): a
   // blob subscription, so a pin click or a settings-page edit re-renders the
   // menu immediately. The parsed config also drives which targets are shown
@@ -336,7 +354,7 @@ export function EditorHost(props: {
     }
     apply(planFirstMatch(ctx.get('betterSidebar')?.matchFileViewer(path), mediaUrlOf))
     return () => { cancelled = true; controller.abort() }
-  }, [scope.sessionId, scope.cwd, path, ctx, showEmpty, isDir, reloadSeq])
+  }, [scope.sessionId, scope.cwd, path, ctx, showEmpty, isDir, reloadSeq, viewerRegistryRevision])
 
   // Save-then-refresh in preview mode (issue #167 part C): the edge into
   // 'saved' (never a lingering 'saved' state) triggers exactly one reload, so

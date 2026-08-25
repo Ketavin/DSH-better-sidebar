@@ -296,6 +296,38 @@ describe('EditorHost (files window)', () => {
     }
   })
 
+  it('re-resolves an already-open file when a viewer registers later', async () => {
+    const { store, ctx } = setup()
+    const service = ctx.betterSidebar
+    service.registerFileViewer({
+      id: 'test:fallback',
+      exts: [],
+      fetchStrategy: 'none',
+      component: () => createElement('div', null, 'Fallback viewer'),
+    })
+    service.openTab({ type: 'editor', title: 'x.late', path: '/tmp/x.late', id: 'editor:/tmp/x.late' })
+    const fileTab = (): SidebarTab =>
+      allLeaves(store.getSnapshot().state!.splits).flatMap(leaf => leaf.tabs)
+        .find(tab => tab.path === '/tmp/x.late')!
+    const { container, unmount } = mountHost(ctx, store, fileTab)
+    try {
+      expect(container.textContent).toContain('Fallback viewer')
+      await act(async () => {
+        service.registerFileViewer({
+          id: 'test:late',
+          exts: ['late'],
+          priority: 100,
+          fetchStrategy: 'none',
+          component: () => createElement('div', null, 'Late viewer'),
+        })
+      })
+      expect(container.textContent).toContain('Late viewer')
+      expect(container.textContent).not.toContain('Fallback viewer')
+    } finally {
+      unmount()
+    }
+  })
+
   it('a folder tab (meta.dir) renders the tree rooted at the folder, no editor chrome', () => {
     const { store, ctx } = setup()
     ctx.betterSidebar!.openTab({

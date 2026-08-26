@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  node-pty@1.1.0: 27e88f1307c5a2eb9da877cfa9205039d722afa2c73a37b8bedd2abece668349
+
 importers:
 
   .:
@@ -88,7 +91,7 @@ importers:
         version: 11.17.0
       node-pty:
         specifier: ^1.1.0
-        version: 1.1.0
+        version: 1.1.0(patch_hash=27e88f1307c5a2eb9da877cfa9205039d722afa2c73a37b8bedd2abece668349)
       react-icons:
         specifier: 5.7.0
         version: 5.7.0(react@18.2.0)
@@ -5299,7 +5302,7 @@ snapshots:
 
   node-addon-api@7.1.0: {}
 
-  node-pty@1.1.0:
+  node-pty@1.1.0(patch_hash=27e88f1307c5a2eb9da877cfa9205039d722afa2c73a37b8bedd2abece668349):
     dependencies:
       node-addon-api: 7.1.0
 

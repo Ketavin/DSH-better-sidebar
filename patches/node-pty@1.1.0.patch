@@ -1,0 +1,43 @@
+diff --git a/lib/conpty_console_list_agent.js b/lib/conpty_console_list_agent.js
+index 8c4fca9022a6d6f015bca87f61625cde2278f428..cffaa9c3417c684702e2b42e4f83b7f6859f638d 100644
+--- a/lib/conpty_console_list_agent.js
++++ b/lib/conpty_console_list_agent.js
+@@ -10,7 +10,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ var utils_1 = require("./utils");
+ var getConsoleProcessList = utils_1.loadNativeModule('conpty_console_list').module.getConsoleProcessList;
+ var shellPid = parseInt(process.argv[2], 10);
+-var consoleProcessList = getConsoleProcessList(shellPid);
++var consoleProcessList = [];
++if (shellPid > 0) {
++    try {
++        consoleProcessList = getConsoleProcessList(shellPid);
++    }
++    catch (_a) {
++        // The shell may exit before this cleanup helper can attach to its
++        // console. Fall back to the shell PID like windowsPtyAgent's timeout.
++        consoleProcessList = [shellPid];
++    }
++}
+ process.send({ consoleProcessList: consoleProcessList });
+ process.exit(0);
+ //# sourceMappingURL=conpty_console_list_agent.js.map
+diff --git a/src/conpty_console_list_agent.ts b/src/conpty_console_list_agent.ts
+index 181ccabbbe9c4948a9725fb1db907a68e9de01fc..cdcb0bcca38fe14b4859d7df7a786521973be316 100644
+--- a/src/conpty_console_list_agent.ts
++++ b/src/conpty_console_list_agent.ts
+@@ -11,5 +11,14 @@ import { loadNativeModule } from './utils';
+ const getConsoleProcessList = loadNativeModule('conpty_console_list').module.getConsoleProcessList;
+ const shellPid = parseInt(process.argv[2], 10);
+-const consoleProcessList = getConsoleProcessList(shellPid);
++let consoleProcessList: number[] = [];
++if (shellPid > 0) {
++  try {
++    consoleProcessList = getConsoleProcessList(shellPid);
++  } catch {
++    // The shell may exit before this cleanup helper can attach to its
++    // console. Fall back to the shell PID like windowsPtyAgent's timeout.
++    consoleProcessList = [shellPid];
++  }
++}
+ process.send!({ consoleProcessList });
+ process.exit(0);

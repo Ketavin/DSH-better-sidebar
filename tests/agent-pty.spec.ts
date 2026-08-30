@@ -46,12 +46,16 @@ describe('AgentPtyRegistry', () => {
       expect(list[0]!.command).toBe('echo hello-agent-pty')
       expect(list[0]!.exited).toBe(false)
       // The command was written to stdin; wait for the output.
-      const transcript = await waitForTranscript(registry, uuid, 'hello-agent-pty')
+      // A freshly provisioned Windows runner can spend well over ten seconds
+      // on the first powershell.exe + ConPTY startup (subsequent launches are
+      // warm). The registry itself has no startup deadline, so this test must
+      // observe that real cold-start contract rather than invent a shorter one.
+      const transcript = await waitForTranscript(registry, uuid, 'hello-agent-pty', 30_000)
       expect(transcript).toContain('hello-agent-pty')
     } finally {
       registry.disposeAll()
     }
-  }, 15_000)
+  }, 40_000)
 
   it('spawns a bare shell when command is empty', () => {
     const registry = new AgentPtyRegistry(testShell())

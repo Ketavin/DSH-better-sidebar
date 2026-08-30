@@ -30,6 +30,7 @@ describe('node-pty AttachConsole fallback', () => {
 
   it('waits for the helper to exit before exposing its process list', async () => {
     const child = new EventEmitter() as ChildProcess
+    Object.defineProperty(child, 'pid', { value: 987 })
     const forkProcess = (() => child) as typeof fork
     const resolved = vi.fn()
     const result = resolveConsoleProcessList(321, {
@@ -40,7 +41,9 @@ describe('node-pty AttachConsole fallback', () => {
     })
     void result.then(resolved)
 
-    child.emit('message', { consoleProcessList: [321, 654] })
+    child.emit('message', {
+      consoleProcessList: [process.pid, process.ppid, child.pid, 321, 654],
+    })
     await Promise.resolve()
     expect(resolved).not.toHaveBeenCalled()
 

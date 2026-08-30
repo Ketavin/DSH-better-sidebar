@@ -78,15 +78,25 @@ export function resolveConsoleProcessList(
       child = forkProcess(helperPath, [String(shellPid), nodePtyLib], { silent: true })
       child.once('message', message => {
         const value = (message as { consoleProcessList?: unknown } | null)?.consoleProcessList
+        // GetConsoleProcessList can include the isolated probe itself and,
+        // on some hosted Windows console arrangements, the Node host or its
+        // launcher. None of those are terminal descendants. Never return a
+        // PID that could terminate the DSH process, its supervisor, or the
+        // helper after its PID is recycled.
+        const protectedPids = new Set([process.pid, process.ppid, child?.pid])
         const processes = Array.isArray(value)
-          ? value.filter((pid): pid is number => Number.isInteger(pid) && pid > 0)
+          ? value.filter((pid): pid is number => (
+              Number.isInteger(pid) && pid > 0 && !protectedPids.has(pid)
+            ))
           : []
         // The helper is attached to the target console while it probes the
         // process list, so its own PID can be part of the result. Do not hand
         // that list back to node-pty until the helper has completed its IPC
         // flush and exited; otherwise node-pty can race to terminate the
         // still-running helper and make the host/test worker exit non-zero.
-        reportedProcesses = processes.length > 0 ? processes : [shellPid]
+        reportedProcesses = processes.length > 0
+          ? processes
+          : protectedPids.has(shellPid) ? [] : [shellPid]
       })
       child.once('error', () => { finish([shellPid]) })
       child.once('exit', () => { finish(reportedProcesses ?? [shellPid]) })

@@ -133,19 +133,16 @@ export function EditorHost(props: {
     useCallback((callback: () => void) => store.subscribe(callback), [store]),
     useCallback(() => store.getSnapshot().prefs.editorExplorer, [store]),
   )
-  // Re-evaluate an already-open file on EVERY viewer-registry mutation (for
-  // example Office, Excel, or Document Workbench at startup/HMR). A snapshot
-  // made only from viewer ids misses a synchronous dispose+register of a new
-  // descriptor with the same id, so use the registry notification itself as
-  // a monotonic revision just like Sidebar's tabsVersion.
-  const [viewerRegistryRevision, setViewerRegistryRevision] = useState(0)
-  useEffect(() => {
-    const service = ctx.get('betterSidebar')
-    if (service === undefined) return
-    return service.subscribe(() => {
-      setViewerRegistryRevision(revision => revision + 1)
-    })
-  }, [ctx])
+  // Re-evaluate an already-open file only when the VIEWER registry changes
+  // (Office, Excel, or Document Workbench startup/HMR). Tab registrations
+  // are unrelated and must never remount an editor. The service-owned
+  // revision makes useSyncExternalStore race-free and still observes a
+  // synchronous dispose+register replacement using the same viewer id.
+  const service = ctx.get('betterSidebar')
+  const viewerRegistryRevision = useSyncExternalStore(
+    useCallback((callback: () => void) => service?.subscribeFileViewers(callback) ?? (() => {}), [service]),
+    useCallback(() => service?.getFileViewerRevision() ?? 0, [service]),
+  )
   // The file tree's "open with" configuration (pluginSettings['editor']): a
   // blob subscription, so a pin click or a settings-page edit re-renders the
   // menu immediately. The parsed config also drives which targets are shown
@@ -248,6 +245,18 @@ export function EditorHost(props: {
     controlsRef.current = controls
   }, [])
 
+  // A late viewer registration normally re-matches immediately, but never
+  // while the current viewer owns an unsaved/saving/failed draft: remounting
+  // it would destroy component-local editor state. Once the viewer reports a
+  // clean state, apply the latest accumulated revision in one reload.
+  const [appliedViewerRegistryRevision, setAppliedViewerRegistryRevision] = useState(viewerRegistryRevision)
+  const viewerReloadBlocked = toolbar?.dirty === true
+    || toolbar?.saveState === 'saving'
+    || toolbar?.saveState === 'failed'
+  useEffect(() => {
+    if (!viewerReloadBlocked) setAppliedViewerRegistryRevision(viewerRegistryRevision)
+  }, [viewerRegistryRevision, viewerReloadBlocked])
+
   // The docked panel's drag-resize: pointer capture on the handle itself
   // (no window listeners — the captured pointer keeps tracking even off the
   // handle). Local width while dragging, persisted into meta.treeWidth on
@@ -349,7 +358,7 @@ export function EditorHost(props: {
     }
     apply(planFirstMatch(ctx.get('betterSidebar')?.matchFileViewer(path), mediaUrlOf))
     return () => { cancelled = true; controller.abort() }
-  }, [scope.sessionId, scope.cwd, path, ctx, showEmpty, isDir, reloadSeq, viewerRegistryRevision])
+  }, [scope.sessionId, scope.cwd, path, ctx, showEmpty, isDir, reloadSeq, appliedViewerRegistryRevision])
 
   // Save-then-refresh in preview mode (issue #167 part C): the edge into
   // 'saved' (never a lingering 'saved' state) triggers exactly one reload, so

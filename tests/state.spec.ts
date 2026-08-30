@@ -1328,6 +1328,51 @@ describe('pinned terminals (v0.17.0)', () => {
   })
 })
 
+describe('cold-start pinned-session hydration', () => {
+  it('restores only persisted pin-bearing sessions, once, before they are visited', () => {
+    const g = globalThis as Record<string, unknown>
+    g.window = {
+      clearTimeout: () => {}, setTimeout: () => 0,
+      innerWidth: 1024, innerHeight: 800, location: { search: '' },
+    }
+
+    let pinned = makeDefaultState()
+    pinned = openTabInActivePane(pinned, { id: 'terminal:home', type: 'terminal', title: 'Home' })
+    pinned = setTabPin(pinned, 'terminal:home', { scope: 'global' })
+    const ordinary = makeDefaultState()
+    const data = new Map<string, string>([
+      ['dsh-sidebar:v1:home', JSON.stringify(pinned)],
+      ['dsh-sidebar:v1:ordinary', JSON.stringify(ordinary)],
+      ['dsh-sidebar:v1:corrupt', '{not-json'],
+      ['dsh-sidebar:v1:width', '420'],
+    ])
+    const keys = [...data.keys()]
+    g.localStorage = {
+      get length() { return keys.length },
+      key: (index: number) => keys[index] ?? null,
+      getItem: (key: string) => data.get(key) ?? null,
+      setItem: () => {},
+      removeItem: () => {},
+    }
+
+    try {
+      const store = createSidebarStore()
+      store.setSession('viewer')
+      expect([...store.getSessionStates().keys()]).toEqual(['viewer'])
+      expect(store.hydratePinnedSessions()).toBe(1)
+      expect([...store.getSessionStates().keys()].sort()).toEqual(['home', 'viewer'])
+      expect(store.getSessionStates().get('home')?.width).toBe(420)
+      // A second call neither re-enumerates into cache nor changes ids/state.
+      expect(store.hydratePinnedSessions()).toBe(0)
+      expect(store.getSessionStates().has('ordinary')).toBe(false)
+      expect(store.getSessionStates().has('corrupt')).toBe(false)
+    } finally {
+      delete g.window
+      delete g.localStorage
+    }
+  })
+})
+
 describe('URL reset escape hatch (issue #369)', () => {
   // Same browser-global stubs as the v0.12.0 block above; loadState reads
   // window.location.search (reset param) and localStorage (persisted state).

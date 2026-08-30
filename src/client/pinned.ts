@@ -97,11 +97,13 @@ export function createPinnedVirtualTab(entry: PinnedTabEntry): SidebarTab {
 }
 
 /** Normalize a cwd for workspace identity without importing Node path APIs
- * into the browser bundle. Windows drive/UNC paths compare case-insensitively
- * and accept either slash; POSIX paths remain case-sensitive. */
+ * into the browser bundle. Windows drive and explicit backslash-UNC paths
+ * compare case-insensitively; POSIX paths remain case-sensitive. A leading
+ * forward `//` is ambiguous without a host-platform signal, so it stays
+ * case-sensitive (fail closed rather than merging two POSIX workspaces). */
 export function normalizeWorkspaceCwd(cwd: string): string {
   const trimmed = cwd.trim()
-  const windowsLike = /^[a-z]:[\\/]/i.test(trimmed) || trimmed.startsWith('\\\\') || trimmed.startsWith('//')
+  const windowsLike = /^[a-z]:[\\/]/i.test(trimmed) || trimmed.startsWith('\\\\')
   let normalized = trimmed.replace(/\\/g, '/').replace(/\/{2,}/g, '/')
   // Preserve POSIX and Windows drive roots; trimming `C:/` to `C:` would
   // turn an absolute workspace identity into a drive-relative one.

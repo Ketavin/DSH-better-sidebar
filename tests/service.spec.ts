@@ -75,6 +75,26 @@ describe('BetterSidebar service', () => {
     service.registerTab({ id: 'y', title: 'Y', component: () => null })
     expect(calls).toBe(2)
   })
+
+  it('file-viewer subscription ignores tab changes and exposes a monotonic revision', () => {
+    const store = createSidebarStore()
+    const service = createBetterSidebarService(store)
+    let calls = 0
+    const unsub = service.subscribeFileViewers(() => { calls++ })
+    expect(service.getFileViewerRevision()).toBe(0)
+    service.registerTab({ id: 'tab-only', title: 'Tab', component: () => null })
+    expect(calls).toBe(0)
+    expect(service.getFileViewerRevision()).toBe(0)
+    const dispose = service.registerFileViewer({
+      id: 'viewer-only', exts: ['safe'], fetchStrategy: 'none', component: () => null,
+    })
+    expect(calls).toBe(1)
+    expect(service.getFileViewerRevision()).toBe(1)
+    dispose()
+    expect(calls).toBe(2)
+    expect(service.getFileViewerRevision()).toBe(2)
+    unsub()
+  })
 })
 
 describe('enable switches (declarative settings)', () => {

@@ -68,6 +68,7 @@ describe('pinnedVisibleTo', () => {
     expect(sameWorkspaceCwd('C:\\Work\\Repo', 'c:/work/repo/')).toBe(true)
     expect(sameWorkspaceCwd('\\\\Server\\Share\\Repo', '//server/share/repo/')).toBe(true)
     expect(sameWorkspaceCwd('/Work/Repo', '/work/repo')).toBe(false)
+    expect(sameWorkspaceCwd('//Work/Repo', '//work/repo')).toBe(false)
   })
 })
 

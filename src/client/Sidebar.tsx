@@ -626,7 +626,6 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     ctx.get('betterSidebar')?.openTab({ type: 'subagent', title: t('subagent') })
   }, [sessionId, store, ctx])
 
-  /**
    /**
     * Inline pinned terminals (v0.17.0+): pinned tabs from OTHER sessions
     * inject as VIRTUAL tabs into the first leaf of the right panel's split
@@ -643,6 +642,11 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     */
   const [activePinnedTabId, setActivePinnedTabId] = useState<string | null>(null)
   const [pinnedRevision, setPinnedRevision] = useState(0)
+  useEffect(() => {
+    if (store.hydratePinnedSessions() > 0) {
+      setPinnedRevision(revision => revision + 1)
+    }
+  }, [store])
 
   /**
    * Cross-session pinned-tab collection. Recomputed on every store notify,

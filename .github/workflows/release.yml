@@ -20,12 +20,9 @@ name: Release
 on:
   release:
     types: [published]
+  # A manual dispatch is always validation-only. Publishing is possible only
+  # from a published release in the canonical upstream repository.
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: Pack and verify everything, but do not publish
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -90,7 +87,7 @@ jobs:
 
       - name: Dry-run publish (validation only)
         if: >-
-          (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true') ||
+          github.event_name == 'workflow_dispatch' ||
           (github.event_name == 'release' && github.repository != 'omdsh-dev/DSH-better-sidebar')
         run: pnpm publish --dry-run --no-git-checks
 

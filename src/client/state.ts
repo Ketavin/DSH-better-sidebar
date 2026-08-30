@@ -1191,6 +1191,13 @@ function loadState(sessionId: string, prefs: SidebarPrefs): SidebarState {
   return makeDefaultState(width, openByDefault, seed)
 }
 
+/** Whether a restored session contains at least one legal pinned terminal. */
+function hasPinnedTerminal(state: SidebarState): boolean {
+  const docked = allLeaves(state.splits).concat(allLeaves(state.bottomSplits))
+    .some(leaf => leaf.tabs.some(tab => tab.type === 'terminal' && tab.pin !== undefined))
+  return docked || state.floats.some(item => item.tab.type === 'terminal' && item.tab.pin !== undefined)
+}
+
 /**
  * Structural validation of one persisted state. A malformed or stale shape
  * (older layouts, hand-edited storage) must fall back to the default instead
@@ -1434,6 +1441,8 @@ export class SidebarStore {
   /** Per-session persist debounce timers (v0.12.0+: one per session, so a
    *  targeted open never cancels another session's pending write). */
   private readonly persistTimers = new Map<string, number>()
+  /** Cold-start pin scan runs once; only states containing a pin are retained. */
+  private pinnedSessionsHydrated = false
   /** User-facing side card prefs seeding brand-new session states (defaults until the settings RPC resolves). */
   private prefs: SidebarPrefs = { ...SIDEBAR_PREFS_DEFAULTS }
   /**
@@ -1540,13 +1549,58 @@ export class SidebarStore {
   }
 
   /**
+   * Restore persisted sessions that contain pinned terminals without
+   * requiring the user to visit each conversation first. The one-time scan
+   * retains only pin-bearing states, so ordinary history does not become an
+   * in-memory mirror of localStorage. Returns the number newly cached.
+   */
+  hydratePinnedSessions(): number {
+    if (this.pinnedSessionsHydrated || resetRequested()) return 0
+    this.pinnedSessionsHydrated = true
+    const counterBefore = nextIdCounter
+    let counterCeiling = counterBefore
+    let added = 0
+    try {
+      const prefix = `${STORAGE_PREFIX}:`
+      const keys: string[] = []
+      for (let index = 0; index < localStorage.length; index += 1) {
+        const key = localStorage.key(index)
+        if (key !== null && key.startsWith(prefix) && key !== GLOBAL_WIDTH_KEY) keys.push(key)
+      }
+      const globalWidth = readGlobalWidth()
+      for (const key of keys) {
+        const sessionId = key.slice(prefix.length)
+        if (sessionId === '' || this.bySession.has(sessionId)) continue
+        try {
+          const raw = localStorage.getItem(key)
+          if (raw === null) continue
+          const parsed = JSON.parse(raw) as unknown
+          nextIdCounter = maxCounterId(parsed)
+          const state = sanitizeState(parsed)
+          counterCeiling = Math.max(counterCeiling, nextIdCounter)
+          if (state === undefined || !hasPinnedTerminal(state)) continue
+          this.bySession.set(sessionId, globalWidth === undefined ? state : { ...state, width: globalWidth })
+          added += 1
+        } catch {
+          // One corrupt entry must not hide pins from the remaining sessions.
+        }
+      }
+    } catch {
+      // Storage enumeration can be blocked; the active session still works.
+    } finally {
+      nextIdCounter = Math.max(nextIdCounter, counterCeiling)
+    }
+    return added
+  }
+
+  /**
    * Read-only view of EVERY cached session's state (v0.17.0+). The
    * PinnedRail uses this to collect pinned terminals across sessions
    * without each render reading private fields. The map is the live
    * `bySession` reference — callers MUST treat it as read-only (mutations
-   * go through {@link reduce} / {@link reduceFor}). A session that has
-   * never been visited in this run is absent (its pinned tabs are not
-   * visible until first load — accepted as YAGNI by the design).
+   * go through {@link reduce} / {@link reduceFor}). Call
+   * {@link hydratePinnedSessions} once at sidebar startup to include
+   * persisted pin-bearing sessions that have not been visited this run.
    */
   getSessionStates(): ReadonlyMap<string, SidebarState> {
     return new Map(this.bySession)

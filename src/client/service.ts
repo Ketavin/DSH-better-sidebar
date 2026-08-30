@@ -398,12 +398,16 @@ export interface BetterSidebarService {
   closeTab(tabId: string, scope?: SessionScope): void
   /** Subscribe to registry changes (register/dispose). */
   subscribe(listener: () => void): () => void
+  /** Subscribe only to file-viewer registry changes (register/dispose). */
+  subscribeFileViewers(listener: () => void): () => void
+  /** Monotonic file-viewer registry revision for race-free React snapshots. */
+  getFileViewerRevision(): number
   /** The plugin version this service instance was built from ('0.12.0'). */
   readonly version: string
   /**
    * Monotonic capability list (v0.12.0+): 'badge' | 'tabLifecycle' |
    * 'updateTab' | 'openFile' | 'targetedOpen' | 'stateSubscription' |
-   * 'tabMeta' | 'pluginSettings'. Features are never removed — consumers
+   * 'tabMeta' | 'pluginSettings' | 'viewerRegistrySubscription'. Features are never removed — consumers
    * gate new API usage on membership.
    */
   readonly features: readonly string[]
@@ -485,6 +489,7 @@ export const SIDEBAR_SERVICE_VERSION = '0.17.2'
  * - 'stateSubscription': getSnapshot/subscribeState
  * - 'tabMeta': SidebarTab.meta (seeds, createTab, updateTab, persistence)
  * - 'pluginSettings': SidebarSettingsDeclaration.pluginToggles/render
+ * - 'viewerRegistrySubscription': subscribeFileViewers/getFileViewerRevision
  * - 'urlTarget' (v0.13.0): TabDescriptor.urlTarget (external-link claims)
  * - 'settingSelect': SidebarSettingToggle type 'select' (options/multi)
  * - 'floatWindows' (v0.16.0): tabs float as free windows — openTab's dedupe/
@@ -500,6 +505,7 @@ export const SIDEBAR_FEATURES = [
   'stateSubscription',
   'tabMeta',
   'pluginSettings',
+  'viewerRegistrySubscription',
   'urlTarget',
   'settingSelect',
   'floatWindows',
@@ -523,6 +529,8 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
   const tabs = new Map<string, TabDescriptor>()
   const viewers = new Map<string, FileViewerDescriptor>()
   const listeners = new Set<() => void>()
+  const viewerListeners = new Set<() => void>()
+  let viewerRevision = 0
 
   const notify = (): void => {
     for (const fn of [...listeners]) fn()
@@ -532,6 +540,18 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
     listeners.add(listener)
     return () => { listeners.delete(listener) }
   }
+
+  const notifyFileViewers = (): void => {
+    viewerRevision += 1
+    for (const fn of [...viewerListeners]) fn()
+  }
+
+  const subscribeFileViewers = (listener: () => void): (() => void) => {
+    viewerListeners.add(listener)
+    return () => { viewerListeners.delete(listener) }
+  }
+
+  const getFileViewerRevision = (): number => viewerRevision
 
   const registerTab = (descriptor: TabDescriptor): (() => void) => {
     if (tabs.has(descriptor.id)) {
@@ -552,10 +572,12 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
       throw new Error(`[dsh-better-sidebar] file viewer "${descriptor.id}" already registered`)
     }
     viewers.set(descriptor.id, descriptor)
+    notifyFileViewers()
     notify()
     return () => {
       if (viewers.get(descriptor.id) === descriptor) {
         viewers.delete(descriptor.id)
+        notifyFileViewers()
         notify()
       }
     }
@@ -829,6 +851,8 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
     openTab,
     closeTab,
     subscribe,
+    subscribeFileViewers,
+    getFileViewerRevision,
     version: SIDEBAR_SERVICE_VERSION,
     features: SIDEBAR_FEATURES,
     getSnapshot,

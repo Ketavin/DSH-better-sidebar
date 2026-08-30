@@ -15,6 +15,7 @@ import { randomUUID } from 'node:crypto'
 import type { IPty } from 'node-pty'
 import { ensureSpawnHelper, shellSpawnArgs } from './pty-manager.ts'
 import { loadRequiredNodePty, type NodePtyModule } from './pty-deps.ts'
+import { hardenWindowsPtyCleanup } from './windows-pty-cleanup.ts'
 import { SidebarError } from './wire.ts'
 
 /** Per-agent-terminal transcript bound (bytes kept for replay and reads). */
@@ -226,6 +227,7 @@ export class AgentPtyRegistry {
       cwd,
       env: { ...process.env },
     })
+    hardenWindowsPtyCleanup(pty)
     const handle: AgentTerminalHandle = {
       uuid,
       sessionId,

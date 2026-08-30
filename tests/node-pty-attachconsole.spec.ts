@@ -1,49 +1,51 @@
-import { fork } from 'node:child_process'
 import { readFileSync } from 'node:fs'
-import { createRequire } from 'node:module'
-import { dirname, join } from 'node:path'
-import { describe, expect, it } from 'vitest'
+import type { IPty } from 'node-pty'
+import { describe, expect, it, vi } from 'vitest'
+import {
+  conptyCleanupHelperPath,
+  hardenWindowsPtyCleanup,
+  nodePtyLibPath,
+  resolveConsoleProcessList,
+} from '../src/windows-pty-cleanup.ts'
 
 describe('node-pty AttachConsole fallback', () => {
-  it('keeps the node-pty patch pinned in the workspace', () => {
-    const workspace = readFileSync(new URL('../pnpm-workspace.yaml', import.meta.url), 'utf8')
-    const patch = readFileSync(new URL('../patches/node-pty@1.1.0.patch', import.meta.url), 'utf8')
+  it('ships the crash-safe helper in the package file manifest', () => {
+    const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as { files?: string[] }
+    const helper = readFileSync(conptyCleanupHelperPath(), 'utf8')
 
-    expect(workspace).toContain('node-pty@1.1.0: patches/node-pty@1.1.0.patch')
-    expect(patch).toContain('consoleProcessList = [shellPid]')
+    expect(pkg.files).toContain('scripts/conpty-console-list-agent.cjs')
+    expect(helper).toContain('consoleProcessList = [shellPid]')
   })
 
-  const windowsIt = process.platform === 'win32' ? it : it.skip
-
-  windowsIt('returns the dead shell PID without stderr or a child-process crash', async () => {
-    const require = createRequire(import.meta.url)
-    const entry = require.resolve('node-pty')
-    const helper = join(dirname(entry), 'conpty_console_list_agent.js')
+  it('the shipped helper returns a dead shell PID without crashing', async () => {
     const deadPid = 2_147_483_647
-    const child = fork(helper, [String(deadPid)], { silent: true })
-    let stderr = ''
-    child.stderr?.setEncoding('utf8')
-    child.stderr?.on('data', chunk => { stderr += chunk })
+    await expect(resolveConsoleProcessList(deadPid, {
+      helperPath: conptyCleanupHelperPath(),
+      nodePtyLib: nodePtyLibPath(),
+      timeoutMs: 5_000,
+    })).resolves.toEqual([deadPid])
+  })
 
-    const timeout = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('node-pty cleanup helper timed out')), 5_000).unref()
-    })
-    const message = await Promise.race([
-      new Promise<unknown>((resolve, reject) => {
-        child.once('message', resolve)
-        child.once('error', reject)
-      }),
-      timeout,
-    ])
-    const exit = await Promise.race([
-      new Promise<{ code: number | null, signal: NodeJS.Signals | null }>(resolve => {
-        child.once('exit', (code, signal) => resolve({ code, signal }))
-      }),
-      timeout,
-    ])
+  it('replaces the node-pty 1.1 Windows agent resolver', async () => {
+    const resolveList = vi.fn(async (pid: number) => [pid, pid + 1])
+    const agent = {
+      _innerPid: 321,
+      _getConsoleProcessList: async () => [999],
+    }
+    const pty = { _agent: agent } as unknown as IPty
 
-    expect(message).toEqual({ consoleProcessList: [deadPid] })
-    expect(exit).toEqual({ code: 0, signal: null })
-    expect(stderr).toBe('')
+    expect(hardenWindowsPtyCleanup(pty, { platform: 'win32', resolveList })).toBe(true)
+    await expect(agent._getConsoleProcessList()).resolves.toEqual([321, 322])
+    expect(resolveList).toHaveBeenCalledWith(321)
+  })
+
+  it('does not touch non-Windows PTYs or unknown node-pty shapes', () => {
+    const agent = { _innerPid: 321, _getConsoleProcessList: async () => [999] }
+    const pty = { _agent: agent } as unknown as IPty
+    const original = agent._getConsoleProcessList
+
+    expect(hardenWindowsPtyCleanup(pty, { platform: 'linux' })).toBe(false)
+    expect(agent._getConsoleProcessList).toBe(original)
+    expect(hardenWindowsPtyCleanup({} as IPty, { platform: 'win32' })).toBe(false)
   })
 })

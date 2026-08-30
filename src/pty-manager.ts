@@ -12,6 +12,7 @@ import { createRequire } from 'node:module'
 import { userInfo } from 'node:os'
 import type { IPty } from 'node-pty'
 import { loadRequiredNodePty, type NodePtyModule } from './pty-deps.ts'
+import { hardenWindowsPtyCleanup } from './windows-pty-cleanup.ts'
 import { SidebarError } from './wire.ts'
 
 /** Per-terminal transcript bound (bytes kept for replay). */
@@ -148,18 +149,20 @@ export class PtyManager {
     if (this.keysOf(sessionId).length >= this.maxPerSession) {
       throw new SidebarError('pty-error', `terminal limit reached (${this.maxPerSession}) for this session`, 400)
     }
+    const pty = this.nodePty.spawn(shell ?? this.shell, shellSpawnArgs(shellArgs ?? this.shellArgs), {
+      name: 'xterm-256color',
+      cols: Math.max(2, Math.floor(cols)),
+      rows: Math.max(2, Math.floor(rows)),
+      cwd,
+      env: { ...process.env },
+    })
+    hardenWindowsPtyCleanup(pty)
     const handle: SidebarPty = {
       key,
       sessionId,
       tabId,
       cwd,
-      pty: this.nodePty.spawn(shell ?? this.shell, shellSpawnArgs(shellArgs ?? this.shellArgs), {
-        name: 'xterm-256color',
-        cols: Math.max(2, Math.floor(cols)),
-        rows: Math.max(2, Math.floor(rows)),
-        cwd,
-        env: { ...process.env },
-      }),
+      pty,
       transcript: '',
       exited: false,
     }

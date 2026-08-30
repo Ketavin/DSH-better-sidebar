@@ -29,11 +29,17 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Exercise real ConPTY lifecycle and cleanup seam
-        # Threads avoid a Vitest fork-worker IPC shutdown race after ConPTY
-        # has already cleaned every child; the assertions still use real
-        # native node-pty processes on the Windows runner.
-        run: pnpm exec vitest run --pool=threads tests/node-pty-attachconsole.spec.ts tests/agent-pty.spec.ts
+      - name: Validate packaged ConPTY cleanup seam
+        timeout-minutes: 5
+        # Keep Windows native-runtime files isolated and serialized. A single
+        # threads worker avoids Vitest fork IPC teardown races without
+        # weakening the assertions against the packaged node-pty runtime.
+        run: pnpm exec vitest run --pool=threads --maxWorkers=1 --no-file-parallelism tests/node-pty-attachconsole.spec.ts
+      - name: Exercise real ConPTY lifecycle
+        timeout-minutes: 5
+        # These assertions launch real native PTYs; serial execution makes a
+        # leaked handle fail this named step instead of hanging the whole job.
+        run: pnpm exec vitest run --pool=threads --maxWorkers=1 --no-file-parallelism tests/agent-pty.spec.ts
       - name: Build Windows package
         run: pnpm build
 

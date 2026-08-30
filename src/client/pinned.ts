@@ -15,12 +15,11 @@
  * | pin.scope | visible when |
  * |-----------|--------------|
  * | `global`  | any session (cwd-independent) |
- * | `workspace` | `viewer.cwd === tab.pin.homeCwd` (both undefined match; viewer.cwd unknown → conservative visible) |
+ * | `workspace` | both cwd values are known and identify the same workspace |
  *
- * The "viewer.cwd unknown → visible" branch is intentional: during
- * hydration the session summary may carry no cwd yet, and hiding pinned
- * workspace tabs on first paint would flash them away. Once the cwd
- * resolves, the next store notify re-runs the resolver with the real cwd.
+ * Workspace isolation fails closed. During hydration an unresolved cwd keeps
+ * the pin hidden until the next store notification supplies the real cwd; a
+ * pin created without a home cwd is invalid and never widens to global.
  *
  * The viewer's OWN session is excluded: its pinned tabs are already on its
  * own tab strip, so rendering them again as virtual tabs would double-show.
@@ -97,6 +96,45 @@ export function createPinnedVirtualTab(entry: PinnedTabEntry): SidebarTab {
   }
 }
 
+/** Normalize a cwd for workspace identity without importing Node path APIs
+ * into the browser bundle. Windows drive/UNC paths compare case-insensitively
+ * and accept either slash; POSIX paths remain case-sensitive. */
+export function normalizeWorkspaceCwd(cwd: string): string {
+  const trimmed = cwd.trim()
+  const windowsLike = /^[a-z]:[\\/]/i.test(trimmed) || trimmed.startsWith('\\\\') || trimmed.startsWith('//')
+  let normalized = trimmed.replace(/\\/g, '/').replace(/\/{2,}/g, '/')
+  // Preserve POSIX and Windows drive roots; trimming `C:/` to `C:` would
+  // turn an absolute workspace identity into a drive-relative one.
+  if (normalized.length > 1 && !/^[a-z]:\/$/i.test(normalized)) {
+    normalized = normalized.replace(/\/+$/, '')
+  }
+  if (windowsLike) normalized = normalized.toLowerCase()
+  return normalized
+}
+
+/** Whether two resolved cwd strings identify the same workspace. */
+export function sameWorkspaceCwd(left: string, right: string): boolean {
+  const a = normalizeWorkspaceCwd(left)
+  const b = normalizeWorkspaceCwd(right)
+  return a !== '' && b !== '' && a === b
+}
+
+/** Validate a requested active virtual id against the current injected set. */
+export function activePinnedIdFor(
+  pinned: readonly SidebarTab[],
+  requested: string | null,
+): string | null {
+  if (requested === null) return null
+  return pinned.some(tab => tab.id === requested) ? requested : null
+}
+
+/** Inactive virtual terminals stay represented in the tab strip but do not
+ * mount xterm/WebSocket resources. Ordinary tabs retain the workbench's
+ * keep-mounted behavior. */
+export function shouldRenderPinnedContent(tab: SidebarTab, active: boolean): boolean {
+  return !isPinnedVirtualTab(tab) || active
+}
+
 /** Inject pinned virtual tabs into the first leaf of a split tree, and
  *  override that leaf's `active` when a pinned tab is activated. Returns
  *  the original tree when there are no pinned tabs and no active override. */
@@ -105,28 +143,27 @@ export function injectPinnedIntoTree(
   pinned: readonly SidebarTab[],
   activePinnedId: string | null,
 ): SplitNode {
-  if (pinned.length === 0 && activePinnedId === null) return tree
+  const active = activePinnedIdFor(pinned, activePinnedId)
+  if (pinned.length === 0 && active === null) return tree
   if (tree.kind === 'leaf') {
     return {
       ...tree,
       tabs: pinned.length > 0 ? [...tree.tabs, ...pinned] : tree.tabs,
-      active: activePinnedId ?? tree.active,
+      active: active ?? tree.active,
     }
   }
   return {
     ...tree,
     children: [
-      injectPinnedIntoTree(tree.children[0]!, pinned, activePinnedId),
+      injectPinnedIntoTree(tree.children[0]!, pinned, active),
       ...tree.children.slice(1),
     ],
   }
 }
 
 /**
- * Whether a pinned tab is visible to the viewer session. Conservative on
- * unknown cwd: a `workspace` pin with no `homeCwd` is visible everywhere
- * (the pin was set before the home session's cwd resolved), and a viewer
- * whose cwd is unknown sees every workspace pin (avoids hydration flash).
+ * Whether a pinned tab is visible to the viewer session. Workspace scope is
+ * fail-closed: both cwd values must be present and identify the same path.
  */
 export function pinnedVisibleTo(tab: SidebarTab, viewer: PinnedViewer): boolean {
   const pin = tab.pin
@@ -134,9 +171,8 @@ export function pinnedVisibleTo(tab: SidebarTab, viewer: PinnedViewer): boolean 
   if (pin.scope === 'global') return true
   // workspace scope
   const home = pin.homeCwd
-  if (home === undefined) return true
-  if (viewer.cwd === undefined) return true
-  return viewer.cwd === home
+  if (home === undefined || viewer.cwd === undefined) return false
+  return sameWorkspaceCwd(viewer.cwd, home)
 }
 
 /**

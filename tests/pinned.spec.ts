@@ -12,7 +12,8 @@ import {
 } from '../src/client/state.ts'
 import { collectPinnedTabs, pinnedVisibleTo, type PinnedViewer,
   isPinnedVirtualId, parsePinnedVirtualId, isPinnedVirtualTab, getPinnedHomeScope,
-  createPinnedVirtualTab, injectPinnedIntoTree,
+  activePinnedIdFor, createPinnedVirtualTab, injectPinnedIntoTree,
+  normalizeWorkspaceCwd, sameWorkspaceCwd, shouldRenderPinnedContent,
 } from '../src/client/pinned.ts'
 
 /** A pinned terminal tab in a fresh state, opened and pinned in one go. */
@@ -45,20 +46,28 @@ describe('pinnedVisibleTo', () => {
     expect(pinnedVisibleTo(tab, viewer('s', '/q'))).toBe(false)
   })
 
-  it('workspace pin without homeCwd is visible everywhere (pin set before cwd resolved)', () => {
+  it('workspace pin without homeCwd fails closed', () => {
     const tab = { id: 't', type: 'terminal', title: 'T', pin: { scope: 'workspace' as const } }
-    expect(pinnedVisibleTo(tab, viewer('s', '/anywhere'))).toBe(true)
-    expect(pinnedVisibleTo(tab, viewer('s', undefined))).toBe(true)
+    expect(pinnedVisibleTo(tab, viewer('s', '/anywhere'))).toBe(false)
+    expect(pinnedVisibleTo(tab, viewer('s', undefined))).toBe(false)
   })
 
-  it('workspace pin is conservatively visible when viewer.cwd is unknown (no hydration flash)', () => {
+  it('workspace pin fails closed while viewer.cwd is unknown', () => {
     const tab = { id: 't', type: 'terminal', title: 'T', pin: { scope: 'workspace' as const, homeCwd: '/p' } }
-    expect(pinnedVisibleTo(tab, viewer('s', undefined))).toBe(true)
+    expect(pinnedVisibleTo(tab, viewer('s', undefined))).toBe(false)
   })
 
-  it('both undefined cwds match (legacy pin + unhydrated viewer)', () => {
+  it('two undefined cwds do not create a workspace identity', () => {
     const tab = { id: 't', type: 'terminal', title: 'T', pin: { scope: 'workspace' as const, homeCwd: undefined } }
-    expect(pinnedVisibleTo(tab, viewer('s', undefined))).toBe(true)
+    expect(pinnedVisibleTo(tab, viewer('s', undefined))).toBe(false)
+  })
+
+  it('normalizes Windows drive and UNC cwd identity without weakening POSIX case sensitivity', () => {
+    expect(normalizeWorkspaceCwd('C:\\Work\\Repo\\')).toBe('c:/work/repo')
+    expect(normalizeWorkspaceCwd('C:\\')).toBe('c:/')
+    expect(sameWorkspaceCwd('C:\\Work\\Repo', 'c:/work/repo/')).toBe(true)
+    expect(sameWorkspaceCwd('\\\\Server\\Share\\Repo', '//server/share/repo/')).toBe(true)
+    expect(sameWorkspaceCwd('/Work/Repo', '/work/repo')).toBe(false)
   })
 })
 
@@ -210,6 +219,13 @@ describe('injectPinnedIntoTree', () => {
     expect(injectPinnedIntoTree(tree, [], null)).toBe(tree)
   })
 
+  it('drops a stale active override when the virtual tab is no longer injected', () => {
+    const s = openTabInActivePane(makeDefaultState(), { id: 'terminal:1', type: 'terminal', title: 'T1' })
+    const result = injectPinnedIntoTree(s.splits, [], 'pinned:old:terminal:2')
+    expect(result).toBe(s.splits)
+    expect(activePinnedIdFor([], 'pinned:old:terminal:2')).toBeNull()
+  })
+
   it('appends pinned virtual tabs to the first leaf', () => {
     const s = makeDefaultState()
     const vtab = createPinnedVirtualTab({
@@ -262,5 +278,19 @@ describe('injectPinnedIntoTree', () => {
         expect(second.tabs.map(t => t.id)).not.toContain(vtab.id)
       }
     }
+  })
+})
+
+describe('pinned virtual content lifecycle', () => {
+  const virtual = createPinnedVirtualTab({
+    tab: { id: 'terminal:2', type: 'terminal', title: 'T2', pin: { scope: 'global' } },
+    homeSessionId: 'home',
+  })
+
+  it('mounts only the active virtual terminal while ordinary tabs stay mounted', () => {
+    const regular = { id: 'terminal:1', type: 'terminal' as const, title: 'T1' }
+    expect(shouldRenderPinnedContent(virtual, false)).toBe(false)
+    expect(shouldRenderPinnedContent(virtual, true)).toBe(true)
+    expect(shouldRenderPinnedContent(regular, false)).toBe(true)
   })
 })

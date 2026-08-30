@@ -41,7 +41,7 @@ import {
   resizeFloat, resizeSplitIn, setBottomHeight, setTabPin, setWidth, toggleBottomPanel, toggleExpanded, togglePanel,
   type DropZone, type SidebarState, type SidebarStore, type SidebarTab, type SplitNode,
 } from './state.ts'
-import { collectPinnedTabs, createPinnedVirtualTab, getPinnedHomeScope, injectPinnedIntoTree, isPinnedVirtualId, isPinnedVirtualTab, parsePinnedVirtualId, type PinnedTabEntry } from './pinned.ts'
+import { activePinnedIdFor, collectPinnedTabs, createPinnedVirtualTab, getPinnedHomeScope, injectPinnedIntoTree, isPinnedVirtualId, isPinnedVirtualTab, parsePinnedVirtualId, shouldRenderPinnedContent, type PinnedTabEntry } from './pinned.ts'
 import { IconPinOutline16 } from './icons.tsx'
 import { IconPanelBottomOutline16, IconPanelRightOutline16 } from './icons.tsx'
 import { Workbench, type WorkbenchActions } from './split-pane.tsx'
@@ -662,12 +662,26 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     [pinnedEntries],
   )
 
+  // A virtual active id is valid only while that exact pin is visible in the
+  // current viewer session. Session switches, unpins and workspace changes
+  // can all remove it; derive a safe value synchronously so no render can
+  // override the real active tab with a stale id, then clean the state.
+  const effectiveActivePinnedTabId = useMemo(
+    () => activePinnedIdFor(pinnedVirtualTabs, activePinnedTabId),
+    [pinnedVirtualTabs, activePinnedTabId],
+  )
+  useEffect(() => {
+    if (activePinnedTabId !== null && effectiveActivePinnedTabId === null) {
+      setActivePinnedTabId(null)
+    }
+  }, [activePinnedTabId, effectiveActivePinnedTabId])
+
   /** The right panel's split tree with pinned virtual tabs injected into the
    *  first leaf. When `activePinnedTabId` is set, that leaf's `active` is
    *  overridden so the pinned tab's content is visible. */
   const augmentedTree = useMemo(
-    () => state === undefined ? undefined : injectPinnedIntoTree(state.splits, pinnedVirtualTabs, activePinnedTabId),
-    [state, pinnedVirtualTabs, activePinnedTabId],
+    () => state === undefined ? undefined : injectPinnedIntoTree(state.splits, pinnedVirtualTabs, effectiveActivePinnedTabId),
+    [state, pinnedVirtualTabs, effectiveActivePinnedTabId],
   )
 
   // The app shell's center column: the bottom panel spans ONLY that column
@@ -1252,6 +1266,10 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     // cwd matches. Unpin passes null — the tab stays open in its home
     // session, just unmarked.
     pinTab: (tabId, scope) => {
+      if (scope === 'workspace' && (cwd === undefined || cwd.trim() === '')) {
+        console.warn('[dsh-better-sidebar] cannot workspace-pin a terminal before the session cwd resolves')
+        return
+      }
       store.reduce(s => setTabPin(s, tabId, scope === null ? null : { scope, homeCwd: cwd }))
     },
   }), [store, sessionId, cwd])
@@ -1263,7 +1281,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
    * reduceFor (which doesn't notify — the revision bump is the local signal).
    */
   const wrappedActions = useMemo<WorkbenchActions>(() => {
-    if (pinnedVirtualTabs.length === 0) return actions
+    if (pinnedVirtualTabs.length === 0 && effectiveActivePinnedTabId === null) return actions
     const closePinnedInHome = (virtualId: string): void => {
       const { homeSessionId, tabId: originalId } = parsePinnedVirtualId(virtualId)
       // The home cwd lives in the virtual tab's meta (snapshotted at pin
@@ -1330,7 +1348,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
         }
       },
     }
-  }, [actions, pinnedVirtualTabs, activePinnedTabId, store])
+  }, [actions, pinnedVirtualTabs, activePinnedTabId, effectiveActivePinnedTabId, store])
 
   /**
    * The explorer's @-reference button: append `@<relative path>` to the
@@ -1438,6 +1456,10 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
   // `visible` to pause work, so tying floats to panelOpen would blank them
   // the moment the sidebar collapses).
   const renderTab = (tab: SidebarTab, active: boolean, paneId: string, placement: 'top' | 'bottom' | 'float' = 'top') => {
+    // Virtual terminals are lightweight tab-strip projections. Only the
+    // active projection mounts xterm and a WebSocket; inactive projections
+    // leave the authoritative PTY parked in their home session.
+    if (!shouldRenderPinnedContent(tab, active)) return null
     // Pinned virtual tabs: pass the home session's scope (sessionId + cwd) so
     // TerminalView's WS URL resolves to the home PTY, and effectiveTabId so
     // the descriptor component receives the ORIGINAL tab id (the virtual id

@@ -14,6 +14,11 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
+    // Unbounded Windows fork workers amplify memory/process pressure across
+    // the full suite and can be killed by the host. Keep native node-pty in
+    // isolated processes, but cap their concurrency at two. Linux CI keeps
+    // Vitest's default pool and parallelism.
+    ...(process.platform === 'win32' ? { pool: 'forks' as const, maxWorkers: 2 } : {}),
     server: {
       deps: {
         inline: [/@deepseek-ai\/dsh-client-ui-primitives/],

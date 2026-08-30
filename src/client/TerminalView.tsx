@@ -42,6 +42,12 @@ import { api, type SessionScope, type TerminalDepsStatus } from './api.ts'
 import { agentUuidOf, isAgentTabId, type SidebarStore } from './state.ts'
 import { isDarkScheme, subscribeColorScheme, effectiveTokenValue, tokenValue } from './theme.ts'
 import { resolveTerminalFont } from './terminal-font.ts'
+import {
+  buildTerminalLinksFromCells,
+  shouldActivateTerminalLink,
+  openTerminalUrl,
+  type TerminalTextCell,
+} from './terminal-links.ts'
 import css from './sidebar.module.css'
 
 /** How many consecutive unreasoned failures before showing the error banner. */
@@ -129,6 +135,48 @@ export function TerminalView(props: { scope: SessionScope; tabId: string; store:
     })
     const fit = new FitAddon()
     term.loadAddon(fit)
+    // Ctrl+Click (Cmd+Click on mac) opens http(s) URLs printed in the
+    // pty stream — a plain click is left for xterm's text-selection
+    // gesture. Only http(s) is dispatched; file:// / mailto: / etc. are
+    // underlined for visibility but rejected at activation. See
+    // terminal-links.ts for the line scanner, modifier gate and scheme
+    // guard.
+    const linkProvider = term.registerLinkProvider({
+      provideLinks: (lineNumber, callback) => {
+        // xterm's `provideLinks` hands us a 1-based buffer line number
+        // (its own built-in ILinkProvider does `buffer.lines.get(e - 1)`,
+        // i.e. the public `bufferLineNumber` is 1-based while `getLine`
+        // takes a 0-based index). Passing `lineNumber` straight through
+        // would fetch the row *below* the one xterm asked us to scan, so
+        // the URL text would come from the wrong row while `range.y` still
+        // pointed at the requested row — links landed one line too high.
+        const line = term.buffer.active.getLine(lineNumber - 1)
+        if (line === undefined) {
+          callback(undefined)
+          return
+        }
+        const cells: TerminalTextCell[] = []
+        for (let column = 0; column < line.length; column += 1) {
+          const cell = line.getCell(column)
+          cells.push(cell === undefined
+            ? { chars: '', width: 1 }
+            : { chars: cell.getChars(), width: cell.getWidth() })
+        }
+        const descriptors = buildTerminalLinksFromCells(cells, lineNumber)
+        if (descriptors.length === 0) {
+          callback(undefined)
+          return
+        }
+        callback(descriptors.map(descriptor => ({
+          range: descriptor.range,
+          text: descriptor.text,
+          activate: (event) => {
+            if (!shouldActivateTerminalLink(event)) return
+            openTerminalUrl(descriptor.text)
+          },
+        })))
+      },
+    })
     // Re-theme in place when the app's scheme flips (tokens + palette).
     const applyTheme = (): void => {
       term.options.theme = xtermTheme()
@@ -313,6 +361,7 @@ export function TerminalView(props: { scope: SessionScope; tabId: string; store:
         socket.send(JSON.stringify({ type: 'park' }))
       }
       socket?.close()
+      linkProvider.dispose()
       term.dispose()
       connectRef.current = null
     }

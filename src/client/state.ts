@@ -37,6 +37,12 @@ export interface SidebarTab {
   /** Plugin-owned state (v0.12.0+): MUST be JSON-serializable — it is
    *  persisted with the layout and restored verbatim on reload. */
   meta?: unknown
+  /** Pinned-terminal marker (v0.17.0+): a pinned terminal tab survives a
+   *  session switch in its home session's state and surfaces in the
+   *  PinnedRail of every session the scope allows. `homeCwd` is the cwd
+   *  snapshot at pin time — a `workspace`-scoped pin is only visible to
+   *  sessions whose cwd matches it. Absent = unpinned (legacy states). */
+  pin?: { scope: 'workspace' | 'global'; homeCwd?: string }
 }
 
 /** A tab group. */
@@ -542,6 +548,79 @@ export function patchTab(
 }
 
 /**
+ * Set or clear the pin marker on one open tab (v0.17.0+). A pin marker is
+ * structural metadata (NOT display fields like title/path), so it walks
+ * both split trees AND the free windows exactly like {@link patchTab} —
+ * the tab may live in either tree or float. Passing `null` clears the pin
+ * (the tab stays open in its home session); passing a `{ scope, homeCwd }`
+ * object sets it. An unknown tab id is a strict no-op (same reference
+ * returned) so a stale pin request never churns the state or rewrites
+ * localStorage.
+ * @param state - the current per-session sidebar state.
+ * @param tabId - the tab to pin/unpin.
+ * @param pin - the pin marker to set, or null to clear.
+ * @returns the next state (or the same reference when the tab is missing
+ *          or the pin marker is already the requested value).
+ */
+export function setTabPin(
+  state: SidebarState,
+  tabId: string,
+  pin: { scope: 'workspace' | 'global'; homeCwd?: string } | null,
+): SidebarState {
+  let changed = false
+  const apply = (tab: SidebarTab): SidebarTab => {
+    // Pin is terminal-only (design YAGNI): a defensive guard keeps the
+    // invariant even if a caller accidentally targets a non-terminal tab.
+    if (tab.type !== 'terminal') return tab
+    // Idempotent: setting the same pin (deep-equal on scope + homeCwd) is a
+    // no-op so re-clicking the menu item never churns the state.
+    if (pin === null) {
+      if (tab.pin === undefined) return tab
+    } else if (
+      tab.pin !== undefined
+      && tab.pin.scope === pin.scope
+      && tab.pin.homeCwd === pin.homeCwd
+    ) {
+      return tab
+    }
+    changed = true
+    const { pin: _omit, ...rest } = tab
+    return pin === null ? rest : { ...rest, pin }
+  }
+  const walk = (node: SplitNode): SplitNode => {
+    if (node.kind === 'leaf') {
+      // Find the target tab without rebuilding the whole array: only clone
+      // when the tab is actually here and apply changed it (idempotent
+      // no-ops return the same tab reference, so === holds).
+      const idx = node.tabs.findIndex(tab => tab.id === tabId)
+      if (idx < 0) return node
+      const oldTab = node.tabs[idx]!
+      const newTab = apply(oldTab)
+      if (newTab === oldTab) return node
+      const tabs = node.tabs.slice()
+      tabs[idx] = newTab
+      return { ...node, tabs }
+    }
+    const children = node.children.map(walk)
+    // Only rebuild if at least one child actually changed reference.
+    if (children.every((child, i) => child === node.children[i])) return node
+    return { ...node, children }
+  }
+  const splits = walk(state.splits)
+  const bottomSplits = walk(state.bottomSplits)
+  const floatIdx = state.floats.findIndex(f => f.tab.id === tabId)
+  const floats = floatIdx < 0 ? state.floats : (() => {
+    const oldFloat = state.floats[floatIdx]!
+    const newTab = apply(oldFloat.tab)
+    if (newTab === oldFloat.tab) return state.floats
+    const next = state.floats.slice()
+    next[floatIdx] = { ...oldFloat, tab: newTab }
+    return next
+  })()
+  return changed ? { ...state, splits, bottomSplits, floats } : state
+}
+
+/**
  * Land a tab in the active pane (or focus its existing instance by id).
  * Dedup strategies (single-instance, per-path, per-change) are owned by the
  * tab descriptor through {@link BetterSidebarService.openTab} / `dedupeKey`;
@@ -945,7 +1024,13 @@ export function reconcileAgentTerminals(
   const existingUuids = new Set(existingAgentTabs.map(tab => agentUuidOf(tab.id)))
   const serverUuids = new Set(agentTerminals.map(t => t.uuid))
   const toAdd = agentTerminals.filter(t => !existingUuids.has(t.uuid))
-  const toRemove = existingAgentTabs.filter(tab => !serverUuids.has(agentUuidOf(tab.id)))
+  // Pinned agent terminals (v0.17.0+) are EXEMPT from removal: the agent
+  // closed them or the pty exited, but the user pinned them so the tab
+  // stays as a disconnected surface. The xterm view's reconnect-failure
+  // banner is the user-visible "disconnected" signal (the design's M3
+  // convergence: no title suffix, no meta write — the tab keeps its uuid
+  // so a later reconcile push revives it if the agent reopens the same one).
+  const toRemove = existingAgentTabs.filter(tab => !serverUuids.has(agentUuidOf(tab.id)) && tab.pin === undefined)
   if (toAdd.length === 0 && toRemove.length === 0) return state
   // Remove tabs whose uuids vanished from the server list (the agent closed
   // them, or the pty exited and was reaped). Reuse closeTab's leaf cleanup;
@@ -1104,6 +1189,13 @@ function loadState(sessionId: string, prefs: SidebarPrefs): SidebarState {
   const openByDefault = prefs.openByDefault && (viewport === undefined || !isNarrowWidth(viewport))
   const seed: DefaultSeed = prefs.tabsEnabled['editor'] === false ? 'none' : 'editor-home'
   return makeDefaultState(width, openByDefault, seed)
+}
+
+/** Whether a restored session contains at least one legal pinned terminal. */
+function hasPinnedTerminal(state: SidebarState): boolean {
+  const docked = allLeaves(state.splits).concat(allLeaves(state.bottomSplits))
+    .some(leaf => leaf.tabs.some(tab => tab.type === 'terminal' && tab.pin !== undefined))
+  return docked || state.floats.some(item => item.tab.type === 'terminal' && item.tab.pin !== undefined)
 }
 
 /**
@@ -1267,13 +1359,30 @@ function sanitizePersistedTab(tab: unknown): SidebarTab | 'diff' | undefined {
   // `meta` is plugin-owned JSON-serializable state (v0.12.0+): the persisted
   // value already went through JSON.parse, so it is inherently serializable —
   // carry it through verbatim (absent on older states).
-  return {
+  const result: SidebarTab = {
     id: candidate.id,
     type: candidate.type,
     title: candidate.title,
     ...(typeof candidate.path === 'string' ? { path: candidate.path } : {}),
     ...(candidate.meta !== undefined ? { meta: candidate.meta } : {}),
   }
+  // `pin` (v0.17.0+): a pinned-terminal marker. Whitelist-validate the
+  // shape so a hand-edited / corrupted pin never crashes the rail's
+  // resolver: an unknown scope or a non-string homeCwd drops the pin
+  // silently (the tab survives, just unpinned — the legacy behavior).
+  // Pin is terminal-only: a non-terminal tab carrying a persisted pin
+  // (e.g. from a hand-edited state) has it stripped here.
+  const pin = (candidate as Record<string, unknown>).pin
+  if (pin !== null && typeof pin === 'object' && !Array.isArray(pin) && result.type === 'terminal') {
+    const pinRecord = pin as Record<string, unknown>
+    if (pinRecord.scope === 'workspace' || pinRecord.scope === 'global') {
+      const homeCwd = pinRecord.homeCwd
+      result.pin = homeCwd === undefined || typeof homeCwd === 'string'
+        ? { scope: pinRecord.scope, ...(typeof homeCwd === 'string' ? { homeCwd } : {}) }
+        : { scope: pinRecord.scope }
+    }
+  }
+  return result
 }
 
 /** Validate one split-tree node (leaf or split) and rebuild it cleanly. */
@@ -1332,6 +1441,8 @@ export class SidebarStore {
   /** Per-session persist debounce timers (v0.12.0+: one per session, so a
    *  targeted open never cancels another session's pending write). */
   private readonly persistTimers = new Map<string, number>()
+  /** Cold-start pin scan runs once; only states containing a pin are retained. */
+  private pinnedSessionsHydrated = false
   /** User-facing side card prefs seeding brand-new session states (defaults until the settings RPC resolves). */
   private prefs: SidebarPrefs = { ...SIDEBAR_PREFS_DEFAULTS }
   /**
@@ -1435,6 +1546,64 @@ export class SidebarStore {
     const state = this.bySession.get(sessionId)
       ?? (this.snapshot.sessionId === sessionId ? this.snapshot.state : undefined)
     return state !== undefined && tabOpenIn(state, tabId)
+  }
+
+  /**
+   * Restore persisted sessions that contain pinned terminals without
+   * requiring the user to visit each conversation first. The one-time scan
+   * retains only pin-bearing states, so ordinary history does not become an
+   * in-memory mirror of localStorage. Returns the number newly cached.
+   */
+  hydratePinnedSessions(): number {
+    if (this.pinnedSessionsHydrated || resetRequested()) return 0
+    this.pinnedSessionsHydrated = true
+    const counterBefore = nextIdCounter
+    let counterCeiling = counterBefore
+    let added = 0
+    try {
+      const prefix = `${STORAGE_PREFIX}:`
+      const keys: string[] = []
+      for (let index = 0; index < localStorage.length; index += 1) {
+        const key = localStorage.key(index)
+        if (key !== null && key.startsWith(prefix) && key !== GLOBAL_WIDTH_KEY) keys.push(key)
+      }
+      const globalWidth = readGlobalWidth()
+      for (const key of keys) {
+        const sessionId = key.slice(prefix.length)
+        if (sessionId === '' || this.bySession.has(sessionId)) continue
+        try {
+          const raw = localStorage.getItem(key)
+          if (raw === null) continue
+          const parsed = JSON.parse(raw) as unknown
+          nextIdCounter = maxCounterId(parsed)
+          const state = sanitizeState(parsed)
+          counterCeiling = Math.max(counterCeiling, nextIdCounter)
+          if (state === undefined || !hasPinnedTerminal(state)) continue
+          this.bySession.set(sessionId, globalWidth === undefined ? state : { ...state, width: globalWidth })
+          added += 1
+        } catch {
+          // One corrupt entry must not hide pins from the remaining sessions.
+        }
+      }
+    } catch {
+      // Storage enumeration can be blocked; the active session still works.
+    } finally {
+      nextIdCounter = Math.max(nextIdCounter, counterCeiling)
+    }
+    return added
+  }
+
+  /**
+   * Read-only view of EVERY cached session's state (v0.17.0+). The
+   * PinnedRail uses this to collect pinned terminals across sessions
+   * without each render reading private fields. The map is the live
+   * `bySession` reference — callers MUST treat it as read-only (mutations
+   * go through {@link reduce} / {@link reduceFor}). Call
+   * {@link hydratePinnedSessions} once at sidebar startup to include
+   * persisted pin-bearing sessions that have not been visited this run.
+   */
+  getSessionStates(): ReadonlyMap<string, SidebarState> {
+    return new Map(this.bySession)
   }
 
   /** Apply a pure reducer (returns the next state). */

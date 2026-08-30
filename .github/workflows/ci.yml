@@ -14,6 +14,35 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  windows-runtime:
+    name: windows · ConPTY runtime
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 11
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Validate packaged ConPTY cleanup seam
+        timeout-minutes: 5
+        # Keep Windows native-runtime files isolated and serialized. A single
+        # threads worker avoids Vitest fork IPC teardown races without
+        # weakening the assertions against the packaged node-pty runtime.
+        run: pnpm exec vitest run --pool=threads --maxWorkers=1 --no-file-parallelism tests/node-pty-attachconsole.spec.ts
+      - name: Exercise real ConPTY lifecycle
+        timeout-minutes: 5
+        # These assertions launch real native PTYs; serial execution makes a
+        # leaked handle fail this named step instead of hanging the whole job.
+        run: pnpm exec vitest run --pool=threads --maxWorkers=1 --no-file-parallelism tests/agent-pty.spec.ts
+      - name: Build Windows package
+        run: pnpm build
+
   ci:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -81,6 +110,10 @@ jobs:
       # Pin the DSH CLI the lane mounts into; the profile's bundle stack
       # (dsh-base / dsh-web-app) resolves from this installation. Keep in
       # step with the plugin's @deepseek-ai/* peer range when bumping.
+      # NOTE: DSH 0.1.2-alpha.1 (Remote gateway slash endpoints + one-time-
+      # token browser auth) is NOT on npm yet — the lanes speak BOTH dialects
+      # (tests/e2e/host-protocol.ts, dot-first with slash fallback), so bump
+      # this pin once @deepseek-ai/dsh@0.1.2-alpha.1 publishes.
       - name: Install dsh CLI (pinned)
         run: npm install -g @deepseek-ai/dsh@0.1.1-rc.2
 

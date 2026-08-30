@@ -10,7 +10,7 @@
  */
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
-import { createElement, useEffect } from 'react'
+import { createElement, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { act } from 'react-dom/test-utils'
 import type { Context } from '../src/context-types.ts'
@@ -291,6 +291,124 @@ describe('EditorHost (files window)', () => {
       act(() => { buttons.find(b => b.textContent === 'Edit')!.click() })
       act(() => { header.querySelector<HTMLButtonElement>('button[aria-label="Save"]')!.click() })
       expect(calls).toEqual(['mode:edit', 'save'])
+    } finally {
+      unmount()
+    }
+  })
+
+  it('re-resolves an already-open file when a viewer registers later', async () => {
+    const { store, ctx } = setup()
+    const service = ctx.betterSidebar
+    service.registerFileViewer({
+      id: 'test:fallback',
+      exts: [],
+      fetchStrategy: 'none',
+      component: () => createElement('div', null, 'Fallback viewer'),
+    })
+    service.openTab({ type: 'editor', title: 'x.late', path: '/tmp/x.late', id: 'editor:/tmp/x.late' })
+    const fileTab = (): SidebarTab =>
+      allLeaves(store.getSnapshot().state!.splits).flatMap(leaf => leaf.tabs)
+        .find(tab => tab.path === '/tmp/x.late')!
+    const { container, unmount } = mountHost(ctx, store, fileTab)
+    try {
+      expect(container.textContent).toContain('Fallback viewer')
+      await act(async () => {
+        service.registerFileViewer({
+          id: 'test:late',
+          exts: ['late'],
+          priority: 100,
+          fetchStrategy: 'none',
+          component: () => createElement('div', null, 'Late viewer'),
+        })
+      })
+      expect(container.textContent).toContain('Late viewer')
+      expect(container.textContent).not.toContain('Fallback viewer')
+    } finally {
+      unmount()
+    }
+  })
+
+  it('re-resolves when HMR replaces a viewer descriptor with the same id', async () => {
+    const { store, ctx } = setup()
+    const service = ctx.betterSidebar
+    const dispose = service.registerFileViewer({
+      id: 'test:hmr',
+      exts: ['hmr'],
+      priority: 100,
+      fetchStrategy: 'none',
+      component: () => createElement('div', null, 'Old HMR viewer'),
+    })
+    service.openTab({ type: 'editor', title: 'x.hmr', path: '/tmp/x.hmr', id: 'editor:/tmp/x.hmr' })
+    const fileTab = (): SidebarTab =>
+      allLeaves(store.getSnapshot().state!.splits).flatMap(leaf => leaf.tabs)
+        .find(tab => tab.path === '/tmp/x.hmr')!
+    const { container, unmount } = mountHost(ctx, store, fileTab)
+    try {
+      expect(container.textContent).toContain('Old HMR viewer')
+      await act(async () => {
+        dispose()
+        service.registerFileViewer({
+          id: 'test:hmr',
+          exts: ['hmr'],
+          priority: 100,
+          fetchStrategy: 'none',
+          component: () => createElement('div', null, 'New HMR viewer'),
+        })
+      })
+      expect(container.textContent).toContain('New HMR viewer')
+      expect(container.textContent).not.toContain('Old HMR viewer')
+    } finally {
+      unmount()
+    }
+  })
+
+  it('defers a late viewer rematch until the current editor draft is clean', async () => {
+    const { store, ctx } = setup()
+    const service = ctx.betterSidebar
+    let markClean: (() => void) | undefined
+    let draftUnmounts = 0
+    service.registerFileViewer({
+      id: 'test:draft',
+      exts: [],
+      priority: -100,
+      fetchStrategy: 'none',
+      component: (viewerProps) => {
+        const [dirty, setDirty] = useState(true)
+        markClean = () => { setDirty(false) }
+        useEffect(() => {
+          viewerProps.onToolbarState?.({
+            modes: true, mode: 'edit', dirty, editable: true, saveState: 'idle',
+          })
+        }, [dirty])
+        useEffect(() => () => { draftUnmounts += 1 }, [])
+        return createElement('div', { 'data-draft': true }, 'Unsaved component-local draft')
+      },
+    })
+    service.openTab({ type: 'editor', title: 'x.safe', path: '/tmp/x.safe', id: 'editor:/tmp/x.safe' })
+    const fileTab = (): SidebarTab =>
+      allLeaves(store.getSnapshot().state!.splits).flatMap(leaf => leaf.tabs)
+        .find(tab => tab.path === '/tmp/x.safe')!
+    const { container, unmount } = mountHost(ctx, store, fileTab)
+    try {
+      expect(container.textContent).toContain('Unsaved component-local draft')
+      await act(async () => {
+        service.registerFileViewer({
+          id: 'test:late-safe',
+          exts: ['safe'],
+          priority: 100,
+          fetchStrategy: 'none',
+          component: () => createElement('div', null, 'Late safe viewer'),
+        })
+      })
+      // The new descriptor is known, but the dirty viewer stays mounted.
+      expect(container.textContent).toContain('Unsaved component-local draft')
+      expect(container.textContent).not.toContain('Late safe viewer')
+      expect(draftUnmounts).toBe(0)
+
+      await act(async () => { markClean?.() })
+      expect(container.textContent).toContain('Late safe viewer')
+      expect(container.textContent).not.toContain('Unsaved component-local draft')
+      expect(draftUnmounts).toBe(1)
     } finally {
       unmount()
     }

@@ -539,12 +539,17 @@ interface BetterSidebarService {
   closeTab(tabId: string, scope?: SessionScope): void
   /** 订阅注册表变化（register/dispose 时触发） */
   subscribe(listener: () => void): () => void
+  /** 只订阅 file-viewer 注册表变化（register/dispose）；tab 变化不触发 */
+  subscribeFileViewers(listener: () => void): () => void
+  /** file-viewer 注册表单调版本；适合作为 useSyncExternalStore snapshot */
+  getFileViewerRevision(): number
   // ── v0.12.0+ ──────────────────────────────────────────────────────────
   /** 插件版本（如 '0.12.0'；与 package.json 同步，测试守护） */
   readonly version: string
   /** 单调能力清单（只增不删）：'badge' | 'tabLifecycle' | 'updateTab' |
    *  'openFile' | 'targetedOpen' | 'stateSubscription' | 'tabMeta' |
-   *  'pluginSettings'——用 `features.includes('xxx')` 按能力 gate。 */
+   *  'pluginSettings' | 'viewerRegistrySubscription'——用
+   *  `features.includes('xxx')` 按能力 gate。 */
   readonly features: readonly string[]
   /** 当前快照：激活 sessionId + 其状态（面板几何/打开的 tabs/展开集）+ prefs。
    *  session 未激活时 state/sessionId 为 undefined。 */

@@ -113,6 +113,8 @@ service.isViewerEnabled('my-plugin:csv')
 service.matchFileViewer('a.csv', new Uint8Array([1]))
 service.closeTab('tab:1')
 service.subscribe(() => {})
+service.subscribeFileViewers(() => {})
+service.getFileViewerRevision()
 const seed: OpenTabSeed = { type: 'my-plugin:db', title: 'DB', path: '/p', id: 'x', meta: { a: 1 } }
 service.openTab(seed)
 service.openTab(seed, { sessionId: 's1', cwd: '/p' })

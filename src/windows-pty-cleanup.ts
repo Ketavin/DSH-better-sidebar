@@ -66,6 +66,7 @@ export function resolveConsoleProcessList(
   return new Promise(resolve => {
     let child: ChildProcess | undefined
     let settled = false
+    let reportedProcesses: number[] | undefined
     let timer: ReturnType<typeof setTimeout> | undefined
     const finish = (processes: number[]): void => {
       if (settled) return
@@ -80,10 +81,15 @@ export function resolveConsoleProcessList(
         const processes = Array.isArray(value)
           ? value.filter((pid): pid is number => Number.isInteger(pid) && pid > 0)
           : []
-        finish(processes.length > 0 ? processes : [shellPid])
+        // The helper is attached to the target console while it probes the
+        // process list, so its own PID can be part of the result. Do not hand
+        // that list back to node-pty until the helper has completed its IPC
+        // flush and exited; otherwise node-pty can race to terminate the
+        // still-running helper and make the host/test worker exit non-zero.
+        reportedProcesses = processes.length > 0 ? processes : [shellPid]
       })
       child.once('error', () => { finish([shellPid]) })
-      child.once('exit', () => { finish([shellPid]) })
+      child.once('exit', () => { finish(reportedProcesses ?? [shellPid]) })
       timer = setTimeout(() => {
         try { child?.kill() } catch { /* already gone */ }
         finish([shellPid])

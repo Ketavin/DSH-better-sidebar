@@ -1,4 +1,6 @@
 import { readFileSync } from 'node:fs'
+import { EventEmitter } from 'node:events'
+import type { ChildProcess, fork } from 'node:child_process'
 import type { IPty } from 'node-pty'
 import { describe, expect, it, vi } from 'vitest'
 import {
@@ -24,6 +26,26 @@ describe('node-pty AttachConsole fallback', () => {
       nodePtyLib: nodePtyLibPath(),
       timeoutMs: 5_000,
     })).resolves.toEqual([deadPid])
+  })
+
+  it('waits for the helper to exit before exposing its process list', async () => {
+    const child = new EventEmitter() as ChildProcess
+    const forkProcess = (() => child) as typeof fork
+    const resolved = vi.fn()
+    const result = resolveConsoleProcessList(321, {
+      helperPath: 'fixture-helper.cjs',
+      nodePtyLib: 'fixture-node-pty-lib',
+      timeoutMs: 5_000,
+      forkProcess,
+    })
+    void result.then(resolved)
+
+    child.emit('message', { consoleProcessList: [321, 654] })
+    await Promise.resolve()
+    expect(resolved).not.toHaveBeenCalled()
+
+    child.emit('exit', 0, null)
+    await expect(result).resolves.toEqual([321, 654])
   })
 
   it('replaces the node-pty 1.1 Windows agent resolver', async () => {

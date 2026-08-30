@@ -25,6 +25,10 @@ if (Number.isInteger(shellPid) && shellPid > 0 && typeof nodePtyLib === 'string'
 }
 
 if (typeof process.send === 'function') {
-  process.send({ consoleProcessList })
+  // Do not exit until Node confirms that the IPC payload was flushed. The
+  // parent deliberately waits for this clean exit before node-pty starts
+  // terminating the returned console-process list.
+  process.send({ consoleProcessList }, () => { process.exit(0) })
+} else {
+  process.exit(0)
 }
-process.exit(0)

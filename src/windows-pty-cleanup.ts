@@ -84,11 +84,23 @@ export function resolveConsoleProcessList(
         // PID that could terminate the DSH process, its supervisor, or the
         // helper after its PID is recycled.
         const protectedPids = new Set([process.pid, process.ppid, child?.pid])
-        const processes = Array.isArray(value)
-          ? value.filter((pid): pid is number => (
+        const rawProcesses = Array.isArray(value)
+          ? value.filter((pid): pid is number => Number.isInteger(pid) && pid > 0)
+          : []
+        const processes = rawProcesses
+          .filter(pid => (
               Number.isInteger(pid) && pid > 0 && !protectedPids.has(pid)
             ))
-          : []
+        if (process.env.DSH_CONPTY_DEBUG === '1') {
+          console.error('[dsh-conpty-cleanup]', JSON.stringify({
+            shellPid,
+            hostPid: process.pid,
+            parentPid: process.ppid,
+            helperPid: child?.pid,
+            rawProcesses,
+            processes,
+          }))
+        }
         // The helper is attached to the target console while it probes the
         // process list, so its own PID can be part of the result. Do not hand
         // that list back to node-pty until the helper has completed its IPC

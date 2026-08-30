@@ -39,6 +39,8 @@ jobs:
         timeout-minutes: 5
         # These assertions launch real native PTYs; serial execution makes a
         # leaked handle fail this named step instead of hanging the whole job.
+        env:
+          DSH_CONPTY_DEBUG: '1'
         run: pnpm exec vitest run --pool=threads --maxWorkers=1 --no-file-parallelism tests/agent-pty.spec.ts
       - name: Build Windows package
         run: pnpm build

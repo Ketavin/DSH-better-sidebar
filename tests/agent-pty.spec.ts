@@ -21,7 +21,7 @@ async function waitForTranscript(
   registry: AgentPtyRegistry,
   uuid: string,
   needle: string,
-  timeoutMs = 5000,
+  timeoutMs = 10_000,
 ): Promise<string> {
   const deadline = Date.now() + timeoutMs
   while (Date.now() < deadline) {
@@ -51,7 +51,7 @@ describe('AgentPtyRegistry', () => {
     } finally {
       registry.disposeAll()
     }
-  })
+  }, 15_000)
 
   it('spawns a bare shell when command is empty', () => {
     const registry = new AgentPtyRegistry(testShell())

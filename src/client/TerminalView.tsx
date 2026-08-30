@@ -43,9 +43,10 @@ import { agentUuidOf, isAgentTabId, type SidebarStore } from './state.ts'
 import { isDarkScheme, subscribeColorScheme, effectiveTokenValue, tokenValue } from './theme.ts'
 import { resolveTerminalFont } from './terminal-font.ts'
 import {
-  buildTerminalLinks,
+  buildTerminalLinksFromCells,
   shouldActivateTerminalLink,
   openTerminalUrl,
+  type TerminalTextCell,
 } from './terminal-links.ts'
 import css from './sidebar.module.css'
 
@@ -154,7 +155,14 @@ export function TerminalView(props: { scope: SessionScope; tabId: string; store:
           callback(undefined)
           return
         }
-        const descriptors = buildTerminalLinks(line.translateToString(true), lineNumber)
+        const cells: TerminalTextCell[] = []
+        for (let column = 0; column < line.length; column += 1) {
+          const cell = line.getCell(column)
+          cells.push(cell === undefined
+            ? { chars: '', width: 1 }
+            : { chars: cell.getChars(), width: cell.getWidth() })
+        }
+        const descriptors = buildTerminalLinksFromCells(cells, lineNumber)
         if (descriptors.length === 0) {
           callback(undefined)
           return

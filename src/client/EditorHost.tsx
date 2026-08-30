@@ -133,24 +133,19 @@ export function EditorHost(props: {
     useCallback((callback: () => void) => store.subscribe(callback), [store]),
     useCallback(() => store.getSnapshot().prefs.editorExplorer, [store]),
   )
-  // Re-evaluate an already-open file when a viewer plugin registers after this
-  // host mounts (for example Office, Excel, or Document Workbench at startup).
-  const viewerRegistryRevision = useSyncExternalStore(
-    useCallback(
-      (callback: () => void) => ctx.get('betterSidebar')?.subscribe(callback) ?? (() => {}),
-      [ctx],
-    ),
-    useCallback(
-      () =>
-        ctx
-          .get('betterSidebar')
-          ?.getFileViewers()
-          .map((viewer) => viewer.id)
-          .sort()
-          .join('|') ?? '',
-      [ctx],
-    ),
-  )
+  // Re-evaluate an already-open file on EVERY viewer-registry mutation (for
+  // example Office, Excel, or Document Workbench at startup/HMR). A snapshot
+  // made only from viewer ids misses a synchronous dispose+register of a new
+  // descriptor with the same id, so use the registry notification itself as
+  // a monotonic revision just like Sidebar's tabsVersion.
+  const [viewerRegistryRevision, setViewerRegistryRevision] = useState(0)
+  useEffect(() => {
+    const service = ctx.get('betterSidebar')
+    if (service === undefined) return
+    return service.subscribe(() => {
+      setViewerRegistryRevision(revision => revision + 1)
+    })
+  }, [ctx])
   // The file tree's "open with" configuration (pluginSettings['editor']): a
   // blob subscription, so a pin click or a settings-page edit re-renders the
   // menu immediately. The parsed config also drives which targets are shown

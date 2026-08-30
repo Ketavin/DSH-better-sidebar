@@ -131,6 +131,14 @@ export interface TerminalLinkDescriptor {
   text: string
 }
 
+/** Minimal xterm buffer-cell surface used to map UTF-16 string offsets back
+ * to terminal columns without importing xterm into this pure module. */
+export interface TerminalTextCell {
+  chars: string
+  /** Display width in terminal cells: 0 continuation, 1 normal, 2 wide. */
+  width: number
+}
+
 /**
  * Build link descriptors for every URL found in a terminal line.
  *
@@ -154,6 +162,47 @@ export function buildTerminalLinks(lineText: string, lineNumber: number): Termin
     },
     text: url,
   }))
+}
+
+/**
+ * Build descriptors from xterm cells. JavaScript string offsets are not
+ * terminal columns: CJK/full-width glyphs occupy two cells, while combining
+ * sequences can occupy one cell with multiple UTF-16 code units. This mapper
+ * reconstructs the visible row and records the start/end terminal column for
+ * every code unit before applying the shared URL scanner.
+ */
+export function buildTerminalLinksFromCells(
+  cells: readonly TerminalTextCell[],
+  lineNumber: number,
+): TerminalLinkDescriptor[] {
+  let lineText = ''
+  const startX: number[] = []
+  const endX: number[] = []
+
+  for (let column = 0; column < cells.length; column += 1) {
+    const cell = cells[column]!
+    const width = Number.isFinite(cell.width) ? Math.max(0, Math.floor(cell.width)) : 1
+    if (width === 0) continue
+    const chars = cell.chars === '' ? ' ' : cell.chars
+    const offset = lineText.length
+    lineText += chars
+    for (let index = 0; index < chars.length; index += 1) {
+      startX[offset + index] = column + 1
+      endX[offset + index] = column + Math.max(1, width)
+    }
+  }
+
+  lineText = lineText.trimEnd()
+  return findTerminalUrlsInLine(lineText).map(({ start, text: url }) => {
+    const last = start + url.length - 1
+    return {
+      range: {
+        start: { x: startX[start] ?? start + 1, y: lineNumber },
+        end: { x: endX[last] ?? start + url.length, y: lineNumber },
+      },
+      text: url,
+    }
+  })
 }
 
 /**

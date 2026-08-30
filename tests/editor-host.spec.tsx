@@ -328,6 +328,40 @@ describe('EditorHost (files window)', () => {
     }
   })
 
+  it('re-resolves when HMR replaces a viewer descriptor with the same id', async () => {
+    const { store, ctx } = setup()
+    const service = ctx.betterSidebar
+    const dispose = service.registerFileViewer({
+      id: 'test:hmr',
+      exts: ['hmr'],
+      priority: 100,
+      fetchStrategy: 'none',
+      component: () => createElement('div', null, 'Old HMR viewer'),
+    })
+    service.openTab({ type: 'editor', title: 'x.hmr', path: '/tmp/x.hmr', id: 'editor:/tmp/x.hmr' })
+    const fileTab = (): SidebarTab =>
+      allLeaves(store.getSnapshot().state!.splits).flatMap(leaf => leaf.tabs)
+        .find(tab => tab.path === '/tmp/x.hmr')!
+    const { container, unmount } = mountHost(ctx, store, fileTab)
+    try {
+      expect(container.textContent).toContain('Old HMR viewer')
+      await act(async () => {
+        dispose()
+        service.registerFileViewer({
+          id: 'test:hmr',
+          exts: ['hmr'],
+          priority: 100,
+          fetchStrategy: 'none',
+          component: () => createElement('div', null, 'New HMR viewer'),
+        })
+      })
+      expect(container.textContent).toContain('New HMR viewer')
+      expect(container.textContent).not.toContain('Old HMR viewer')
+    } finally {
+      unmount()
+    }
+  })
+
   it('a folder tab (meta.dir) renders the tree rooted at the folder, no editor chrome', () => {
     const { store, ctx } = setup()
     ctx.betterSidebar!.openTab({

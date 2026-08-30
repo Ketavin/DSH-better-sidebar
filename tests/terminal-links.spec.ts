@@ -11,9 +11,21 @@ import {
   TERMINAL_URL_REGEX,
   findTerminalUrlsInLine,
   buildTerminalLinks,
+  buildTerminalLinksFromCells,
   shouldActivateTerminalLink,
   openTerminalUrl,
 } from '../src/client/terminal-links.ts'
+
+/** Expand display glyphs into xterm-like leading/continuation cells. */
+function cells(parts: Array<{ chars: string; width?: number }>): Array<{ chars: string; width: number }> {
+  const result: Array<{ chars: string; width: number }> = []
+  for (const part of parts) {
+    const width = part.width ?? 1
+    result.push({ chars: part.chars, width })
+    for (let index = 1; index < width; index += 1) result.push({ chars: '', width: 0 })
+  }
+  return result
+}
 
 /** Reset the regex's lastIndex between tests (it carries the `g` flag). */
 function reset(): void {
@@ -213,6 +225,51 @@ describe('buildTerminalLinks', () => {
     expect(links[1]?.text).toBe('http://b.com')
     // Non-overlapping ranges, in order.
     expect(links[0]!.range.end.x).toBeLessThan(links[1]!.range.start.x)
+  })
+})
+
+describe('buildTerminalLinksFromCells', () => {
+  it('maps a URL after CJK/full-width text to terminal cells, not JS offsets', () => {
+    const prefix = cells([
+      { chars: '链', width: 2 },
+      { chars: '接', width: 2 },
+      { chars: '：', width: 2 },
+    ])
+    const url = 'https://example.com'
+    const line = [...prefix, ...cells([...url].map(chars => ({ chars })))]
+
+    expect(buildTerminalLinksFromCells(line, 9)).toEqual([{
+      range: { start: { x: 7, y: 9 }, end: { x: 25, y: 9 } },
+      text: url,
+    }])
+  })
+
+  it('handles multi-code-unit glyphs and combining sequences before a URL', () => {
+    const prefix = cells([
+      { chars: '😀', width: 2 },
+      { chars: 'e\u0301', width: 1 },
+      { chars: ' ', width: 1 },
+    ])
+    const url = 'https://a.com'
+    const line = [...prefix, ...cells([...url].map(chars => ({ chars })))]
+
+    expect(buildTerminalLinksFromCells(line, 2)[0]).toEqual({
+      range: { start: { x: 5, y: 2 }, end: { x: 17, y: 2 } },
+      text: url,
+    })
+  })
+
+  it('covers wide characters inside a URL path through the final display cell', () => {
+    const ascii = 'https://example.com/'
+    const line = [
+      ...cells([...ascii].map(chars => ({ chars }))),
+      ...cells([{ chars: '中', width: 2 }, { chars: '文', width: 2 }]),
+    ]
+    const link = buildTerminalLinksFromCells(line, 1)[0]!
+
+    expect(link.text).toBe(`${ascii}中文`)
+    expect(link.range.start.x).toBe(1)
+    expect(link.range.end.x).toBe(ascii.length + 4)
   })
 })
 

@@ -89,9 +89,14 @@ jobs:
         run: pnpm test
 
       - name: Dry-run publish (validation only)
-        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true'
+        if: >-
+          (github.event_name == 'workflow_dispatch' && github.event.inputs.dry_run == 'true') ||
+          (github.event_name == 'release' && github.repository != 'omdsh-dev/DSH-better-sidebar')
         run: pnpm publish --dry-run --no-git-checks
 
       - name: Publish to npm
-        if: github.event_name == 'release' || github.event.inputs.dry_run != 'true'
+        # npm Trusted Publishing is bound to the canonical upstream repository.
+        # Fork releases are build/test/pack candidates only and must never try
+        # to publish the upstream package identity.
+        if: github.event_name == 'release' && github.repository == 'omdsh-dev/DSH-better-sidebar'
         run: pnpm publish --provenance --access public --no-git-checks

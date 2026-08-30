@@ -113,6 +113,8 @@ export interface AgentTerminalHandle {
   transcript: string
   /** Whether the top-level process exited (transcript stays replayable). */
   exited: boolean
+  /** Whether a terminating node-pty kill has already been requested. */
+  terminationRequested?: boolean
   /** Exit code once known. */
   exitCode?: number | null
   /** Exit signal number once known (POSIX only; undefined on Windows). */
@@ -190,6 +192,8 @@ export function snapshotOf(handle: AgentTerminalHandle): AgentTerminalSnapshot {
 export class AgentPtyRegistry {
   private readonly sessions = new Map<string, AgentTerminalHandle>()
   private readonly changeListeners = new Set<() => void>()
+  /** Exit notifications still pending after a synchronous close request. */
+  private readonly pendingExits = new Set<Promise<void>>()
 
   constructor(
     private readonly shell: string,
@@ -238,6 +242,9 @@ export class AgentPtyRegistry {
       transcript: '',
       exited: false,
     }
+    let resolveExit!: () => void
+    const exitSettled = new Promise<void>(resolve => { resolveExit = resolve })
+    this.pendingExits.add(exitSettled)
     pty.onData((data) => {
       handle.transcript += data
       if (handle.transcript.length > TRANSCRIPT_LIMIT) {
@@ -248,6 +255,8 @@ export class AgentPtyRegistry {
       handle.exited = true
       handle.exitCode = exitCode
       handle.exitSignal = signal
+      resolveExit()
+      this.pendingExits.delete(exitSettled)
       this.notify()
     })
     if (command !== '') {
@@ -468,6 +477,8 @@ export class AgentPtyRegistry {
     // until the ConPTY agent becomes ready; a surrounding try/catch cannot
     // catch that later callback. Never enqueue a named signal there.
     if (process.platform === 'win32') {
+      if (handle.terminationRequested) return
+      handle.terminationRequested = true
       try {
         handle.pty.kill()
       } catch {
@@ -475,6 +486,8 @@ export class AgentPtyRegistry {
       }
       return
     }
+    if (handle.terminationRequested) return
+    handle.terminationRequested = true
     try {
       handle.pty.kill(signal)
     } catch {
@@ -498,10 +511,13 @@ export class AgentPtyRegistry {
     const handle = this.sessions.get(uuid)
     if (handle === undefined) return false
     this.sessions.delete(uuid)
-    try {
-      handle.pty.kill()
-    } catch {
-      // Already exited or gone; nothing left to kill.
+    if (!handle.exited && !handle.terminationRequested) {
+      handle.terminationRequested = true
+      try {
+        handle.pty.kill()
+      } catch {
+        // Already exited or gone; nothing left to kill.
+      }
     }
     this.notify()
     return true
@@ -525,6 +541,34 @@ export class AgentPtyRegistry {
   /** Close every agent terminal (plugin teardown). */
   disposeAll(): void {
     for (const uuid of [...this.sessions.keys()]) this.close(uuid)
+  }
+
+  /**
+   * Close every agent terminal and wait until node-pty has emitted every exit.
+   *
+   * `disposeAll()` remains synchronous for Cordis teardown compatibility, but
+   * native ConPTY cleanup is asynchronous. Callers that own an async shutdown
+   * boundary (tests, standalone hosts, maintenance scripts) can use this method
+   * to prove that no PTY pipe or helper handle is still live before exiting.
+   */
+  async disposeAllAndWait(timeoutMs = 30_000): Promise<void> {
+    this.disposeAll()
+    const pending = [...this.pendingExits]
+    if (pending.length === 0) return
+    let timer: ReturnType<typeof setTimeout> | undefined
+    try {
+      await Promise.race([
+        Promise.all(pending),
+        new Promise<never>((_resolve, reject) => {
+          timer = setTimeout(
+            () => reject(new Error(`timed out waiting for ${pending.length} agent terminal(s) to exit`)),
+            Math.max(1, timeoutMs),
+          )
+        }),
+      ])
+    } finally {
+      if (timer !== undefined) clearTimeout(timer)
+    }
   }
 
   /** Fire every change listener (callers wrap in try/catch if needed). */

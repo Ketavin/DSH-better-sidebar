@@ -5,7 +5,7 @@
  * console noise from node-pty's ConPTY module on Windows is expected and
  * does not affect the assertions.
  */
-import { describe, expect, it } from 'vitest'
+import { afterAll, describe, expect, it, vi } from 'vitest'
 import { AgentPtyRegistry, ALLOWED_SIGNALS, snapshotOf, type AgentTerminalSnapshot } from '../src/agent-pty.ts'
 
 /**
@@ -15,6 +15,18 @@ import { AgentPtyRegistry, ALLOWED_SIGNALS, snapshotOf, type AgentTerminalSnapsh
 function testShell(): string {
   return process.platform === 'win32' ? 'powershell.exe' : '/bin/sh'
 }
+
+const registries = new Set<AgentPtyRegistry>()
+
+function trackedRegistry(): AgentPtyRegistry {
+  const registry = new AgentPtyRegistry(testShell())
+  registries.add(registry)
+  return registry
+}
+
+afterAll(async () => {
+  await Promise.all([...registries].map(registry => registry.disposeAllAndWait()))
+})
 
 /** Wait for a terminal's transcript to contain a substring (or timeout). */
 async function waitForTranscript(
@@ -35,7 +47,7 @@ async function waitForTranscript(
 
 describe('AgentPtyRegistry', () => {
   it('creates a terminal with a uuid, writes the command to stdin, and lists it', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'echo test', 'echo hello-agent-pty', process.cwd(), 80, 24)
       expect(uuid).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i)
@@ -58,7 +70,7 @@ describe('AgentPtyRegistry', () => {
   }, 40_000)
 
   it('spawns a bare shell when command is empty', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'bare', '', process.cwd(), 80, 24)
       const handle = registry.get(uuid)
@@ -74,7 +86,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('sends raw text to stdin (send-keys semantics)', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'sender', '', process.cwd(), 80, 24)
       // Wait for the shell prompt, then send a command.
@@ -91,7 +103,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('reads a bounded page of the transcript', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'reader', 'echo line1\necho line2\necho line3', process.cwd(), 80, 24)
       await waitForTranscript(registry, uuid, 'line3')
@@ -109,7 +121,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('resizes without throwing', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'resizer', '', process.cwd(), 80, 24)
       expect(() => registry.resize(uuid, 120, 40)).not.toThrow()
@@ -119,7 +131,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('resize clamps to the 2..1024 range and returns the applied dimensions', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'clamp', '', process.cwd(), 80, 24)
       // Oversized / undersized requests report the clamped values, so the
@@ -137,7 +149,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('assertOwned rejects a uuid owned by another session', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const mine = registry.create('s1', 'mine', '', process.cwd(), 80, 24)
       const theirs = registry.create('s2', 'theirs', '', process.cwd(), 80, 24)
@@ -151,7 +163,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('closes a terminal and removes it from the list', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'closer', '', process.cwd(), 80, 24)
       expect(registry.list('s1')).toHaveLength(1)
@@ -167,7 +179,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('scopes list by session id', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       registry.create('s1', 'a', '', process.cwd(), 80, 24)
       registry.create('s1', 'b', '', process.cwd(), 80, 24)
@@ -181,7 +193,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('fires change listeners on create, close, and exit', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       let changeCount = 0
       registry.subscribe(() => { changeCount += 1 })
@@ -197,7 +209,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('disposeAll closes every terminal', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     registry.create('s1', 'a', '', process.cwd(), 80, 24)
     registry.create('s2', 'b', '', process.cwd(), 80, 24)
     registry.disposeAll()
@@ -206,7 +218,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('snapshotOf drops the pty reference and transcript', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'snap', '', process.cwd(), 80, 24)
       const handle = registry.get(uuid)!
@@ -235,7 +247,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('waitFor returns found when the needle is already in the transcript', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'echo-test', 'echo wait-for-fast', process.cwd(), 80, 24)
       await waitForTranscript(registry, uuid, 'wait-for-fast')
@@ -252,7 +264,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('waitFor returns found after the needle appears (async output)', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       // Spawn a shell WITH a command (so output is guaranteed), but start
       // the wait for a DIFFERENT needle that only appears after we send
@@ -280,7 +292,7 @@ describe('AgentPtyRegistry', () => {
   }, 40_000)
 
   it('waitFor returns timeout when the needle never appears', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'silent', '', process.cwd(), 80, 24)
       await waitForTranscript(registry, uuid, '', 1000)
@@ -298,7 +310,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('waitFor throws on an empty needle', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'empty-needle', '', process.cwd(), 80, 24)
       await expect(registry.waitFor(uuid, '', 500)).rejects.toThrow()
@@ -308,12 +320,12 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('waitFor throws on an unknown uuid', async () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     await expect(registry.waitFor('nonexistent-uuid', 'foo', 500)).rejects.toThrow()
   })
 
   it('delivers SIGINT and SIGTSTP by writing control characters (cross-platform)', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'signal-test', '', process.cwd(), 80, 24)
       // SIGINT and SIGTSTP are delivered by writing \x03 / \x1a to the pty
@@ -330,7 +342,7 @@ describe('AgentPtyRegistry', () => {
   })
 
   it('delivers SIGKILL via the process-termination path', () => {
-    const registry = new AgentPtyRegistry(testShell())
+    const registry = trackedRegistry()
     try {
       const uuid = registry.create('s1', 'kill-test', '', process.cwd(), 80, 24)
       // SIGKILL uses pty.kill() (TerminateProcess on Windows). Must not
@@ -340,5 +352,26 @@ describe('AgentPtyRegistry', () => {
     } finally {
       registry.disposeAll()
     }
+  })
+
+  it('does not enqueue a second kill when close follows a termination signal', () => {
+    const kill = vi.fn()
+    const pty = {
+      cols: 80,
+      rows: 24,
+      write: vi.fn(),
+      resize: vi.fn(),
+      kill,
+      onData: vi.fn(() => ({ dispose: vi.fn() })),
+      onExit: vi.fn(() => ({ dispose: vi.fn() })),
+    }
+    const registry = new AgentPtyRegistry('fixture-shell', [], {
+      spawn: vi.fn(() => pty),
+    } as never)
+    const uuid = registry.create('s1', 'idempotent-kill', '', process.cwd())
+
+    registry.signal(uuid, 'SIGKILL')
+    expect(registry.close(uuid)).toBe(true)
+    expect(kill).toHaveBeenCalledTimes(1)
   })
 })

@@ -463,13 +463,24 @@ export class AgentPtyRegistry {
       }
       return
     }
-    // SIGKILL / SIGTERM / SIGHUP: use the process-termination path.
+    // SIGKILL / SIGTERM / SIGHUP: use the process-termination path. Windows
+    // node-pty rejects every named signal, but it can defer that rejection
+    // until the ConPTY agent becomes ready; a surrounding try/catch cannot
+    // catch that later callback. Never enqueue a named signal there.
+    if (process.platform === 'win32') {
+      try {
+        handle.pty.kill()
+      } catch {
+        // Already exited or gone; nothing left to kill.
+      }
+      return
+    }
     try {
       handle.pty.kill(signal)
     } catch {
-      // node-pty on Windows rejects named signals other than the default;
-      // fall back to the default kill (TerminateProcess on Windows,
-      // SIGKILL-equivalent on POSIX) so the signal still takes effect.
+      // A POSIX pty can still disappear between the exited check and kill;
+      // fall back to the default termination path when the named signal is
+      // no longer deliverable.
       try {
         handle.pty.kill()
       } catch {

@@ -72,10 +72,20 @@ export function resolveConsoleProcessList(
       if (settled) return
       settled = true
       if (timer !== undefined) clearTimeout(timer)
+      child?.removeAllListeners()
+      child?.stdout?.destroy()
+      child?.stderr?.destroy()
+      try { child?.disconnect?.() } catch { /* already disconnected */ }
+      child?.unref?.()
       resolve(processes)
     }
     try {
-      child = forkProcess(helperPath, [String(shellPid), nodePtyLib], { silent: true })
+      // Only IPC is needed. `silent: true` creates three extra pipe handles
+      // per terminal cleanup; those handles can keep a worker or a long-lived
+      // DSH host alive even after the helper exits.
+      child = forkProcess(helperPath, [String(shellPid), nodePtyLib], {
+        stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
+      })
       child.once('message', message => {
         const value = (message as { consoleProcessList?: unknown } | null)?.consoleProcessList
         // GetConsoleProcessList can include the isolated probe itself and,
@@ -91,16 +101,6 @@ export function resolveConsoleProcessList(
           .filter(pid => (
               Number.isInteger(pid) && pid > 0 && !protectedPids.has(pid)
             ))
-        if (process.env.DSH_CONPTY_DEBUG === '1') {
-          console.error('[dsh-conpty-cleanup]', JSON.stringify({
-            shellPid,
-            hostPid: process.pid,
-            parentPid: process.ppid,
-            helperPid: child?.pid,
-            rawProcesses,
-            processes,
-          }))
-        }
         // The helper is attached to the target console while it probes the
         // process list, so its own PID can be part of the result. Do not hand
         // that list back to node-pty until the helper has completed its IPC

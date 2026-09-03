@@ -13,7 +13,7 @@
  * the FileViewerProps toolbar callbacks so the host's path-input header
  * renders the controls instead.
  */
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import clsx from 'clsx'
 import { EditorState } from '@codemirror/state'
@@ -35,11 +35,20 @@ import { LazyMermaidMarkdown, MarkdownDocument, type MarkdownHtmlMedia } from '.
 import { MdToc } from './md-toc.tsx'
 import { splitMermaidBlocks } from './mermaid-blocks.ts'
 import { t } from './locales.ts'
+import { useCtrlWheelZoom } from './ctrl-wheel-zoom.ts'
 import type { EditorToolbarState, FileViewerProps } from './service.ts'
 import css from './sidebar.module.css'
 
 /** Previewable files (rendered output vs source editing). */
 type ViewMode = 'preview' | 'edit'
+
+const TEXT_ZOOM_MIN = 0.5
+const TEXT_ZOOM_MAX = 2
+const TEXT_ZOOM_STEP = 0.1
+
+function clampTextZoom(scale: number): number {
+  return Math.min(TEXT_ZOOM_MAX, Math.max(TEXT_ZOOM_MIN, Math.round(scale * 10) / 10))
+}
 
 /** The floating "add to conversation" action: payload + viewport anchor. */
 interface SelectionPopup {
@@ -64,6 +73,12 @@ export function TextEditor(props: FileViewerProps) {
   const [draft, setDraft] = useState<string | null>(null)
   const [dirty, setDirty] = useState(false)
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'failed'>('idle')
+  const zoomHostRef = useRef<HTMLDivElement>(null)
+  const [contentZoom, setContentZoom] = useState(1)
+  const zoomContent = useCallback((direction: 1 | -1): void => {
+    setContentZoom(current => clampTextZoom(current + direction * TEXT_ZOOM_STEP))
+  }, [])
+  useCtrlWheelZoom(zoomHostRef, zoomContent)
   const hostRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<CodeMirrorView | null>(null)
   const savingRef = useRef(false)
@@ -107,6 +122,7 @@ export function TextEditor(props: FileViewerProps) {
   // A new file (tab switch) starts clean: fresh preview mode, no draft.
   useEffect(() => {
     setMode('preview')
+    setContentZoom(1)
     setDraft(null)
     setDirty(false)
     setSaveState('idle')
@@ -351,7 +367,15 @@ export function TextEditor(props: FileViewerProps) {
   }, [hostToolbar])
 
   return (
-    <>
+    <div
+      ref={zoomHostRef}
+      className={css.editorTextView}
+      data-content-zoom={`${Math.round(contentZoom * 100)}%`}
+      style={{
+        '--dsh-sidebar-content-font-size': `${13 * contentZoom}px`,
+        '--dsh-sidebar-content-line-height': `${20 * contentZoom}px`,
+      } as CSSProperties}
+    >
       {!hostToolbar && (
       <div className={css.editorHeader}>
         {(markdown || html) && (
@@ -463,6 +487,6 @@ export function TextEditor(props: FileViewerProps) {
         </button>,
         document.body,
       )}
-    </>
+    </div>
   )
 }

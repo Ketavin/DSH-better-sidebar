@@ -41,6 +41,17 @@ describe('ImageView', () => {
     expect(imageView.dataset.imageMode).toBe('fit')
     expect(image.getAttribute('style')).toBeNull()
 
+    const ctrlWheel = new WheelEvent('wheel', { bubbles: true, cancelable: true, ctrlKey: true, deltaY: -100 })
+    act(() => { imageView.dispatchEvent(ctrlWheel) })
+    expect(ctrlWheel.defaultPrevented).toBe(true)
+    expect(imageView.dataset.imageMode).toBe('scaled')
+    expect(container.querySelector('span')?.textContent).toBe('125%')
+
+    const plainWheel = new WheelEvent('wheel', { bubbles: true, cancelable: true, deltaY: -100 })
+    act(() => { imageView.dispatchEvent(plainWheel) })
+    expect(plainWheel.defaultPrevented).toBe(false)
+    expect(container.querySelector('span')?.textContent).toBe('125%')
+
     act(() => { button('100%').click() })
     expect(imageView.dataset.imageMode).toBe('scaled')
     expect(image.style.width).toBe('1200px')

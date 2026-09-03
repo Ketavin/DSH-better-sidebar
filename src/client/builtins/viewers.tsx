@@ -32,9 +32,10 @@ import {
   IconPdfOutline16,
   IconHtmlOutline16,
 } from '../icons.tsx'
-import { useState, type ComponentType } from 'react'
+import { useCallback, useRef, useState, type ComponentType } from 'react'
 import type { FileViewerDescriptor, FileViewerProps } from '../service.ts'
 import { t } from '../locales.ts'
+import { useCtrlWheelZoom } from '../ctrl-wheel-zoom.ts'
 import css from '../sidebar.module.css'
 
 /**
@@ -60,12 +61,14 @@ function clampImageScale(scale: number): number {
  * large image can be inspected without creating another page-level panel.
  */
 export function ImageView({ url, title }: { url: string; title: string }) {
+  const viewRef = useRef<HTMLDivElement>(null)
   const [natural, setNatural] = useState<{ width: number; height: number } | null>(null)
   const [scale, setScale] = useState<number | null>(null)
-  const zoom = (delta: number): void => {
+  const zoom = useCallback((delta: number): void => {
     if (natural === null) return
-    setScale(current => clampImageScale((current ?? 1) + delta))
-  }
+    setScale(current => clampImageScale(Math.round(((current ?? 1) + delta) * 100) / 100))
+  }, [natural])
+  useCtrlWheelZoom(viewRef, direction => { zoom(direction * IMAGE_ZOOM_STEP) })
   const scaledStyle = scale === null || natural === null
     ? undefined
     : {
@@ -75,7 +78,7 @@ export function ImageView({ url, title }: { url: string; title: string }) {
         maxHeight: 'none',
       }
   return (
-    <div className={css.editorImageView} data-image-mode={scale === null ? 'fit' : 'scaled'}>
+    <div ref={viewRef} className={css.editorImageView} data-image-mode={scale === null ? 'fit' : 'scaled'}>
       <div className={css.editorImageToolbar} role="toolbar" aria-label={t('viewerImage')}>
         <button
           type="button"

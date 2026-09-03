@@ -1742,14 +1742,76 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
   color: var(--dsw-alias-label-primary);
 }
 
-.editorImageWrap {
+.editorImageView {
   flex: 1;
   min-height: 0;
   display: flex;
+  flex-direction: column;
+}
+
+.editorImageToolbar {
+  display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  justify-content: center;
+  gap: 4px;
+  min-height: 34px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.editorImageToolbar button {
+  min-width: 28px;
+  height: 26px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  font: var(--dsw-font-xxxs-11);
+  cursor: pointer;
+}
+
+.editorImageToolbar button:hover:not(:disabled),
+.editorImageToolbarActive {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+.editorImageToolbar button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.editorImageZoomValue {
+  margin-left: auto;
+  color: var(--dsw-alias-label-tertiary);
+  font: var(--dsw-font-xxxs-11);
+}
+
+.editorImageWrap {
+  flex: 1;
+  min-height: 0;
   overflow: auto;
+}
+
+.editorImageStage {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  min-width: 100%;
+  min-height: 100%;
   padding: 12px;
+}
+
+.editorImageView[data-image-mode='fit'] .editorImageStage {
+  width: 100%;
+  height: 100%;
+}
+
+.editorImageView[data-image-mode='scaled'] .editorImageStage {
+  width: max-content;
+  height: max-content;
 }
 
 .editorImage {

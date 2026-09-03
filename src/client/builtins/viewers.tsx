@@ -32,7 +32,7 @@ import {
   IconPdfOutline16,
   IconHtmlOutline16,
 } from '../icons.tsx'
-import type { ComponentType } from 'react'
+import { useState, type ComponentType } from 'react'
 import type { FileViewerDescriptor, FileViewerProps } from '../service.ts'
 import { t } from '../locales.ts'
 import css from '../sidebar.module.css'
@@ -45,6 +45,87 @@ import css from '../sidebar.module.css'
  */
 const LazyTextEditor = lazyChunkComponent<FileViewerProps>('editor', (mod) => mod.TextEditor as ComponentType<FileViewerProps> | undefined)
 
+const IMAGE_ZOOM_MIN = 0.25
+const IMAGE_ZOOM_MAX = 4
+const IMAGE_ZOOM_STEP = 0.25
+
+/** Clamp an image scale to the viewer's usable 25%-400% range. */
+function clampImageScale(scale: number): number {
+  return Math.min(IMAGE_ZOOM_MAX, Math.max(IMAGE_ZOOM_MIN, scale))
+}
+
+/**
+ * Built-in image viewer: fit-to-window by default, with explicit actual-size
+ * and zoom controls. Scaled images remain inside the editor scrollport, so a
+ * large image can be inspected without creating another page-level panel.
+ */
+export function ImageView({ url, title }: { url: string; title: string }) {
+  const [natural, setNatural] = useState<{ width: number; height: number } | null>(null)
+  const [scale, setScale] = useState<number | null>(null)
+  const zoom = (delta: number): void => {
+    if (natural === null) return
+    setScale(current => clampImageScale((current ?? 1) + delta))
+  }
+  const scaledStyle = scale === null || natural === null
+    ? undefined
+    : {
+        width: Math.max(1, Math.round(natural.width * scale)),
+        height: Math.max(1, Math.round(natural.height * scale)),
+        maxWidth: 'none',
+        maxHeight: 'none',
+      }
+  return (
+    <div className={css.editorImageView} data-image-mode={scale === null ? 'fit' : 'scaled'}>
+      <div className={css.editorImageToolbar} role="toolbar" aria-label={t('viewerImage')}>
+        <button
+          type="button"
+          aria-label={t('mermaidZoomOut')}
+          title={t('mermaidZoomOut')}
+          disabled={natural === null || scale === IMAGE_ZOOM_MIN}
+          onClick={() => { zoom(-IMAGE_ZOOM_STEP) }}
+        >−</button>
+        <button
+          type="button"
+          aria-label="100%"
+          title="100%"
+          disabled={natural === null}
+          onClick={() => { setScale(1) }}
+        >100%</button>
+        <button
+          type="button"
+          aria-label={t('mermaidZoomIn')}
+          title={t('mermaidZoomIn')}
+          disabled={natural === null || scale === IMAGE_ZOOM_MAX}
+          onClick={() => { zoom(IMAGE_ZOOM_STEP) }}
+        >+</button>
+        <button
+          type="button"
+          className={scale === null ? css.editorImageToolbarActive : undefined}
+          aria-label={t('mermaidZoomReset')}
+          title={t('mermaidZoomReset')}
+          onClick={() => { setScale(null) }}
+        >{t('mermaidZoomReset')}</button>
+        <span className={css.editorImageZoomValue} aria-live="polite">
+          {scale === null ? t('mermaidZoomReset') : `${Math.round(scale * 100)}%`}
+        </span>
+      </div>
+      <div className={css.editorImageWrap}>
+        <div className={css.editorImageStage}>
+          <img
+            className={css.editorImage}
+            src={url}
+            alt={title}
+            style={scaledStyle}
+            onLoad={(event) => {
+              setNatural({ width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight })
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /** The 6 built-in file viewer descriptors. */
 export function builtinViewers(): readonly FileViewerDescriptor[] {
   return [
@@ -54,11 +135,7 @@ export function builtinViewers(): readonly FileViewerDescriptor[] {
       icon: (size: number) => <IconImageOutline16 size={size} />,
       exts: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'ico', 'avif'],
       fetchStrategy: 'mediaUrl',
-      component: ({ mediaUrl: url, title }) => (
-        <div className={css.editorImageWrap}>
-          <img className={css.editorImage} src={url} alt={title} />
-        </div>
-      ),
+      component: ({ mediaUrl: url, title }) => <ImageView url={url ?? ''} title={title} />,
     },
     {
       id: 'pdf',

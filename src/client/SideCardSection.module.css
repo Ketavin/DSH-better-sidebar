@@ -116,11 +116,11 @@
   border-color: var(--dsw-alias-label-dimmed);
 }
 
-/* Enabled = highlighted: a SOFTENED brand border (color-mix, the icon-chip
-   precedent) + tinted fill — full-strength brand reads harsh at card scale. */
+/* Use the shared state accent, not the high-contrast primary button fill.
+   The low-opacity tint follows the resolved light/dark palette. */
 .cardOn {
-  border-color: color-mix(in srgb, var(--dsw-alias-button-primary-fill) 45%, transparent);
-  background: var(--dsw-alias-interactive-bg-active);
+  border-color: color-mix(in srgb, var(--dsw-alias-state-business-primary) 30%, var(--dsw-alias-border-l2));
+  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 5%, transparent);
 }
 
 /* The card's switch: the whole main area (top row + desc) flips the feature.
@@ -173,9 +173,9 @@
 }
 
 .cardOn .cardIconChip {
-  border-color: color-mix(in srgb, var(--dsw-alias-button-primary-fill) 35%, transparent);
-  background: color-mix(in srgb, var(--dsw-alias-button-primary-fill) 12%, transparent);
-  color: var(--dsw-alias-button-primary-fill);
+  border-color: color-mix(in srgb, var(--dsw-alias-state-business-primary) 25%, var(--dsw-alias-border-l2));
+  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 8%, transparent);
+  color: var(--dsw-alias-state-business-primary);
 }
 
 .cardTitle {
@@ -227,8 +227,8 @@
 }
 
 .cardOn .cardSwitchTrack {
-  border-color: var(--dsw-alias-button-primary-fill);
-  background: var(--dsw-alias-button-primary-fill);
+  border-color: var(--dsw-alias-state-business-primary);
+  background: var(--dsw-alias-state-business-primary);
 }
 
 .cardOn .cardSwitchThumb {
@@ -306,7 +306,7 @@
 }
 
 .cardOn .cardSettings {
-  border-top-color: color-mix(in srgb, var(--dsw-alias-button-primary-fill) 18%, transparent);
+  border-top-color: color-mix(in srgb, var(--dsw-alias-state-business-primary) 18%, var(--dsw-alias-border-l2));
 }
 
 .cardSettings:hover {
@@ -417,8 +417,8 @@
 }
 
 .switchInput:checked + .switchTrack {
-  border-color: var(--dsw-alias-button-primary-fill);
-  background: var(--dsw-alias-button-primary-fill);
+  border-color: var(--dsw-alias-state-business-primary);
+  background: var(--dsw-alias-state-business-primary);
 }
 
 .switchInput:checked + .switchTrack .switchThumb {

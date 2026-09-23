@@ -40,6 +40,8 @@
 
 ## ✨ Features
 
+Sidebar content, file viewers and general-setting switches share DSH's theme accent. Cards use a subtle tint and follow light, dark and system appearance.
+
 - **🗂️ File Workbench**: file explorer (lazy-loading tree; symlinks show their target kind — directory links expand, dangling links flagged) + CodeMirror editor; inline preview for images (fit / 100% / 25%-400% zoom) / Markdown (incl. Mermaid diagrams, strict-mode safe rendering + click-to-zoom) / HTML / PDF. With the pointer over an image, Markdown, or code viewer, `Ctrl/Cmd + wheel` zooms only that Sidebar content instead of the browser page
 - **🌐 Embedded Browser**: multiple web tabs with back / forward / refresh; content runs in a sandboxed iframe; external links are routed by protocol by default — HTTP opens in the sidebar, HTTPS goes to the system browser (both adjustable in settings)
 - **💻 Real Terminal**: xterm.js + node-pty real shell, reconnect with transcript replay; optionally injects `terminal_*` tools for the model

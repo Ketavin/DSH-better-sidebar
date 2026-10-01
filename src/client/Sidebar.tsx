@@ -28,7 +28,7 @@
  * drawer floats). Widening does not migrate back: the tabs keep living in
  * the right tree.
  */
-import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState, type DragEvent as ReactDragEvent, type ReactNode } from 'react'
+import { createElement, memo, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent as ReactDragEvent, type ReactNode } from 'react'
 import { useSyncExternalStore } from 'react'
 import clsx from 'clsx'
 import { IconCloseFill14, Tooltip } from '@deepseek-ai/dsh-client-ui-primitives'
@@ -47,6 +47,7 @@ import { IconPanelBottomOutline16, IconPanelRightOutline16 } from './icons.tsx'
 import { Workbench, type WorkbenchActions } from './split-pane.tsx'
 import { isNarrowWidth, useViewportSize } from './breakpoints.ts'
 import { layoutPushSize } from './layout-push.ts'
+import { ACTIVITY_RAIL_WIDTH, railPushWidth, railTarget } from './activity-rail.ts'
 import { parseDesktopEnv } from './desktop-env.ts'
 import { getWcoSnapshot, subscribeWco } from './wco.ts'
 import { getShellPreset } from './shell-presets.ts'
@@ -164,7 +165,7 @@ const TabContent = memo(function TabContent(props: TabContentProps) {
  * a disabled row (e.g. terminal at capacity) instead of hiding the option.
  * Tabs the user disabled in the side card settings are filtered out
  * entirely — re-enabling them is the settings page's job. */
-function buildNewTabOptions(state: SidebarState, ctx: Context, scope: SessionScope): NewTabOption[] {
+function buildNewTabOptions(state: SidebarState | undefined, ctx: Context, scope: SessionScope | undefined): NewTabOption[] {
   const service = ctx.get('betterSidebar')
   if (service === undefined) return []
   return service.getTabs()
@@ -173,9 +174,31 @@ function buildNewTabOptions(state: SidebarState, ctx: Context, scope: SessionSco
     .map(d => ({
       id: d.id,
       label: typeof d.title === 'function' ? d.title() : d.title,
-      disabled: !(d.available?.(ctx, scope, state) ?? true),
+      disabled: state === undefined || scope === undefined || !(d.available?.(ctx, scope, state) ?? true),
       icon: typeof d.icon === 'function' ? d.icon(16) : d.icon,
     }))
+}
+
+function ActivityRail(props: { options: NewTabOption[]; activeType?: string; onSelect: (id: string) => void }) {
+  return (
+    <nav className={css.activityRail} data-dsh-sidebar-rail>
+      {props.options.map(option => (
+        <Tooltip key={option.id} label={option.label} side="bottom" delayMs={300}>
+          <button
+            type="button"
+            className={css.activityButton}
+            aria-label={option.label}
+            aria-pressed={props.activeType === option.id}
+            disabled={option.disabled === true}
+            data-dsh-rail-option={option.id}
+            onClick={() => { props.onSelect(option.id) }}
+          >
+            {option.icon ?? null}
+          </button>
+        </Tooltip>
+      ))}
+    </nav>
+  )
 }
 
 export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
@@ -981,7 +1004,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
    *  layout.css's margins. Every size change — drag frames and committed
    *  state — flows through here so the push never forks between paths. */
   const writeGeometry = (width: number, height: number): void => {
-    document.documentElement.style.setProperty('--dsh-sidebar-width', `${width}px`)
+    document.documentElement.style.setProperty('--dsh-sidebar-width', `${railPushWidth(width, viewport.width, narrow)}px`)
     document.documentElement.style.setProperty('--dsh-sidebar-height', `${height}px`)
     // The corner handle positions itself relative to the panel (CSS
     // `bottom: calc(var(--dsh-sidebar-height) + 6px)`), so these two layout
@@ -1368,11 +1391,15 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     appendToDraft(ctx, sessionId, `@${relativeTo(cwd ?? '', path)}`)
   }, [ctx, sessionId, cwd])
 
+  const hostStyle = { '--dsh-activity-rail-width': `${narrow ? 0 : ACTIVITY_RAIL_WIDTH}px` } as CSSProperties
+  const newTabOptions = buildNewTabOptions(state, ctx, sessionId === undefined ? undefined : { sessionId, cwd })
+
   if (state === undefined || sessionId === undefined) {
     // Keep the unavailable controls focusable: touch users have no hover, so
     // focus is the only way the existing Tooltip can explain what is missing.
     return (
-      <div data-dsh-panel-host {...osFileDragShield}>
+      <div data-dsh-panel-host style={hostStyle} {...osFileDragShield}>
+        {!narrow && <ActivityRail options={newTabOptions} onSelect={() => {}} />}
         <div className={css.toggleCluster} data-dsh-toggle-cluster>
           {!narrow && (
             <Tooltip label={t('noSession')} side="bottom" delayMs={500}>
@@ -1411,6 +1438,40 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     // The session scope rides along: lifecycle callbacks receive it (and
     // the open stays in the current session, as before).
     service.openTab({ type: optionId, title }, { sessionId, cwd })
+  }
+
+  const railOptions = newTabOptions.map(option => railTarget(state, option.id) === undefined ? option : { ...option, disabled: false })
+  const activeLeaf = [...allLeaves(state.splits), ...allLeaves(state.bottomSplits)].find(leaf => leaf.id === state.activePane)
+  const activeInRight = allLeaves(state.splits).some(leaf => leaf.id === state.activePane)
+  const activeRailType = (activeInRight ? state.panelOpen : state.bottomOpen)
+    ? activeLeaf?.tabs.find(tab => tab.id === activeLeaf.active)?.type
+    : undefined
+  const onRailSelect = (optionId: string): void => {
+    const service = ctx.get('betterSidebar')
+    const live = store.getSnapshot()
+    const descriptor = service?.getTab(optionId)
+    if (live.sessionId !== sessionId || live.state === undefined || descriptor === undefined
+      || descriptor.hidden || service?.isTabEnabled(optionId) !== true) return
+    const target = railTarget(live.state, optionId)
+    if (target !== undefined) {
+      // Activation goes through the owner so external plugin lifecycle callbacks still fire.
+      const leaf = [...allLeaves(live.state.splits), ...allLeaves(live.state.bottomSplits)]
+        .find(leaf => leaf.id === live.state!.activePane)
+      const alreadyActive = leaf?.active === target.tabId
+      const wasOpen = target.placement === 'top' ? live.state.panelOpen : live.state.bottomOpen
+      service.activateTab(target.tabId, { sessionId, cwd })
+      if (target.placement !== 'float') {
+        store.reduce(s => target.placement === 'top'
+          ? { ...s, panelOpen: !(alreadyActive && wasOpen) }
+          : { ...s, bottomOpen: !(alreadyActive && wasOpen) })
+      }
+      return
+    }
+    if (!(descriptor.available?.(ctx, { sessionId, cwd }, live.state) ?? true)) return
+    // Launches from the right rail land in the right workbench, even after a bottom-pane focus.
+    store.reduce(s => ({ ...s, panelOpen: true,
+      activePane: allLeaves(s.splits).some(leaf => leaf.id === s.activePane) ? s.activePane : firstLeaf(s.splits).id }))
+    onNewTab(optionId)
   }
 
   /**
@@ -1499,7 +1560,8 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
   }
 
   return (
-    <div data-dsh-panel-host {...osFileDragShield}>
+    <div data-dsh-panel-host style={hostStyle} {...osFileDragShield}>
+      {!narrow && <ActivityRail options={railOptions} activeType={activeRailType} onSelect={onRailSelect} />}
       {/*
         The persistent toggle cluster at the top-right corner: the bottom
         panel's button (bottom glyph) LEFT of the right panel's (side glyph).
@@ -1550,7 +1612,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
         className={clsx(css.panel, !state.panelOpen && css.panelHidden)}
         data-dsh-panel
         style={{
-          width: narrow ? '100vw' : Math.min(state.width, window.innerWidth),
+          width: narrow ? '100vw' : Math.min(state.width, Math.max(0, window.innerWidth - ACTIVITY_RAIL_WIDTH)),
           // Narrow drawer: keep the bottom-anchored sheet above the on-screen
           // keyboard (visualViewport inset); desktop panels are full-height
           // and unaffected.
@@ -1600,7 +1662,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
           <Workbench
             state={state}
             tree={augmentedTree}
-            newTabOptions={buildNewTabOptions(state, ctx, { sessionId, cwd })}
+            newTabOptions={newTabOptions}
             actions={wrappedActions}
             onNewTab={onNewTab}
             renderTab={renderTab}
@@ -1755,7 +1817,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
           <Workbench
             state={state}
             tree={state.bottomSplits}
-            newTabOptions={buildNewTabOptions(state, ctx, { sessionId, cwd })}
+            newTabOptions={newTabOptions}
             actions={actions}
             onNewTab={onNewTab}
             renderTab={(tab, active, paneId) => renderTab(tab, active, paneId, 'bottom')}

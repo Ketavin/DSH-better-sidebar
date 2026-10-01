@@ -69,12 +69,76 @@
   position: absolute;
   /* env() resolves to 0 on devices without a top inset (desktops). */
   top: calc(3px + env(safe-area-inset-top));
-  right: 10px;
+  right: calc(10px + var(--dsh-activity-rail-width, 0px));
   z-index: 45;
   display: flex;
   flex-direction: row;
   gap: 4px;
   pointer-events: auto;
+}
+
+.activityRail {
+  box-sizing: border-box;
+  position: absolute;
+  top: var(--dsh-title-bar-strip, 0px);
+  right: 0;
+  bottom: 0;
+  z-index: 45;
+  width: var(--dsh-activity-rail-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  pointer-events: auto;
+  background: var(--dsw-alias-bg-layer-1);
+  border-left: 1px solid var(--dsw-alias-border-l2);
+  -webkit-app-region: no-drag;
+}
+
+.activityButton {
+  flex: none;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.activityButton > svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.activityButton:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+.activityButton[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--dsw-alias-state-business-primary) 10%, transparent);
+  color: var(--dsw-alias-state-business-primary);
+}
+
+.activityButton:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: -2px;
+}
+
+.activityButton:disabled {
+  opacity: 0.4;
+  cursor: default;
 }
 
 /* The tab strip of the OPEN right panel reserves the cluster's width at its
@@ -120,7 +184,7 @@
   box-sizing: border-box;
   position: absolute;
   top: 0;
-  right: 0;
+  right: var(--dsh-activity-rail-width, 0px);
   /* Full height: the bottom panel squeezes only the center column, so the
      right panel never gives up any vertical position. */
   bottom: 0;

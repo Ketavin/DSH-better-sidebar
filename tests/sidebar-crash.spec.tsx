@@ -26,7 +26,8 @@ import { act } from 'react-dom/test-utils'
 ;(globalThis as Record<string, unknown>).IS_REACT_ACT_ENVIRONMENT = true
 
 import { Sidebar } from '../src/client/Sidebar.tsx'
-import { createSidebarStore, setBottomHeight, toggleBottomPanel, type SidebarStore } from '../src/client/state.ts'
+import { allLeaves, createSidebarStore, setBottomHeight, toggleBottomPanel, type SidebarStore } from '../src/client/state.ts'
+import { ACTIVITY_RAIL_WIDTH } from '../src/client/activity-rail.ts'
 import { createBetterSidebarService, type BetterSidebarService } from '../src/client/service.ts'
 import { t } from '../src/client/locales.ts'
 
@@ -50,14 +51,14 @@ interface MountedSidebar {
 /** Unique per-test session ids (see the comment inside). */
 let sessionSeq = 0
 
-function mountSidebar(): MountedSidebar {
+function mountSidebar(openByDefault = true): MountedSidebar {
   vi.stubGlobal('WebSocket', FakeWebSocket)
   const container = document.createElement('div')
   document.body.append(container)
   const store = createSidebarStore()
   const service = createBetterSidebarService(store)
   // Fresh-session seed: open the panel explicitly (openByDefault defaults off).
-  store.setPrefs({ ...store.getPrefs(), openByDefault: true })
+  store.setPrefs({ ...store.getPrefs(), openByDefault })
   // Unique session per test — the store persists per-session state to
   // localStorage (200ms debounce); a shared id lets a previous test's late
   // write leak into this store's setSession restore.
@@ -104,7 +105,7 @@ describe('layout-push variable cleanup', () => {
     const htmlStyle = document.documentElement.style
     // The seeded session is open: the layout push is applied on mount.
     const width = store.getSnapshot().state!.width
-    expect(htmlStyle.getPropertyValue('--dsh-sidebar-width')).toBe(`${width}px`)
+    expect(htmlStyle.getPropertyValue('--dsh-sidebar-width')).toBe(`${width + ACTIVITY_RAIL_WIDTH}px`)
     expect(htmlStyle.getPropertyValue('--dsh-sidebar-height')).toBe('0px')
     // Any unmount (boundary swap, plugin disable, HMR) must release the push.
     unmount()
@@ -120,7 +121,7 @@ describe('layout-push variable cleanup', () => {
     // Simulate a drag release: the bottom panel opens and its height commits.
     act(() => { store.reduce(toggleBottomPanel) })
     act(() => { store.reduce(s => setBottomHeight(s, 300)) })
-    expect(htmlStyle.getPropertyValue('--dsh-sidebar-width')).toBe(`${width}px`)
+    expect(htmlStyle.getPropertyValue('--dsh-sidebar-width')).toBe(`${width + ACTIVITY_RAIL_WIDTH}px`)
     expect(htmlStyle.getPropertyValue('--dsh-sidebar-height')).toBe('300px')
     // The commit must NOT have removed the variables at any point. React
     // runs every effect cleanup before every effect setup in a commit, so a
@@ -159,7 +160,7 @@ describe('tab crash containment', () => {
     // the collapse button is still there and the layout push is still live.
     expect(container.querySelector(`[aria-label="${t('collapse')}"]`)).not.toBeNull()
     expect(document.documentElement.style.getPropertyValue('--dsh-sidebar-width')).toBe(
-      `${store.getSnapshot().state!.width}px`,
+      `${store.getSnapshot().state!.width + ACTIVITY_RAIL_WIDTH}px`,
     )
   })
 
@@ -188,5 +189,72 @@ describe('tab crash containment', () => {
     act(() => { retry!.click() })
     expect(container.textContent).toContain('recovered')
     expect(container.textContent).not.toContain('transient')
+  })
+})
+
+describe('persistent activity rail', () => {
+  it('shows the enabled registered options in order while the content panel is closed', () => {
+    const { container, service, store, unmount } = mountSidebar(false)
+    act(() => {
+      for (let index = 8; index >= 0; index--) service.registerTab({
+        id: `entry-${index}`, title: `Entry ${index}`, order: index, component: () => null,
+      })
+    })
+    const buttons = [...container.querySelectorAll('[data-dsh-rail-option]')]
+    expect(buttons.map(button => button.getAttribute('aria-label'))).toEqual(Array.from({ length: 9 }, (_, index) => `Entry ${index}`))
+    expect(store.getSnapshot().state!.panelOpen).toBe(false)
+    expect(document.documentElement.style.getPropertyValue('--dsh-sidebar-width')).toBe('44px')
+    act(() => { store.setPrefs({ ...store.getPrefs(), tabsEnabled: { 'entry-3': false } }) })
+    expect(container.querySelector('[data-dsh-rail-option="entry-3"]')).toBeNull()
+    unmount()
+  })
+
+  it('reuses an existing multi-instance page and fires activation callbacks without minting again', () => {
+    const { container, service, store, unmount } = mountSidebar(false)
+    let minted = 0
+    const onOpen = vi.fn(), onActivate = vi.fn()
+    act(() => { service.registerTab({ id: 'terminal', title: 'Terminal', component: () => null,
+      createTab: () => ({ tab: { id: `terminal:${++minted}`, type: 'terminal', title: 'Terminal' } }), onOpen, onActivate }) })
+    const button = container.querySelector<HTMLButtonElement>('[data-dsh-rail-option="terminal"]')!
+    act(() => { button.click() })
+    expect(store.getSnapshot().state!.panelOpen).toBe(true)
+    act(() => { button.click() })
+    expect(store.getSnapshot().state!.panelOpen).toBe(false)
+    act(() => { button.click() })
+    expect(store.getSnapshot().state!.panelOpen).toBe(true)
+    expect(minted).toBe(1)
+    expect(onOpen).toHaveBeenCalledTimes(1)
+    expect(onActivate).toHaveBeenCalledTimes(2)
+    expect(button.getAttribute('aria-pressed')).toBe('true')
+    unmount()
+  })
+
+  it('creates a new page on the right after the bottom workbench had focus', () => {
+    const { container, service, store, unmount } = mountSidebar(false)
+    act(() => {
+      service.registerTab({ id: 'tool', title: 'Tool', component: () => null })
+      store.reduce(s => ({ ...s, activePane: allLeaves(s.bottomSplits)[0]!.id, bottomOpen: true }))
+    })
+    act(() => { container.querySelector<HTMLButtonElement>('[data-dsh-rail-option="tool"]')!.click() })
+    const state = store.getSnapshot().state!
+    expect(allLeaves(state.splits).flatMap(leaf => leaf.tabs).some(tab => tab.type === 'tool')).toBe(true)
+    expect(allLeaves(state.bottomSplits).flatMap(leaf => leaf.tabs).some(tab => tab.type === 'tool')).toBe(false)
+    expect(state.panelOpen).toBe(true)
+    unmount()
+  })
+
+  it('allows reuse at a creation limit but blocks creating an unavailable page', () => {
+    const { container, service, unmount } = mountSidebar(false)
+    const createTab = vi.fn(() => ({ tab: { id: 'limited:1', type: 'limited', title: 'Limited' } }))
+    act(() => {
+      service.registerTab({ id: 'limited', title: 'Limited', component: () => null, available: () => false, createTab })
+    })
+    expect(container.querySelector<HTMLButtonElement>('[data-dsh-rail-option="limited"]')!.disabled).toBe(true)
+    act(() => { service.openTab({ type: 'limited' }) })
+    const button = container.querySelector<HTMLButtonElement>('[data-dsh-rail-option="limited"]')!
+    expect(button.disabled).toBe(false)
+    act(() => { button.click() })
+    expect(createTab).toHaveBeenCalledTimes(1)
+    unmount()
   })
 })

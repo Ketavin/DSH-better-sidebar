@@ -13,7 +13,9 @@
 #   bash scripts/e2e-mount.sh [--grep <playwright-filter>]
 #
 # 环境变量（均可省略）：
-#   DSH_CMD        dsh 命令；缺省 PATH 上的 `dsh`，回退 npx 拉官方包
+#   DSH_CMD        单一 CLI 可执行路径；默认 frozen legacy fixture，禁止下载回退
+#   DSH_RUNTIME_MODE / DSH_RUNTIME_ROOT  legacy fixture 或本次 built Core
+#   DSH_MOUNT_ARTIFACTS  保留日志与实际依赖树；默认 mount-artifacts/<mode>
 #   TARBALL        插件 tarball；缺省仓库根 dsh-better-sidebar-*.tgz（须已 pack）
 #   PORT           固定端口（默认 0 = OS 分配，从日志解析 URL）
 #   DSH_HOME_BASE  覆盖 scratch 根目录（默认系统临时目录）。脚本始终在其下
@@ -28,7 +30,6 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-DSH_CMD="${DSH_CMD:-dsh}"
 PORT="${PORT:-0}"
 TARBALL="${TARBALL:-}"
 GREP_FILTER=""
@@ -41,15 +42,10 @@ die()  { printf '\033[31m[e2e-mount]\033[0m %s\n' "$*" >&2; exit 1; }
 command -v node >/dev/null 2>&1 || die "未找到 node（DSH 运行需要 Node.js >= 20）"
 command -v pnpm >/dev/null 2>&1 || die "未找到 pnpm（dsh plugin 转发给 pnpm）"
 
-# dsh CLI 解析：PATH 上的 dsh 优先，否则 npx 拉官方包（同 scripts/install.sh）
-if ! command -v "$DSH_CMD" >/dev/null 2>&1; then
-  if command -v npx >/dev/null 2>&1; then
-    say "PATH 上无 ${DSH_CMD}，回退 npx -y --package @deepseek-ai/dsh"
-    DSH_CMD="npx -y --package @deepseek-ai/dsh dsh"
-  else
-    die "未找到 $DSH_CMD 或 npx；请先安装 DSH CLI（npm i -g @deepseek-ai/dsh）或用 DSH_CMD 指定"
-  fi
-fi
+MOUNT_LANE=single
+PROFILE_DIR=""
+source "$SCRIPT_DIR/e2e-runtime.sh"
+configure_mount_runtime
 
 # tarball 解析（多个候选时取 mtime 最新——`ls | head -1` 的字典序会拿到
 # 旧版本号的历史 tarball，把冒烟挂到过期产物上）
@@ -60,6 +56,7 @@ if [ -z "$TARBALL" ]; then
 fi
 [ -n "$TARBALL" ] && [ -f "$TARBALL" ] || die "找不到 tarball（TARBALL 或 \$ROOT/dsh-better-sidebar-*.tgz）——先运行 pnpm build && pnpm pack"
 TARBALL="$(cd "$(dirname "$TARBALL")" && pwd)/$(basename "$TARBALL")"
+record_mount_tarball
 say "tarball: $TARBALL"
 
 # scratch home（每次全新，绝不触碰真实 ~/.dsh）：调用方给了 DSH_HOME_BASE
@@ -80,9 +77,11 @@ say "scratch home: ${DSH_HOME}（DSH_HOME=${DSH_HOME}）"
 SERVER_PID=""
 cleanup() {
   local code=$?
-  if [ -n "$SERVER_PID" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
-    kill "$SERVER_PID" 2>/dev/null || true
-    wait "$SERVER_PID" 2>/dev/null || true
+  if ! stop_mount_server; then [ "$code" -ne 0 ] || code=1; fi
+  if ! save_mount_evidence "$code"; then
+    warn "无法保存全部挂载证据，保留 scratch: $SCRATCH"
+    KEEP_HOME=1
+    [ "$code" -ne 0 ] || code=1
   fi
   if [ -z "${KEEP_HOME:-}" ]; then
     rm -rf "$SCRATCH"
@@ -92,6 +91,8 @@ cleanup() {
   exit "$code"
 }
 trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 # 步骤 1：引导 scratch profile（web 模板，镜像 dsh initProfile；先写
 # pnpm-workspace.yaml 的 allowBuilds / minimumReleaseAgeExclude，避免 pnpm 11
@@ -125,9 +126,15 @@ minimumReleaseAgeExclude:
   - dsh-better-sidebar
 EOF
 
+# 空 profile 真启动：宿主基础兼容故障必须在插件安装前显式失败。
+say "验证空 profile 启动..."
+start_mount_server "$LOG_DIR/empty-profile.log"
+guard_mount_runtime empty-profile
+stop_mount_server
+
 # 步骤 2：官方 CLI 安装 tarball + bundle 协调（真实挂载路径）
 say "执行 dsh plugin --profile web add file:$TARBALL ..."
-$DSH_CMD plugin --profile web add "file:$TARBALL"
+install_mount_plugin installed-profile "$TARBALL"
 
 # 步骤 3：校验挂载生效（dsh.profile.bundles 含 dsh-better-sidebar）
 if ! node -e '
@@ -144,8 +151,8 @@ say "挂载已注册：dsh.profile.bundles 包含 dsh-better-sidebar"
 
 # 步骤 4：启动 dsh web（--port 0 = OS 分配，避免端口冲突；keyless 可起）
 say "启动 dsh web（port=${PORT}）..."
-$DSH_CMD web --port "$PORT" > "$WEB_LOG" 2>&1 &
-SERVER_PID=$!
+start_mount_server "$WEB_LOG"
+guard_mount_runtime running-profile
 
 # 就绪行解析：DSH 0.1.2-alpha.1+ 打印的是带一次性 token 的鉴权 URL
 # （`dsh web: http://127.0.0.1:<port>/?token=<43字符>`，页面导航用它换取
@@ -153,20 +160,8 @@ SERVER_PID=$!
 # 匹配必须延伸到空白（`[^ ]*`）——在 `/` 处截断会丢掉 token，alpha.1+
 # 宿主上的整条 lane 都会挂在首屏 401。LAN 后缀 `(LAN: …)` 是下一个
 # 空格分段，不会被并进来。
-URL=""
-for _ in $(seq 1 120); do
-  if ! kill -0 "$SERVER_PID" 2>/dev/null; then
-    echo "=== dsh web 提前退出，日志尾部 ===" >&2
-    tail -30 "$WEB_LOG" >&2 || true
-    exit 1
-  fi
-  if URL="$(grep -oE 'dsh web: http://127\.0\.0\.1:[0-9]+[^ ]*' "$WEB_LOG" | head -1 | awk '{print $3}')" && [ -n "$URL" ]; then
-    break
-  fi
-  sleep 1
-done
-[ -n "$URL" ] || { echo "=== 120s 内未等到 dsh web 就绪，日志尾部 ===" >&2; tail -40 "$WEB_LOG" >&2 || true; exit 1; }
-say "dsh web 就绪：${URL}（pid ${SERVER_PID}）"
+URL="$MOUNT_URL"
+say "dsh web 就绪（pid ${SERVER_PID}）"
 
 # 步骤 5：运行无头渲染 lane
 say "运行 Playwright 无头渲染 lane..."

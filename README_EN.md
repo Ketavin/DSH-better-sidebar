@@ -505,7 +505,7 @@ WeChat / QQ group QR codes will live here. After uploading the QR images (drag t
 
 - **Code changes go through PRs**: develop on a `feat/*` / `fix/*` branch, then `gh pr create`; docs-only changes may be pushed to main directly
 - **Curate an ecosystem plugin**: tag your repo with `dsh-better-sidebar` + PR a `PluginEntry` into [`src/client/plugins-tabs.ts`](./src/client/plugins-tabs.ts) / [`plugins-viewers.ts`](./src/client/plugins-viewers.ts)
-- **Before submitting**: `pnpm typecheck && pnpm build && pnpm test` (CI additionally gates on npm-pack → real-mount → headless-render via `pnpm test:mount`)
+- **Before submitting**: `pnpm typecheck && pnpm build && pnpm test`; CI additionally checks the packed plugin, built-in pages and aggregate double mount. The [frozen fixture](./ci/runtime-legacy/README.md) installs the complete legacy host graph, and guards verify actual host peers after each plugin installation. Candidate Core callers must bind their current build identity; there is no automatic host download fallback.
 - See [`AGENTS.md`](./AGENTS.md) for the repository rules (hard constraints, CI lanes, release flow)
 
 ## ⭐ Star History

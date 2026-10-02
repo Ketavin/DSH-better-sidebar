@@ -153,4 +153,5 @@ registry/
 # Playwright headless-render lane (tests/e2e) artifacts
 playwright-report/
 test-results/
+mount-artifacts/
 

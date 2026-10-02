@@ -71,8 +71,8 @@ jobs:
         run: pnpm typecheck
       - name: Test
         run: pnpm test
-      - name: Test legacy runtime rejection guards
-        run: node --test ci/runtime-legacy/guard.check.mjs scripts/e2e-runtime.check.mjs
+      - name: Test mount runner failure and cleanup
+        run: node --test scripts/e2e-runtime.check.mjs
       - name: Build
         run: pnpm build
       # The consumer-facing declaration surface guard: a browser-only plugin
@@ -119,6 +119,9 @@ jobs:
         run: |
           npm ci --prefix ci/runtime-legacy --no-audit --no-fund
           node --expose-internals ci/runtime-legacy/guard.mjs --output mount-artifacts/legacy/host-runtime.json
+
+      - name: Test runtime rejection and real CLI fallback guards
+        run: node --test ci/runtime-legacy/guard.check.mjs
 
       # lib/ is gitignored; the tarball is produced from this build.
       - name: Build and pack the npm tarball

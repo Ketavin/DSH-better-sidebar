@@ -237,7 +237,8 @@ test('plugin mounts into the DSH shell and survives a built-in tab sweep', async
 
   // openByDefault defaults OFF: a fresh session's panel starts collapsed.
   // Expand it through the toggle cluster before the layout push can apply.
-  const expandButton = sidebar.getByRole('button', { name: 'Expand sidebar' })
+  const expandButton = page.locator('[data-dsh-header-panel-controls], [data-dsh-toggle-cluster]')
+    .getByRole('button', { name: 'Expand sidebar' })
   await expect(expandButton, 'the collapsed toggle cluster must offer the expand button').toHaveCount(1)
   await expandButton.click()
 
@@ -546,7 +547,7 @@ test('conservative auto: URL stamps alone never modify the layout; plugin chrome
     .poll(() => page.evaluate(() => document.documentElement.style.getPropertyValue('--dsh-title-bar-strip')))
     .toBe('')
   // The stable addressing surface for presets / custom CSS is mounted.
-  await expect(page.locator('[data-dsh-toggle-cluster]')).toBeAttached()
+  await expect(page.locator('[data-dsh-toggle-cluster], [data-dsh-header-panel-controls]').first()).toBeAttached()
   await expect(page.locator('[data-dsh-panel]').first()).toBeAttached()
   // The plugin's interactive chrome opts out of Electron drag regions
   // (issues #103/#111) — inert in plain browsers, present in the bundle

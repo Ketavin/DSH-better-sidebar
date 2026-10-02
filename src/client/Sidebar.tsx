@@ -43,7 +43,7 @@ import {
 } from './state.ts'
 import { activePinnedIdFor, collectPinnedTabs, createPinnedVirtualTab, getPinnedHomeScope, injectPinnedIntoTree, isPinnedVirtualId, isPinnedVirtualTab, parsePinnedVirtualId, shouldRenderPinnedContent, type PinnedTabEntry } from './pinned.ts'
 import { IconPinOutline16 } from './icons.tsx'
-import { IconPanelBottomOutline16, IconPanelRightOutline16 } from './icons.tsx'
+import { PanelToggleButtons, useHeaderControlsCenter, useHeaderControlsPresent, useHeaderControlsVisible, type HeaderControlPlacement } from './header-panel-controls.tsx'
 import { Workbench, type WorkbenchActions } from './split-pane.tsx'
 import { isNarrowWidth, useViewportSize } from './breakpoints.ts'
 import { layoutPushSize } from './layout-push.ts'
@@ -201,8 +201,11 @@ function ActivityRail(props: { options: NewTabOption[]; activeType?: string; onS
   )
 }
 
-export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
+export function Sidebar(props: { ctx: Context; store: SidebarStore; headerControls?: HeaderControlPlacement }) {
   const { ctx, store } = props
+  const headerControlsVisible = useHeaderControlsVisible(props.headerControls)
+  const headerControlsPresent = useHeaderControlsPresent(props.headerControls)
+  const headerControlsCenter = useHeaderControlsCenter(props.headerControls)
 
   // Copy freshness: re-render the whole tree when the DSH locale switches.
   // The module-level t() reads the active locale at call time, so a root
@@ -334,17 +337,15 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     viewportHeight: layoutViewportHeight,
   }).height
 
-  // The collapsed toggle cluster reclaims the top-right corner, so the DSH
-  // session header's right-aligned utilities (the "Session log" download
-  // capsule) must yield. layout.css keys off this body attribute to push the
-  // header's right padding out past the cluster. Only the CLOSED panel needs
-  // it — an open panel already squeezes `#root` left, moving the header clear.
+  // Only the corner fallback needs extra header clearance. On supported
+  // hosts the controls live inside the native utility row and occupy normal
+  // flex space, including while the right panel is open.
   const collapsed = state === undefined || !state.panelOpen
   useEffect(() => {
-    if (collapsed) document.body.setAttribute('data-dsh-sidebar-collapsed', '')
+    if (collapsed && !headerControlsPresent) document.body.setAttribute('data-dsh-sidebar-collapsed', '')
     else document.body.removeAttribute('data-dsh-sidebar-collapsed')
     return () => { document.body.removeAttribute('data-dsh-sidebar-collapsed') }
-  }, [collapsed])
+  }, [collapsed, headerControlsPresent])
 
   // Title-bar / shell compatibility (the "位置兼容模式" scheme):
   //   auto    — CONSERVATIVE: only the standard Window Controls Overlay
@@ -1391,7 +1392,22 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     appendToDraft(ctx, sessionId, `@${relativeTo(cwd ?? '', path)}`)
   }, [ctx, sessionId, cwd])
 
-  const hostStyle = { '--dsh-activity-rail-width': `${narrow ? 0 : ACTIVITY_RAIL_WIDTH}px` } as CSSProperties
+  // A cramped desktop may need the corner controls even with a live native
+  // header. Align that fallback to the measured row, and grow its right
+  // panel tab strip enough that the 28px controls never cover pane content.
+  // Mobile drawers keep their safe-area/title-bar corner instead.
+  const fallbackToggleTop = !narrow && headerControlsCenter !== undefined
+    ? Math.max(headerControlsCenter - 14, titleBarStrip + 3)
+    : undefined
+  const fallbackTabHeight = !headerControlsVisible && fallbackToggleTop !== undefined
+    ? Math.max(34, fallbackToggleTop - titleBarStrip + 28 + 3)
+    : 34
+  const hostStyle = {
+    '--dsh-activity-rail-width': `${narrow ? 0 : ACTIVITY_RAIL_WIDTH}px`,
+    '--dsh-toggle-reserve-width': headerControlsVisible ? '0px' : narrow ? '40px' : '72px',
+    '--dsh-toggle-top': fallbackToggleTop === undefined ? undefined : `${fallbackToggleTop}px`,
+    '--dsh-toggle-tab-height': `${fallbackTabHeight}px`,
+  } as CSSProperties
   const newTabOptions = buildNewTabOptions(state, ctx, sessionId === undefined ? undefined : { sessionId, cwd })
 
   if (state === undefined || sessionId === undefined) {
@@ -1400,20 +1416,11 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
     return (
       <div data-dsh-panel-host style={hostStyle} {...osFileDragShield}>
         {!narrow && <ActivityRail options={newTabOptions} onSelect={() => {}} />}
-        <div className={css.toggleCluster} data-dsh-toggle-cluster>
-          {!narrow && (
-            <Tooltip label={t('noSession')} side="bottom" delayMs={500}>
-              <button type="button" className={css.toggleButton} aria-disabled="true" aria-label={t('noSession')}>
-                <IconPanelBottomOutline16 />
-              </button>
-            </Tooltip>
-          )}
-          <Tooltip label={t('noSession')} side="bottom" delayMs={500}>
-            <button type="button" className={css.toggleButton} aria-disabled="true" aria-label={t('noSession')}>
-              <IconPanelRightOutline16 />
-            </button>
-          </Tooltip>
-        </div>
+        {!headerControlsVisible && (
+          <div className={css.toggleCluster} data-dsh-toggle-cluster>
+            <PanelToggleButtons store={store} narrow={narrow} />
+          </div>
+        )}
       </div>
     )
   }
@@ -1562,42 +1569,13 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore }) {
   return (
     <div data-dsh-panel-host style={hostStyle} {...osFileDragShield}>
       {!narrow && <ActivityRail options={railOptions} activeType={activeRailType} onSelect={onRailSelect} />}
-      {/*
-        The persistent toggle cluster at the top-right corner: the bottom
-        panel's button (bottom glyph) LEFT of the right panel's (side glyph).
-        Always pinned to the viewport corner — inside the right panel's
-        top-right while it is open, sitting flush in the tab strip whose
-        right end it really squeezes (the strip reserves its width via CSS),
-        so the tabs genuinely yield space to it.
-      */}
-      <div className={css.toggleCluster} data-dsh-toggle-cluster>
-        {/*
-          Narrow viewports merge the two workbenches into the one drawer —
-          there is no bottom panel, so its toggle button is not offered.
-        */}
-        {!narrow && (
-          <Tooltip label={state.bottomOpen ? t('collapseBottomPanel') : t('expandBottomPanel')} side="bottom" delayMs={500}>
-            <button
-              type="button"
-              className={css.toggleButton}
-              aria-label={state.bottomOpen ? t('collapseBottomPanel') : t('expandBottomPanel')}
-              onClick={() => { store.reduce(toggleBottomPanel) }}
-            >
-              <IconPanelBottomOutline16 />
-            </button>
-          </Tooltip>
-        )}
-        <Tooltip label={state.panelOpen ? t('collapse') : t('expand')} side="bottom" delayMs={500}>
-          <button
-            type="button"
-            className={css.toggleButton}
-            aria-label={state.panelOpen ? t('collapse') : t('expand')}
-            onClick={() => { store.reduce(togglePanel) }}
-          >
-            <IconPanelRightOutline16 />
-          </button>
-        </Tooltip>
-      </div>
+      {/* The corner is retained for legacy/blank headers and for closing a
+          narrow drawer that covers the native conversation header. */}
+      {!headerControlsVisible && (
+        <div className={css.toggleCluster} data-dsh-toggle-cluster>
+          <PanelToggleButtons store={store} narrow={narrow} />
+        </div>
+      )}
       {/*
         The right panel stays mounted while collapsed (hidden off-screen) so
         the slide in/out can animate; visibility hides it after the slide

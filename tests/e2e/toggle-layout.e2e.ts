@@ -79,7 +79,8 @@ test('bottom panel tracks the center column during the right-panel toggle transi
   }
 
   // Open the right panel (fresh sessions start collapsed).
-  const expandButton = sidebar.getByRole('button', { name: 'Expand sidebar' })
+  const panelControls = page.locator('[data-dsh-header-panel-controls], [data-dsh-toggle-cluster]')
+  const expandButton = panelControls.getByRole('button', { name: 'Expand sidebar' })
   await expect(expandButton).toHaveCount(1)
   await expandButton.click()
   await expect
@@ -91,7 +92,7 @@ test('bottom panel tracks the center column during the right-panel toggle transi
 
   // Open the bottom panel too: the twin panels make the toggle exercise the
   // full geometry chain (bottom panel edges follow the animated push).
-  const expandBottom = sidebar.getByRole('button', { name: 'Expand bottom panel' })
+  const expandBottom = panelControls.getByRole('button', { name: 'Expand bottom panel' })
   await expect(expandBottom).toHaveCount(1)
   await expandBottom.click()
   // Wait until the bottom panel is REALLY tracking the center column (not
@@ -129,8 +130,8 @@ test('bottom panel tracks the center column during the right-panel toggle transi
     requestAnimationFrame(loop)
   })
 
-  const collapseButton = sidebar.getByRole('button', { name: 'Collapse sidebar' })
-  const expandButton2 = sidebar.getByRole('button', { name: 'Expand sidebar' })
+  const collapseButton = panelControls.getByRole('button', { name: 'Collapse sidebar' })
+  const expandButton2 = panelControls.getByRole('button', { name: 'Expand sidebar' })
 
   async function sampleToggle(click: () => Promise<void>): Promise<FrameSample[]> {
     // Clear accumulated frames so the sample window starts at the click.

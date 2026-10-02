@@ -50,6 +50,15 @@ identity check covers the profile and its installed consumers, including
 Sidebar's DSH peers (including Settings), plus base/web-app/app-boot. Missing fallback links, shadow packages or
 newly resolved host peers therefore fail before browser acceptance.
 
+The Profile root must resolve Cordis, Loader, HMR and Timer. Additional host
+packages are required when declared by the Profile or an installed consumer.
+Both the Profile's node_modules and its parent profiles/node_modules fallback
+are inventoried to reject shadow host instances and check actual consumers.
+The old CLI healer links only the actual CLI dependency/peer closure, so an
+unused fixture-only package such as logger-console need not resolve from the
+Profile root. If a consumer declares it, absence or a second instance still
+fails; no missing actual dependency is silently skipped.
+
 The fixture has no profile lock for Sidebar's own installable dependencies.
 The actual tarball install stays in the existing scratch-profile lane, with
 automatic peer installation disabled; its host peer resolution is checked

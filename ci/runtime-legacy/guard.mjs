@@ -22,7 +22,15 @@ export const EXPECTED = Object.freeze({
   react: '18.2.0',
   'react-dom': '18.2.0',
 });
-const FAMILY = Object.keys(EXPECTED).filter(name => name !== '@deepseek-ai/dsh');
+// These services must resolve from the Profile for the CLI's post-boot watcher.
+// Other fixture packages are checked when the Profile or a real consumer uses
+// them; CLI fallback links only its own dependency/peer closure.
+export const PROFILE_REQUIRED = Object.freeze([
+  '@deepseek-ai/cordis',
+  '@deepseek-ai/cordis-plugin-loader',
+  '@deepseek-ai/cordis-plugin-hmr',
+  '@deepseek-ai/cordis-plugin-timer',
+]);
 const json = filename => JSON.parse(readFileSync(filename, 'utf8'));
 const sha256 = filename => createHash('sha256').update(readFileSync(filename)).digest('hex');
 
@@ -125,6 +133,40 @@ export async function cleanupGuardResources(operations) {
   if (errors.length) throw new AggregateError(errors, 'legacy guard cleanup failed');
 }
 
+export function inspectConsumerDependencies(consumer, scope, roots, resolutions) {
+  const declared = { ...consumer.metadata.dependencies, ...consumer.metadata.peerDependencies };
+  for (const name of [...roots.keys()].filter(name => name in declared)) {
+    const actual = resolvePackage(consumer.manifest, name);
+    assertResolutionIdentity(name, actual, roots.get(name));
+    resolutions.push({ scope, consumer: consumer.name, dependency: name, version: actual.version, manifest: actual.manifest });
+  }
+}
+
+export function inspectProfileDependencies(profile, roots, resolutions = []) {
+  const profileManifest = resolve(profile, 'package.json');
+  const profileMetadata = json(profileManifest);
+  const profileInventory = installedPackages(resolve(profile, 'node_modules'));
+  const fallbackInventory = installedPackages(resolve(profile, '..', 'node_modules'));
+  for (const name of PROFILE_REQUIRED) {
+    const actual = resolvePackage(profileManifest, name);
+    assertResolutionIdentity(name, actual, roots.get(name));
+    resolutions.push({ scope: 'profile-root', consumer: profileMetadata.name, dependency: name, version: actual.version, manifest: actual.manifest });
+  }
+  inspectConsumerDependencies({ name: profileMetadata.name, manifest: profileManifest, metadata: profileMetadata }, 'profile-manifest', roots, resolutions);
+  for (const [scope, inventory] of [['profile', profileInventory], ['profile-fallback', fallbackInventory]]) {
+    for (const consumer of inventory) {
+      assertPinned(consumer.name, consumer.version);
+      if (roots.has(consumer.name)) assertResolutionIdentity(consumer.name, consumer, roots.get(consumer.name));
+      inspectConsumerDependencies(consumer, scope, roots, resolutions);
+    }
+  }
+  for (const name of ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app', '@deepseek-ai/dsh-app-boot']) {
+    const actual = resolvePackage(profileManifest, name);
+    assertResolutionIdentity(name, actual, roots.get(name));
+  }
+  return { manifest: profileManifest, packageCount: profileInventory.length, fallbackPackageCount: fallbackInventory.length, bundles: profileMetadata.dsh?.profile?.bundles ?? [], requiredRootPackages: PROFILE_REQUIRED };
+}
+
 export async function runGuard({ profile } = {}) {
   assert.ok(process.execArgv.includes('--expose-internals'), 'run guard with node --expose-internals');
   const manifestFile = join(FIXTURE, 'package.json');
@@ -156,42 +198,14 @@ export async function runGuard({ profile } = {}) {
   const roots = new Map(hostNames.map(name => [name, resolvePackage(manifestFile, name)]));
   for (const pkg of inventory.filter(pkg => hostNames.includes(pkg.name))) assertResolutionIdentity(pkg.name, pkg, roots.get(pkg.name));
   const resolutions = [];
-  function inspectConsumer(consumer, scope) {
-    const declared = { ...consumer.metadata.dependencies, ...consumer.metadata.peerDependencies };
-    for (const name of hostNames.filter(name => name in declared)) {
-      const actual = resolvePackage(consumer.manifest, name);
-      assertResolutionIdentity(name, actual, roots.get(name));
-      resolutions.push({ scope, consumer: consumer.name, dependency: name, version: actual.version, manifest: actual.manifest });
-    }
-  }
+  const inspectConsumer = (consumer, scope) => inspectConsumerDependencies(consumer, scope, roots, resolutions);
   for (const consumer of inventory) inspectConsumer(consumer, 'fixture');
   for (const name of ['@deepseek-ai/dsh', '@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app', '@deepseek-ai/dsh-app-boot']) {
     const consumer = resolvePackage(manifestFile, name);
     assertPinned(name, consumer.version);
     inspectConsumer(consumer, 'entry-point');
   }
-  let profileReport;
-  if (profile) {
-    const profileManifest = resolve(profile, 'package.json');
-    const profileMetadata = json(profileManifest);
-    const profileInventory = installedPackages(resolve(profile, 'node_modules'));
-    for (const name of FAMILY) {
-      const actual = resolvePackage(profileManifest, name);
-      assertResolutionIdentity(name, actual, roots.get(name));
-      resolutions.push({ scope: 'profile-root', consumer: profileMetadata.name, dependency: name, version: actual.version, manifest: actual.manifest });
-    }
-    for (const consumer of profileInventory) {
-      assertPinned(consumer.name, consumer.version);
-      if (hostNames.includes(consumer.name)) assertResolutionIdentity(consumer.name, consumer, roots.get(consumer.name));
-      inspectConsumer(consumer, 'profile');
-    }
-    for (const name of ['@deepseek-ai/dsh-base', '@deepseek-ai/dsh-web-app', '@deepseek-ai/dsh-app-boot']) {
-      const actual = resolvePackage(profileManifest, name);
-      const expected = resolvePackage(manifestFile, name);
-      assertResolutionIdentity(name, actual, expected);
-    }
-    profileReport = { manifest: profileManifest, packageCount: profileInventory.length, bundles: profileMetadata.dsh?.profile?.bundles ?? [] };
-  }
+  const profileReport = profile ? inspectProfileDependencies(profile, roots, resolutions) : undefined;
 
   // Resolve from the actual CLI entry, rather than from a separate mini-tree.
   const cliEntry = join(dirname(roots.get('@deepseek-ai/dsh').manifest), 'lib', 'bin.js');

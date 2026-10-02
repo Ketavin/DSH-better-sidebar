@@ -496,7 +496,7 @@ Windows / Linux / macOS 三平台适配（macOS 日常验证；其余经单元�
 
 - **代码改动走 PR**：`feat/*` / `fix/*` 分支开发 → `gh pr create`；纯文档改动可直接推 main
 - **收录生态插件**：给仓库打 `dsh-better-sidebar` topic + 向 [`src/client/plugins-tabs.ts`](./src/client/plugins-tabs.ts) / [`plugins-viewers.ts`](./src/client/plugins-viewers.ts) 提 PR
-- **提交前自检**：`pnpm typecheck && pnpm build && pnpm test`（CI 另有 npm 打包 → 真实挂载 → 无头渲染门禁 `pnpm test:mount`）
+- **提交前自检**：`pnpm typecheck && pnpm build && pnpm test`；CI 额外运行真实打包挂载、内置页面与聚合双挂载检查。旧 CLI 的完整宿主依赖通过 [冻结 fixture](./ci/runtime-legacy/README.md) 安装，每次插件安装后核对实际宿主 peer；候选 Core 调用方则必须绑定本次构建身份，不能自动下载另一宿主。
 - 仓库工作规范见 [`AGENTS.md`](./AGENTS.md)（含仓库硬约束与 CI 说明）
 
 ## ⭐ Star History

@@ -20,8 +20,9 @@
 #   bash scripts/e2e-aggregate-mount.sh
 #
 # 环境变量（均可省略）：
-#   DSH_CMD        dsh 命令；缺省 `npx -y --package @deepseek-ai/dsh dsh`
-#                  （与 pm2 启动器同源，避免依赖可能失效的 PATH dsh）
+#   DSH_CMD        单一 CLI 可执行路径；默认 frozen legacy fixture，禁止下载回退
+#   DSH_RUNTIME_MODE / DSH_RUNTIME_ROOT  legacy fixture 或本次 built Core
+#   DSH_MOUNT_ARTIFACTS  保留日志与实际依赖树；默认 mount-artifacts/<mode>
 #   TARBALL        插件 tarball；缺省仓库根 dsh-better-sidebar-*.tgz（须已 pack）
 #   PORT           固定端口（默认 0 = OS 分配，从日志解析 URL）
 #   DSH_HOME_BASE  scratch 根目录（默认系统临时目录）。脚本始终在其下新建
@@ -37,7 +38,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 FIXTURE_DIR="$ROOT/tests/fixtures/aggregate-better-sidebar"
 
-DSH_CMD="${DSH_CMD:-npx -y --package @deepseek-ai/dsh dsh}"
 TARBALL="${TARBALL:-}"
 PORT="${PORT:-0}"
 KEEP_HOME="${KEEP_HOME:-}"
@@ -51,10 +51,17 @@ command -v pnpm >/dev/null 2>&1 || die "未找到 pnpm（dsh plugin 转发给 pn
 command -v npm >/dev/null 2>&1 || die "未找到 npm（打包 fixture 需要）"
 command -v curl >/dev/null 2>&1 || die "未找到 curl"
 
+MOUNT_LANE=aggregate
+PROFILE_DIR=""
+source "$SCRIPT_DIR/e2e-runtime.sh"
+configure_mount_runtime
+
 if [ -z "$TARBALL" ]; then
-  TARBALL="$(ls "$ROOT"/dsh-better-sidebar-*.tgz 2>/dev/null | head -1 || true)"
+  TARBALL="$(ls -t "$ROOT"/dsh-better-sidebar-*.tgz 2>/dev/null | head -1 || true)"
 fi
 [ -n "$TARBALL" ] && [ -f "$TARBALL" ] || die "未找到插件 tarball：先在本仓库跑 pnpm build && npm pack，或用 TARBALL 指定"
+TARBALL="$(cd "$(dirname "$TARBALL")" && pwd)/$(basename "$TARBALL")"
+record_mount_tarball
 
 # ── scratch home ────────────────────────────────────────────────────────────
 # 始终在本调用拥有的全新目录里运行：调用方给了 DSH_HOME_BASE（可能是真实
@@ -72,9 +79,12 @@ OUT_LOG="$LOG_DIR/dsh-web.out.log"; ERR_LOG="$LOG_DIR/dsh-web.err.log"
 SERVER_PID=""
 TMP_DIR=""
 cleanup() {
-  if [ -n "$SERVER_PID" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
-    kill "$SERVER_PID" 2>/dev/null || true
-    wait "$SERVER_PID" 2>/dev/null || true
+  local code=$?
+  if ! stop_mount_server; then [ "$code" -ne 0 ] || code=1; fi
+  if ! save_mount_evidence "$code"; then
+    warn "无法保存全部挂载证据，保留 scratch: $SCRATCH"
+    KEEP_HOME=1
+    [ "$code" -ne 0 ] || code=1
   fi
   if [ -n "$TMP_DIR" ] && [ -d "$TMP_DIR" ]; then
     rm -rf "$TMP_DIR"
@@ -84,8 +94,11 @@ cleanup() {
   else
     warn "KEEP_HOME 已设置，保留 $SCRATCH"
   fi
+  exit "$code"
 }
 trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 # ── 打包 fixture 聚合包 ─────────────────────────────────────────────────────
 TMP_DIR="$(mktemp -d)"
@@ -126,33 +139,28 @@ minimumReleaseAgeExclude:
   - dsh-better-sidebar
 EOF
 
+# 与单挂载 lane 一样，先独立证明基础宿主启动与 Profile peer 解析。
+say "验证空 profile 启动..."
+start_mount_server "$LOG_DIR/empty-profile.log"
+guard_mount_runtime empty-profile
+stop_mount_server
+
 # ── 组装 profile：聚合先行，插件后到 ──────────────────────────────────────
 say "安装 fixture 聚合包（先行）…"
-$DSH_CMD plugin --profile web add "file:$FIXTURE_TGZ"
+install_mount_plugin aggregate-installed "$FIXTURE_TGZ"
 say "安装插件 tarball（后到）…"
-$DSH_CMD plugin --profile web add "file:$TARBALL"
+install_mount_plugin installed-profile "$TARBALL"
 
 # ── 启动真实 dsh web ───────────────────────────────────────────────────────
 say "启动 dsh web（--port ${PORT}，日志 ${LOG_DIR}）…"
-$DSH_CMD web --port "$PORT" >"$OUT_LOG" 2>"$ERR_LOG" &
-SERVER_PID=$!
+start_mount_server "$OUT_LOG"
+guard_mount_runtime running-profile
 
 # 等待启动 URL 或进程退出（最多 120s）。这里有意只取 origin：0.1.2-alpha.1+
 # 的就绪行是 `…/?token=<43字符>` 鉴权 URL，但下方的探活全部打插件的
 # `/sidebar/api/*` 路由——webserver carrier 不做鉴权（只有 /api、index 与
 # remote.mux 升级在 browser auth 之后），origin 拼路径即正确且两版通用。
-URL=""
-for _ in $(seq 1 120); do
-  if ! kill -0 "$SERVER_PID" 2>/dev/null; then break; fi
-  URL="$(grep -oE 'http://127\.0\.0\.1:[0-9]+' "$OUT_LOG" | tail -1 || true)"
-  [ -n "$URL" ] && break
-  sleep 1
-done
-if [ -z "$URL" ]; then
-  warn "out log 尾部：$(tail -5 "$OUT_LOG" 2>/dev/null || true)"
-  warn "err log 尾部：$(tail -5 "$ERR_LOG" 2>/dev/null || true)"
-  die "dsh web 未在 120s 内启动"
-fi
+URL="$(mount_server_origin)"
 say "已启动：$URL"
 
 # ── 断言 ────────────────────────────────────────────────────────────────────
@@ -163,13 +171,12 @@ fi
 # 真实方法探活：terminal.deps 是插件自己的 handler（writeOk → HTTP 200 +
 # {"ok":true,...}）。成功响应证明至少一个实例真正注册了 /sidebar/api 路由
 # ——generic missing-route 404 无法冒充（P2: Probe a real sidebar API method）。
-DEPS="$(curl -s -X POST "$URL/sidebar/api/terminal.deps" 2>/dev/null || true)"
-if ! printf '%s' "$DEPS" | grep -q '"ok":true'; then
-  die "/sidebar/api/terminal.deps 未返回 ok:true（响应：$(printf '%s' "$DEPS" | head -c 200)）"
-fi
+DEPS_STATUS="$(curl --silent --show-error --max-time 15 -o "$ARTIFACT_DIR/terminal-deps.json" -w '%{http_code}' -X POST "$URL/sidebar/api/terminal.deps")"
+[ "$DEPS_STATUS" = 200 ] || die "/sidebar/api/terminal.deps HTTP $DEPS_STATUS (expected 200)"
+node -e 'const fs = require("node:fs"); const result = JSON.parse(fs.readFileSync(process.argv[1], "utf8")); if (result.ok !== true) process.exit(1)' "$ARTIFACT_DIR/terminal-deps.json" || die "/sidebar/api/terminal.deps 未返回 JSON ok:true"
 say "/sidebar/api/terminal.deps → ok:true（真实 handler 存活）"
 
-STATUS="$(curl -s -o /dev/null -w '%{http_code}' -X POST "$URL/sidebar/api/__e2e_unknown__" 2>/dev/null || true)"
+STATUS="$(curl --silent --show-error --max-time 15 -o /dev/null -w '%{http_code}' -X POST "$URL/sidebar/api/__e2e_unknown__")"
 say "/sidebar/api POST 未知方法 → HTTP ${STATUS}（期望 404）"
 [ "$STATUS" = "404" ] || die "/sidebar/api 未知方法未按预期返回 404（HTTP ${STATUS}）"
 

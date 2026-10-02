@@ -1,0 +1,3444 @@
+{
+  "registry": "https://registry.npmjs.org/",
+  "packages": [
+    {
+      "name": "@deepseek-ai/cordis",
+      "version": "4.0.1",
+      "dist": {
+        "shasum": "e8171e63b11d259eec87ab42b2cd6d8b56949203",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cordis/-/cordis-4.0.1.tgz",
+        "fileCount": 32,
+        "integrity": "sha512-YBdskTU2Po1kru3GgcUWUbkTsPMA9LkSQDAY8rBkFJeajdgcQad3QPJZE26JyK99Xb6HaASvoXg2DSUTeN/0Nw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCwrltmd5gag0+RApP6DcxmPPpHAYgnRh56cVbgUDKungIgbLijokCHcDszBbmd3yK4DtRcbUelPTPWt+GbHl5cjhU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 239076
+      }
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-group",
+      "version": "1.0.1",
+      "dist": {
+        "shasum": "aaa1c78fc05d1e4b92a9f2526b5563ad2aed603b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cordis-plugin-group/-/cordis-plugin-group-1.0.1.tgz",
+        "fileCount": 7,
+        "integrity": "sha512-E1NThkFB3jn3TCqa6Oc++1zQHqLejF3W2wDwv2BlL3UEmgtBXL1K1j1koc+j676RuiOXtJkUJlPcOntRGKLWBQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDDybxTX3Y14QYCg2GtHJrUYWXLJIEM9p55Dylc5D5dIwIgM91qZua55q8x+GAxFzJy1iARwIOUe0qRWGp9jBY9914=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 2980
+      }
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-hmr",
+      "version": "1.0.16",
+      "dist": {
+        "shasum": "fd9339b15d191e3741d76b28481435337ff6e6fc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cordis-plugin-hmr/-/cordis-plugin-hmr-1.0.16.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-S7VHfylDg1+Y5O6fdYYZu0KFRAj/snHywcFPnX3KmQYa/qv2Q8IXi4zAt9ABq0BJYqhNoqRlbpGMfIjabgXjKA==",
+        "signatures": [
+          {
+            "sig": "MEQCIDUbWXXeiUX+8Q+lUxoLy8ybDixhsqKHyPkMQYTP0dTIAiBXBLc2tDCoFsu3j7qYNQlBNyPRK1BwdCw7DYQohan2vQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 45585
+      }
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-include",
+      "version": "1.0.6",
+      "dist": {
+        "shasum": "c40ac7343289eae63c7b7a52a44b9a88560754df",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cordis-plugin-include/-/cordis-plugin-include-1.0.6.tgz",
+        "fileCount": 7,
+        "integrity": "sha512-i1VXrZCbv6tk/iUgedCNjrxxArbWT3IvRZGB5sdqJ3ectnihivXXQbRZ8JJ73DSmAPvlMGmrbtjFAfm10yvXRg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCYFDcpV4v8GihvFNzIBDio/mhyflbpmpaTSyu58VIHJgIgTdqd4v1EZl0RY8I3Z+V0/PuKdntK9NfKfRR5dTi8eFw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 31844
+      }
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-loader",
+      "version": "1.0.2",
+      "dist": {
+        "shasum": "ddb1d2eb5a543d14d5a506f4cb958757b956d2b1",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cordis-plugin-loader/-/cordis-plugin-loader-1.0.2.tgz",
+        "fileCount": 25,
+        "integrity": "sha512-RIW9hoVyhYDWdCI9BsvtZccPde1ECLC4OAxupwowGTak78vwVTVdb3HezTSOK1Y1/Ax3Ru0LA1pYOB04CnTxIQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIEt1U94h5wySoZUplemXps5CbmernSl4xTYkatfS5XOGAiEArjFUIJqTMoPkzseisa3l1EGwfeZQmqw9boRIl612SUQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 90098
+      }
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-logger-console",
+      "version": "1.0.1",
+      "dist": {
+        "shasum": "f70308e8dec445af0c7f0ee2ec933a140c9b34c6",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cordis-plugin-logger-console/-/cordis-plugin-logger-console-1.0.1.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-PcVPJZSaxrxz7SRnQx0FrzRbJvcrUgz3E56qL4xqwTcS0b3m0qoPwD2l8MUL80HRPrY2lSFESObrlkkZb0em5A==",
+        "signatures": [
+          {
+            "sig": "MEUCICn38W3IrGExI7TLpfC/AmHdpuA2hCFDnIIR6798YsopAiEA1RpSBaJerpC2XFfINvVywreXM36y+nj2O4kBRMAnARY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 17619
+      }
+    },
+    {
+      "name": "@deepseek-ai/cordis-plugin-timer",
+      "version": "1.1.3",
+      "dist": {
+        "shasum": "887fa3660eb42ecb7001c4eae93691818940c535",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cordis-plugin-timer/-/cordis-plugin-timer-1.1.3.tgz",
+        "fileCount": 7,
+        "integrity": "sha512-IOkey1VNmJwYa5U8bksyMOnM7mtirqjjbWLr3xA8QybLMK0sMooG3a6iJwtvd8P3MFwo3FQibEg+JPixp37MEw==",
+        "signatures": [
+          {
+            "sig": "MEUCIDrVsy2YtDSoG1GLe0rW8fFMGePmPp+6uoknmp9fxDWtAiEAqk36/JxBMEDh/O0ruGb8lvL2Q9nHvKY/W3Ukm1YQATk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15090
+      }
+    },
+    {
+      "name": "@deepseek-ai/cosmokit",
+      "version": "1.8.2",
+      "dist": {
+        "shasum": "25f030c6b688de810d8f7c06bc7c96d9b91e2e50",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/cosmokit/-/cosmokit-1.8.2.tgz",
+        "fileCount": 22,
+        "integrity": "sha512-muBOKtSrUKU5m/xpq8ZXWL6hQ/jgd4PhU2PqH97bcxIiLEJfNwZOGQEx4t/aS/GgxRAR+ra9pMHPMtTHU4sqqA==",
+        "signatures": [
+          {
+            "sig": "MEUCICSNHTi+KVpBM34IwkzsI3dqp+Js3xn1V59QphI0V4XuAiEAz5q8vNRyw2bjeo6YmSltGszxmiVlMmNm1+WCZYz5cQw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 53033
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "1a5112369f1c46b13a6e6f21de8af5e6afd45074",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh/-/dsh-0.1.1-rc.2.tgz",
+        "fileCount": 20,
+        "integrity": "sha512-UP1UIh6q3Gme/yXRn/QL2P8IsVlv8Shpg22TRJIZPsCRWLm4CBiA1MUvXmJAfsOEETBMLAl+xWPtFw6ICsN3wg==",
+        "signatures": [
+          {
+            "sig": "MEUCIEY4dTVNQfNwDbgl/Y/f/BiisLPow9Po7K6PL95xqDZ9AiEAme7FBadECpIqC/nvAAP9ThOT+CwCSLL3oqZOEQ6iJds=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 119971
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d4490d82b4a179cb8b9009e6b59d1c829ffe94e5",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-agent/-/dsh-agent-0.1.1-rc.2.tgz",
+        "fileCount": 23,
+        "integrity": "sha512-cC7lnJe7JgPFcreNXxcxLMxQd78LnpVO9ZXROjZsGRQN1zGH6i/DduI892F1am85IfzzO+XTxMwwUHmfwamb0g==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCpwYl6eQegOtG1a/Gm7f8n9GS0FOAmziS+/QzKnKsTGwIhAPvKsPORIrQ727/vdZbxRCZt8lB63kygpLSg0bAXiunW",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 166729
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-default-model",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d219c155c4760a12cdbecb32b3d14a081308d1fd",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-agent-default-model/-/dsh-agent-default-model-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-Pv+4p20Eol7Ds/n0OS0vjtChCWfFTJAMThxugXcEcLKEJ9WAtpI4mzWfLgjmeVXnwD2yvp6HlLKDrrQV9PIkww==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDVuOK3u3o33KYYLas6d44BjcxqzKxQx4svCXrKgHs6NwIgb6Q6Bmae4d8zrocLE+WeIOcL8mjaFmHBE0HXIb+2mfA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 13946
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-instructions",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "598e76945f374b5cfea9aaaa60eb71b4def2c6aa",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-agent-instructions/-/dsh-agent-instructions-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-a3xKsOsqmlWZaGxXfIr97ULJlXSI1clZt0DCSjCaULW4Z1y67DzG8w/kRsb+/Z1pksRMrJE7faLMC/i9S5Y2Ew==",
+        "signatures": [
+          {
+            "sig": "MEQCIB4NC7u48pCX/yRHKEH2w6er8t17vcBcJDw9FXsUH4MsAiANlkKe2RzG8lT1LAFMX412mKVdkTk+bMuSg1RSKYLntA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 111645
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-loop",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f4b91c5b1c492949919b77d26f03b7f6b08d630d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-agent-loop/-/dsh-agent-loop-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-2uJZ6kjJ3IYLRGn6/NhiZgD576ABcbERB/nkReR9TEUMO2zWkz6OuKtVwLyFCFSni2T25Jv+clKQWt7D4MhU3A==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCqzJJTfHPMMXtUss1NDNL2m5Dti0w9jqVaet1+FS4RlgIhAMFF5Ik/MFPSyFUMTm+VNfHfzFkIQiF/PH5od23DcGA1",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 106171
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-presets",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "4d5c0440022f36412f72dabf1e8347f68ccfee78",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-agent-presets/-/dsh-agent-presets-0.1.1-rc.2.tgz",
+        "fileCount": 25,
+        "integrity": "sha512-88r3jkrbdwTgcP3MZLIUX458Ecu8JcLmZa7PtPszwf33yFoWlZvZmgjyn5ETHV55plNQ8gKMRm9a0RwzGGmzCw==",
+        "signatures": [
+          {
+            "sig": "MEQCIDPzrTIatLCso3JNb6gdibAIniz/t7ptRUn57JRVlOv7AiAhWZZJ81aD9+f0LGCMw94bYlpQickPEQxSWPEaK9gDww==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 258062
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-agent-tool-presentation",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "79082af905af3365779a780803eff19ce5708b04",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-agent-tool-presentation/-/dsh-agent-tool-presentation-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-l1C7Z+erWcfj6Ak5EQbcCAPW/0+na4iOXwGknozHgKILLCK2C9CWcrTK0LwozvUPdqh0gFUucSOhi68HQ61srg==",
+        "signatures": [
+          {
+            "sig": "MEUCIDYx2IS8seR/rggDKs1vROEz2oKcu7HmRTIwocwtkWBtAiEA+mJvQ7Ftwa4RpfzR1jiWGl+Ubu6Mb/GfBy9QivQis34=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15084
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-anonymous-user-id",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "2f0fa01ce16b1930f8fae5e61e24d33797916897",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-anonymous-user-id/-/dsh-anonymous-user-id-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-ZQBsDhI0VuFwoDnq75VT2gPJdMPmBYfWM3EBDmUkwHM0E2dmyr+iLGXxp33a7M64r79x7kN+81KOTEL5LS0E8A==",
+        "signatures": [
+          {
+            "sig": "MEQCIDxKrkYIY8N9C9ya0r6y44JlImQVN8wKTkqxj2yqMzQEAiAUvd2BHxs7L+yrhRuMtutDs7pbAJZUiwldSUxS/rGHQA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15427
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-api-gateway",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e61a748f9871316de1d163aa342a7b4e99d62aba",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-api-gateway/-/dsh-api-gateway-0.1.1-rc.2.tgz",
+        "fileCount": 16,
+        "integrity": "sha512-i/e/Ecg1QCjMePUFHBfjRQU3NbDV0IdORwQbQD6RpiirzyvAIm4vvZgmW/FfgkO2XYJHHIVjo3i1i0YaHPcQag==",
+        "signatures": [
+          {
+            "sig": "MEUCIAG8g+uH4ICjI14c4fHbO9WeNei8ZQINSFy7+7M9BRDLAiEAhgH35PZitoiZWLm4dzlIkQW3d09SH89UbS1g9/E4bM0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 108448
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-api-remotes",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "dbb3d179d0e8de72546ceee2b510a9ac20d2d91f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-api-remotes/-/dsh-api-remotes-0.1.1-rc.2.tgz",
+        "fileCount": 20,
+        "integrity": "sha512-mtmMxA0TZwTjy46E2DF0kmsPCXVq6RBhrwEHWXBaRzc0DLjnYqmJODrZ0X+XwXOkwFZtDxWSv/uheiIsXf8now==",
+        "signatures": [
+          {
+            "sig": "MEUCIFeH9nJbgY4E7igVQQqLoFDer5XTbkhCkp+oEehcQvDGAiEAwTCeWdgXyFSRSYy2QKql6kQg3jooiWEQu/CNz9lh2kE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 254936
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-app-boot",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e94898e76c9a62d0719ae80157e93e96cb5c89e6",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-app-boot/-/dsh-app-boot-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-eynZWb0oNPKc4OO3HPokqFfz4b5sUEq+EjqhKE2TUWsUsOTgFO43l2Ai3LibqLu6XTpYeHCTbsRLM4Aqg0deBQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCFtsrUbj45bBVaor7BwQBsWyaa4fk8zpMH+YBK2B0aRQIhAMpMn76xaseFCS+qqrrovTjUDIoIpRJK8lXHmAa9JUqW",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 110610
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-atomic-write",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "ffbbe631630e2cd2db43523c46323a09080eb0bd",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-atomic-write/-/dsh-atomic-write-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-QqNSF0+Ddn6qWY480dlilwEy6FLv3JKEWx1UQgoNJrxD4y54SDRzqBQB9yDXWKOoOGyC+05TN6/Px10GNIzMWA==",
+        "signatures": [
+          {
+            "sig": "MEQCIA7/rSEOBC8y7FMDlmwyi6WOwklqy2+NEh9R/Eg8L1cqAiB0TEU58aHrkBIRcupfnf0JFgCDxB3Ly2nLX/S74XpBCQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 20316
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-attachment",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "eff722c493711b71fbf96cbede2817bba841453e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-attachment/-/dsh-attachment-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-rCYAt8QsawP1yfDCU7XxNwYT/XWvyFsxYrkwhLLkdfW83QVD0CQHizSkTQE7RFX74nKUD1z3sTLfnLr7xneArw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDqNp6AahOg6eWi5OeiozHOFm43SsZWSQsbVVyuwdxMswIgOa9qU2+zPuTp3fWkTnOEqyIsHCGyzFm9vTfiPKqwtfg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 36371
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-attachment-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "bea1471cd24730059d4da320c99fd02bb4770d7e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-attachment-local/-/dsh-attachment-local-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-bU24CZc2ElJ7JPUUeWLcibRsiuXjsj9dVuUu8yx6t2vensjbqo70kzAIA4eh9q6ai4CeU1/9cRnKLcMQbgNxMQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIGmTvPutQJuMwXYFO1npLI8m4jb5UB0dpUhs6kXplKznAiBvn4CMDx5h69sE45K40QJBmmw33cRzN+9IlPVwal6TAg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 69259
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-authorization",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "496b55d3e6d0f08c61f2d8b0d2d983be2be8250d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-authorization/-/dsh-authorization-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-+ye7d4XzenQ4kpfY2nMIlUhoIbcprotL9fmkTBahafIPDhyyph0JzmUVhz1AGnkIqZc8TltjGzX2ssald+f+3A==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCgV3GgQlJCN1+qo5QJfwcRgod6GBVvA62w6OwFcOHipAIhAMuAkqIUIC0DXQRJS2PpPt88FgLItwshHzCKw9pZ5PKK",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 58882
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-base",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "bb4943b4b4c5cd68acd9fd637764f61b8487f93c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-base/-/dsh-base-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-DT1kSaseoTZ0b8pwZ5biRkqez2K8AnsLataRiCPsn3uUuxupZOjM1e8x9W+kpkWWFykWy1mbCPhzDRVJ+pLCbg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDSiwTkf4MxHDVCQplTtG8Op+JIXHM3eO2RdledweExngIgXTSU32NmI2CbcGSGRRoKCKMXEE/qYncyCf2qgLcmUqU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 33479
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-bash-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6bbd2b47c3b89ed5ef400456bea011429935c299",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-bash-local/-/dsh-bash-local-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-GAjYTVsJKXkAptjO767xqt0otMufZRtj2qvOAvkx5Bfusd5R6+mMUkSbcx2K2A8WMbltyCbjwhZf4Tu4xyJAdw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCz4m2ywFUX7cwBb+t9pKL6kmnS2Z3HfxHBzywLDvywuwIhAPCy/3NLRQ4B6bjIQNFm277DgWS7jZvsR4o7PC8q9YnN",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 34403
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-bash-sandbox",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "8b7bb8a7ebbee3606dadb168eac72a59a34aa9e4",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-bash-sandbox/-/dsh-bash-sandbox-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-bagZDMZ73C1dVDBjFCn1flNZ8aOEel4dsmDJTfmagqeYPXfIJDFKPhDc3lWjc+o6jMNfmumeUJ62dwhHkjJHKA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDC4jsb/dID1FS4vdRh1DFxx5DMOFXr6f4WTRhsTjWjFQIgLo3+ukpdSE6Uq8AqblaQ5A4B+MIjk4IssNoQj3OOKX8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDsEINNzBQ0vtEdgl4WPyeEdir636VRAyQk/2z/vKymHgIhAKE1PpSUqNTizOJE0ONJJu+EEjIXUfBTMrPZ8GELDQC9",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 39222
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-brand",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "dffc1eb8239e69e4ca17b5ff7e3ff0fe58eb671e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-brand/-/dsh-brand-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-8vXsAXoUdzKAgvd/E9DgyT6HKmR6ZM4rtJ3fs/XoJ6n2kBk4tWil8Lv+jxCMWJeMOnTJF55gu2+NWQ3ECFPtJw==",
+        "signatures": [
+          {
+            "sig": "MEUCICtE6FrCenq/aXGs6s0GkQVGUZ1qgRkTvq6h1d/Su+W9AiEAy+0+8GYZY78njt6tfCGyN+yO8zv3v6y1hupxfBR3hKA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 8177
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-connection",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "19af0ad03c1bd3815bdfe388a525ab0710b8052d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-connection/-/dsh-client-connection-0.1.1-rc.2.tgz",
+        "fileCount": 24,
+        "integrity": "sha512-YX2WLA/aZdDQsien4Zo7IHTEfYVJ+4QhRXbgA6BrRUM23NSP/+V3K00dQYyQVsF3ZwocE5uyvlZvbYeg1Iz4ug==",
+        "signatures": [
+          {
+            "sig": "MEQCIFJHjPGKR255/UGbHmYo8PcA3a+XDJuj1mWZ9JsGXJ7YAiAFxBk8fsyPBMn7eKHyR+S1pOGGwHSO/9VYg+bR0c7r/A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 425783
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-hmr",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "4ea8190ef91e588de92bcdeeb8d5eb68b16575a3",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-hmr/-/dsh-client-hmr-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-q2YqCvIWXfVQBh+AWLQFDF2cMu2ZabgahGKrWXHqQ5q1dY0ae9CvDV+bCMf8+EwQgz1axSOXWQ35+SSKPGwGlw==",
+        "signatures": [
+          {
+            "sig": "MEUCIGZTVfWdmSTZyYuDESe7cDodUGgIyF2NtFHQZ+/JHoLHAiEAwKz5AaLoC4qPr2T2uL4Z7hhACIoFQqG6s7nh8/AZi28=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 25062
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-locale",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7b13beda08ed9228922a246a2fecd20d540315bb",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-locale/-/dsh-client-locale-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-AMoR4FwMPLmt6WlYd4m0PCoxXj4qqMhpElBQZSc3r3NyGCZIuleU8tCG1xphGtr/w9mA1Y0kUX7Ftdmf7yV4FQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIHllI+c1NfRxlC+s/isEtyoG1kQAQ3/C7u3c7sRizL4wAiEAp+ccOZaw93Gw/9no0h2RZwCnbe3ZH1LNHDNZFo8SzTg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 75151
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-modules",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6270aff81a793f4b77de9637624c23eefa5ef06e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-modules/-/dsh-client-modules-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-D0vRgJJpMeTB4ExJTGHk9ay01kLxfK5zvp6bgFjYGlk9sBJgCE3qsOGBFNqD369ylJx4W2oyExAH9lOZGNk3Rw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCP/+dmQMjrIn9wiOvFszYsB/V4Jq5AN9JJ9OagxF5rcgIgTnuQrLgXHUw/hIlwvZAR7zYoKGAzZMMOGrw8LBD5TCg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 73266
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-runtime",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c732d569a086abc9e5e9e5a216b4a39f293d44dd",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-runtime/-/dsh-client-runtime-0.1.1-rc.2.tgz",
+        "fileCount": 51,
+        "integrity": "sha512-o1FH7Rlns0Xaxh4SBOWZ1wpa0ViGw6DXWNm5NFpsBTGYD94RGdIrud3QxgrfzmQKLzu33gvS8JL/IjqbzWyYsg==",
+        "signatures": [
+          {
+            "sig": "MEUCIA4ntDq5ieY24HgJUOUxJRzjB6FRNx93JoznWXmPVVnKAiEAtN3IDemUV+jyZbbdRJe/nLQ1L2jJaHhqQ6HT1gvzS8I=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 628773
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-agent-preset",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "72c0608c9c9a52d932ba92cafb0edb7eaa240141",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-agent-preset/-/dsh-client-ui-agent-preset-0.1.1-rc.2.tgz",
+        "fileCount": 20,
+        "integrity": "sha512-U8iT0+jQSbIdPPF4rYYEhmFaTyewryOgL/ye3322UhuFXFapjQcPTBkchvZYYWnTJ/SGB2CpKXLQqiVSjsN2tA==",
+        "signatures": [
+          {
+            "sig": "MEUCICtHbuuGSYZ4DmNVWHk9GZSUea/nipmwPmQZUuwM2GUrAiEAqBwDyF/ffhV1Z7K3XviT7HoP1bN3WgGa+aNEkp2wUI0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 134021
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-attachment",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "895a16157bed8e440976cc73f64d98ba0e170ad7",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-attachment/-/dsh-client-ui-attachment-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-c3tLJL7Qhok4NzVTE/OomBAsNSLbryT0UndqLaxx/9hcS4W7A984SD0iOF9VuZT4dgZ6dQjMse9eIe9M7Kg08Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDmdlam5JYEHxsUUKeXyLXb9ywOlmmRsJzHvXwLfOTFzgIhAOzPsFNZ9OGmpbU4zEsvPeSoqYwv8RTxeWM4IxLaAxUz",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 58802
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-brand-official",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "01f3f1a94118036bde95bf151991e1ae92939a48",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-brand-official/-/dsh-client-ui-brand-official-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-ORrj3w92n5tif0ecKQy/xGd6vlHPkK3XZCxT0+7JUeA1GRo4TW/wc5ljm0/6hM4FcqKf2x7ndW+OdWfZ2Rwfdg==",
+        "signatures": [
+          {
+            "sig": "MEUCIDu6WRnyPEGYRRmkONZIDqJpxk4Z2AlPf8haJGsNtYumAiEAgikKau81E8PTaVIowmEJie3eipKKR+gxNpANAic8T7A=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 11540
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-commands",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "27e05f739c755731598a03ad7c3636434f1da091",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-commands/-/dsh-client-ui-commands-0.1.1-rc.2.tgz",
+        "fileCount": 17,
+        "integrity": "sha512-k7gIeD/+zRF2jtGPi5tG2vZMUkgVnS9HYPA2yzwB0ilB1NhvL/Xbne1Y9vO4aBAakFE1Be1/1RMIKW4PMv0fkA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCt/BCLNt73B4WIShdysxQTC/v7Zxt+GrgXelSOVY2x2QIhAMVqZcrdeq0omOrUGN9b9Qt2CC+H4PZ01JCiKihiaXYv",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 89539
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-conversation",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "55c92dd838c9260304971a8e608467b1feb25f25",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-conversation/-/dsh-client-ui-conversation-0.1.1-rc.2.tgz",
+        "fileCount": 79,
+        "integrity": "sha512-5PCyHw2Y7nz9geEUT23et3h2XghJm7/3iWDAKa1/4ldIfCnjfxiZ5ZNRdZ9Xxpj32tBmh2lc6yxIJwrtepIyTg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCUJlsahVky0Lb9vYC12u40xjl//FYR7Jif4CfgQSrvIwIhAN6cPMe9JC2rKZdmTCWL0I8zykpzbdTaKCfyubHsoxLT",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 694617
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-cordis",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c6e1c23bd5e02521c27a367ad30288cdb4736dd8",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-cordis/-/dsh-client-ui-cordis-0.1.1-rc.2.tgz",
+        "fileCount": 23,
+        "integrity": "sha512-zUtgUW1N9m+rnyGxVI1uXmXxWA11JxK0/W5sI3ZiwhIzYJNvIMtkMyBjsoNVOVpgd3krwViBxFfbFpP20ew4pA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDRPM7E3dY/4Sm7mF5LOiOyRGVGY30sMFZOWQdwa7s9aAIgQfzpomm1pHgHiDAgNDohBqiZsD5PbU2l2r8cOQsikog=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 119652
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-deliverables",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "9f964d242b2e6f82b15e3725891fd7a68dcfbf79",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-deliverables/-/dsh-client-ui-deliverables-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-VA6tXDGTgHUvudrbPqgvUCnZcuJOc49OTm4k2tGrazm3uUdO7W5uO/VeuAVD8eEA9afS/0IBqqs0WHc3Q8Cojw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCCdl7Ayy2N2uUnvRMeZ0wxVgizKOW336i8gt7n8FCPYQIgUScKOUGJTb+++iyHQ2rLFB/r1RZtNwhLO07XRAQl5Ys=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 41749
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-directory-picker-browse",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a20f6156b0200f2a74c36aae7aee6e0b82a25152",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-directory-picker-browse/-/dsh-client-ui-directory-picker-browse-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-O4fd87GB6Pt0+FgiiygbV/5+DmLI+sPHEBOWouyWqkDKZ19pgRZ541FpYNOmxf6Hjhf8wiG+Zpy3CYi9+n0+vw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCXrtzcUPi8L5dg63YJiLkCWE9VPYX1q7OQLXORrP+X2gIhAINCnv8fRORDQZlYbq3xgpaiAXYBlF2VtXM4fXtM93aL",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 66197
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-directory-picker-native",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "56fe83dce52f8510fa66175d2f74206172d24de4",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-directory-picker-native/-/dsh-client-ui-directory-picker-native-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-ubC7861LSIIKLR8AU/vR/V79tOffQE7bhzaKbGl1A0IPruCZCFZiyYD5J8P0RPvWPSaePXjF/P49or5bF//tdg==",
+        "signatures": [
+          {
+            "sig": "MEQCIBmdCmCxxJrIJUjDhLJrtt00T4sGE0iYQ9QsmVWiLKzxAiASxudZIpvX0XMwkYAfpTeYFAWdlPc+Qup0K4I4RKNYaw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 16057
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-goal",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "0a1180c3fbf0a84b31a759e5f3aebdb1804ae32c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-goal/-/dsh-client-ui-goal-0.1.1-rc.2.tgz",
+        "fileCount": 16,
+        "integrity": "sha512-nyoloPDya2sdsTSn4cFJmJBZWpr2EVgJ+oWAkwIrDGWpDTkQXaX2G44bDmMZas8dY6F2uODfLIBp/rYe4ZdPOQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDWb2RCDUtxPNHECufBLY0EOTS/s/RG/HQklTZFURj1KwIgJBEketJQIZceCLIVIZo9/x5Ec44GJ15ZY5XqxXxMoyI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 38387
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-input-trigger",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "5ee926d7cd1b0b8e18aa7f5c128e23489a3717b8",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-input-trigger/-/dsh-client-ui-input-trigger-0.1.1-rc.2.tgz",
+        "fileCount": 21,
+        "integrity": "sha512-jro0WgcJdi/ClpyKGWg+/0nEq9mmcda1KIoMsB+o9lLqebDUce/enxdEP0UtIEpQVOJ6EMMDY5Bsn+WtrdJNhg==",
+        "signatures": [
+          {
+            "sig": "MEUCIBsWlLnbLoln/ibzMrXY6rnjmXz4CqRLoSF56Mywfc0rAiEAlzlYllUGmDoGqYKQWEs+W1Btye6fSqVXxXZ7G9F/nSk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 88621
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-jobs",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d1a8234156d748eeedad16cb37eb4938d514eeeb",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-jobs/-/dsh-client-ui-jobs-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-G2yJqYpvfEvqSSJ8Rl61gSfoCcX2v3yGEidKzN5InbS0mcewMqLUfn8RihV2fDKu6UG3nggDGN6aahg0csq93Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDbnPY/w7hm1uKTjb0CbAlu5EV/oBvsDkEhfVybTmNUmAIhAMyKPXEOvm+ih8whSn9fZqwhLPmBdxcsPvW3a1jpDptp",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 29211
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-layout",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e9bf4b7fd943c99ce64eaeb7c814ee83f4364772",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-layout/-/dsh-client-ui-layout-0.1.1-rc.2.tgz",
+        "fileCount": 16,
+        "integrity": "sha512-y7xSQyQYGuahLyJcSXpB+JbH1F5lGEc3L9K8cjLy5vd/L9N6gLFLWyeGdlGxxM4jxRt1+rAHDDZ/zl7b8GC5zQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIEZorhXsN1BYJpwkPd6tP58ndg0m2ivvIuDUnrWFYE07AiEAlXRQA6Y28x9lLVHa7TMitqXHK3ecWn72CHZ9u/nYXS4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 45765
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-message-feedback",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "5b0e28be0934a1f5def1dd86dd085d3ede18cbaa",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-message-feedback/-/dsh-client-ui-message-feedback-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-ABh9GhtUmwUXtBMQg/rMrTgyEXrCIuv7gK2UGJ2waurhblSrw2br7EYqTcIsZbVdFIec9+sHHVCmowqJf3lGog==",
+        "signatures": [
+          {
+            "sig": "MEQCIAC8bdO9vPnxcD9R+cn0XSPWyNFUTnKI/J6tLKiTCTL+AiA+Y1KX1xh1k0doxvfcDmxCV5ht+GVwPIiuXJ/TRKNNNg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 55296
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-model-selection",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "2fa2c7c05c1d467795181d7bcd5023c00d2b8cc9",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-model-selection/-/dsh-client-ui-model-selection-0.1.1-rc.2.tgz",
+        "fileCount": 16,
+        "integrity": "sha512-CEFpGeEL6gtz0jTRWEpHcEH1cBIwzY9023vWmgyjjcFDOcaKv3G324n+IXweHDttbWGSKdtxfpi4FMOu14W3Og==",
+        "signatures": [
+          {
+            "sig": "MEYCIQC5Wr7lp5rFqaNJra6vOX1P4Xlu95WP70HQYMgTKKjrGQIhAPaha0xSIhbPDX7EQwUe0CRo+g31PkE0a8ODwEGsanqC",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 62479
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-permission-presets",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "ca6134648dd3cfac4b582603e1c22d98386446a8",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-permission-presets/-/dsh-client-ui-permission-presets-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-dR+7VNod6b1OU3NF8eeAC8if1K+Aj8Z80gj/ly5sBcfV2ezRuhWMwiazFrQfFum5k/EDuoKTL5lOt3pciWEu5w==",
+        "signatures": [
+          {
+            "sig": "MEQCIFEnuiV3KKDoAbKbG3y8hdviU5Q3PutXHrJU8AJMGVhWAiA2nQnw1ZexxM05A69lEtRMObNBvjo7rLbxLFzPPp5F7Q==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 39527
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-plan",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "477b39ee00d9d53b46a40af7a0c21b1f0ba7cc69",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-plan/-/dsh-client-ui-plan-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-1kMI5AgyX3LPdXNEr75CaLwC40SIpYUCxWkyVO0xcoZ5VIXuB/E9jmBXTkEXS5US6IzSHWvam5Pm9PahPwX/dA==",
+        "signatures": [
+          {
+            "sig": "MEUCICvYZCXcvHl6NoZaQVUBoc28azxvu/AMv83BY3vGWcacAiEA0CFT8lvB1Z7oQI1SJHsN3N75qmjW/PIjZqgApDCoH04=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 20532
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-primitives",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d8f0a6f99d0ebaa80f7bb54c7c7b0a4a019babef",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-primitives/-/dsh-client-ui-primitives-0.1.1-rc.2.tgz",
+        "fileCount": 75,
+        "integrity": "sha512-vCWEha1yhY//26j/LppHC/xZrU6MOuw6lcI4bJr5L7ppbY8h7GAR24ozBr+4ESMtQ5OmsvqGnsa/Kj5ZjSLfEQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCitiGPT7Q9o+eNDufssPEidkOlqbKBDeBGujbeum84AAIgMWVKqpkSCdEGpwkPqqi1E4Fg+WCXWfkJ8Im4GkHRkd8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 451736
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-reference",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "eef8b2c40506cac0dfa3210201a629368b3bc68d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-reference/-/dsh-client-ui-reference-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-45Fsle7tGJsIjODdFFESK5PvO0Uk505UgRAy8vKUz36VGUl4v5WpofW562hFSaDBkUztbJQ6/UpCeEQnWs4bjw==",
+        "signatures": [
+          {
+            "sig": "MEQCIAklsgTqYBJlTbOzBziSoK10Xujpg27vdQG80TVHAbgnAiBc6phrmcNc51Zdbsuj/s7ic+xVRtiZmDRA4cRfE4zITQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 18646
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-renderer",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "4604aac8b4c2103b92f3dfc31a8ef1e54aba045f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-renderer/-/dsh-client-ui-renderer-0.1.1-rc.2.tgz",
+        "fileCount": 16,
+        "integrity": "sha512-yCpJWKrA4DLd9lwHuUUIdId8H9Vcoq6xtQoNh3UxOYy4KDeoKbcMsRpOOShlnkxdJYGKOoRk3GpRaDw5RPlrwA==",
+        "signatures": [
+          {
+            "sig": "MEQCIHwSZ9VyScAJlZex66Mu3xQ8mwp2PM4WVqoi8PYMoy2mAiBgk0kwv4789W6MS6fQoxyVQp2j7W/AC44bmHjGFL3TRg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 55517
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-settings",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "159286c1c73435a8faecd3c65bc74dfec34ff9a0",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-settings/-/dsh-client-ui-settings-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-WqEQkyjW467leTJoA31BgqM+nALI3JnrvN1IXDhJuKd8E9nXhTLJcRgDrovEUkh2cjbHF8g8gQJ5Qafg9PzJiQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIGDx/bGDhoFNW3R3BMJSx6JpVlGCQahtcTmLqdwVfKBzAiEA2dfyRFtUCFhEPYdQf/s+hJuECobBeBfZ2oVRVKgzyhQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 88839
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-settings-general",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "1acd6b24f381a96e6de56a7d580706ca4fba01eb",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-settings-general/-/dsh-client-ui-settings-general-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-0hXnCb+nKBdlNPgblzhckUQNVrUsfhwDWsexYWs2wFoSWcfALfwjwgN9ZMwS5dj9LLvl/rWib8w9a4miuhFENw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCzJgSM5KSQKf1KM6Hofk0lWIebCvV+RFVD81BeIFShGgIgJwy+rUu9cBpN7AliewbxoQl3il0LZr8z91hYIW7tzu0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 50723
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-settings-models",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "604312e17527f96ac248c9a019729f1c718f58c2",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-settings-models/-/dsh-client-ui-settings-models-0.1.1-rc.2.tgz",
+        "fileCount": 26,
+        "integrity": "sha512-LfGTsbJpCNG0nhT9nBzUucVxnJ5tlY78i5JmlUEb3fwEFUM2cq9pmhv5sXWFdn3LOAnGr0QcyTm+08iBubc6zQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDps+b+YG9hVJ2DDO0XQn+wO7jnQk4PcQ4x6fWtKOdHVAIgFUt6BEgeTktWI6M5ktIKgTbHiAdl7koBkOLAdtoMNgU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 207867
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-settings-plugin-inventory",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e28a326ce346b45e3c1fb3800f0e064279b4e57a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-settings-plugin-inventory/-/dsh-client-ui-settings-plugin-inventory-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-HSxcn/UbifCGsVSYPxd2dHlURTOqRQ0a907rmQ5TMdPCabEauD+yc0m910XcL+3rRlyTsfW/Vy6AjpNK8cAeJQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCMNlKVArPFPMI9Cr1AlWEvR1EYbuVxuwMrpQJllNVkuAIhANcF+C3sAHOxVs0U4gUytenANzqB2PfhissydSlREw2I",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQCmWnbVJaBrKSlhwyzFLeYtddVJHUfoQ0pAKvu7gOf/VgIgWCrm6Y/AbRmjIeGgDsu6FbzSiwFgfjICf2pI/miM/t0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 30022
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-settings-plugins",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "03a12a8926e48ff8ba2833755ff79f5210074676",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-settings-plugins/-/dsh-client-ui-settings-plugins-0.1.1-rc.2.tgz",
+        "fileCount": 25,
+        "integrity": "sha512-NspsecIb4YdvE54jmaGBW/MjFyuu/MwUjQeM/I9iAgMOpLO+jOsoCOT4M8Su1Nfy1bxokgks9XcBJOcNGjN4Vg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDzVRn+yVw2+ru5x6El1Rv4TgUGef0QW9SVWfVuuZQfzwIhAI0eHLmI7z2q6EM/ObSYydU7g2XDKCUO0AGuNnLeAeRd",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 102927
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-sidebar",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "24558af8e2a0e6666d0b0203a21bc8ed49e9cd4f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-sidebar/-/dsh-client-ui-sidebar-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-UCilyaNPwMO54JYtpCW5leLL+ecwtoRd4sHNVNG94aPQAqZOrqH+hqrBBsuolDJ9d0cKG9K5Mtew0fPz/hByZA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDc0RhmfbLmHypJJ1cMYuqUlOx30l/1YW7Wh2tJEM+O2AIgNdy1FnvOeEsaUb4zwteODE6lzc/eMSDj3lOWf+dHVU0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 37933
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-skill",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "1c9ae0b103267472da73adbe6f93d2fbb880a13a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-skill/-/dsh-client-ui-skill-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-LMpSKA/QIqsv6uGawiMUOY0wgdCzoohBm2Dg7+DGvMmbxdHiUkp0N6HM1SbgO35sS/KP3qBmyDmDrvHrye2EDA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDJ93GPTpnF9TH7BkArEqe6wTtJcOeojWoAEkSm0GKIcgIgYBP1p+7AqRdxb9nvUW2UhXLsGHcF0gLovbaoGt10lGw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 34769
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-slots",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a7c23104c87550c071607c8d2cd8459183aa1aa4",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-slots/-/dsh-client-ui-slots-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-6uBi+Wq+dH1Q8RaJpbK66TjzPlkcSNDWvNZgQXw45RRQCi1gnm/gxFOyJcSQvgqk4pvm2/h/aIvaM/Pa5PRFCA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD016DeVhI1TnfhB+uzH++TqMGu35JppZN2BiRU9OWGbAIgKImTc+ydgcVB+XLVZ7gPeoU+KZvA1lFg3079vsaLUks=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 82519
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-subagent",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "958a59d976fe63658c342cbb03920b59bfb91156",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-subagent/-/dsh-client-ui-subagent-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-YvlWV2GpDVKR/0Ay4rn9whgPx1o0cLBV1TsOzGAp1yQbm2nKjJ3fUJgwcq2Tf6LAZLpJqGxmg8ji0upmkLBjUg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQD83CRc7Hil4QUDEug0qkq72ELu9yZjVo3BkB196YQJuwIgWAWlag9T1X5cUDEf/v8VciN6q8FP8hc3sqlhirT+o4M=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 65885
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-theme",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "66ba1f4e89b17a71f24ad940e026d278fdf6acdc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-theme/-/dsh-client-ui-theme-0.1.1-rc.2.tgz",
+        "fileCount": 17,
+        "integrity": "sha512-gRKI92D+EZtOy7UBkRfNvyL4e/3HikZ7exQSfgGpLEJ278/aXMvStNbL5ZgWVC41+MSZsBUk3dZAfbXNjelz2g==",
+        "signatures": [
+          {
+            "sig": "MEUCIF5cnge/44jLtpj5eMZZFNSL/WtimorHFj5SeyqlOSM+AiEAzeBT73rnFd1hPjt8cL4JKjQBnFRcWAJTG/SakKiOtiw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 114292
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-tool",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "0d59b9c3086bc61ada4fc7edfe7b38680192edbc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-tool/-/dsh-client-ui-tool-0.1.1-rc.2.tgz",
+        "fileCount": 32,
+        "integrity": "sha512-JLLkipHwhpjJsUTECuS7jMq8z1YD9CVYS5ZRZvIYvOd0OxgvBB/ga/CJ5MIIBQhCj8/gLvseAOiqV3wm2OF2Hw==",
+        "signatures": [
+          {
+            "sig": "MEUCIFhf0EyZYqG532Doj5UL8mrKBkPx+EIBGV7dlM5SYifbAiEArnxc29+QbAPCYkgNqaDtMqc8M9JufXOsKSlORAACuRs=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 132329
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-trajectory",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7770d23bbedf423b2a03c6610e6d837f5b9eaf63",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-trajectory/-/dsh-client-ui-trajectory-0.1.1-rc.2.tgz",
+        "fileCount": 35,
+        "integrity": "sha512-8w8klclVCsqqVM6shVWe0vXtfs6pfEfviKHXPLtX70J+yW042wrRkOqcNh61W14QR+OCfq75TIJZbNPDiIf+2Q==",
+        "signatures": [
+          {
+            "sig": "MEQCIQCNu4n9knIxR3+zg5lc+M3C0nVQ2PYp4adLseECoVFezQIfbW4cH2TzlRtu+AWymH33F0qW+rTupMCxvGJdB0zG1w==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 405399
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-user-questions",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d8aa375a3d879cb5e5e2c3d3e4a10df1c9726bff",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-user-questions/-/dsh-client-ui-user-questions-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-rIyokmmWzOvT5W4zBRlPEs84PtcUXKleGW3oABHaAyIidCcWylT868xzXtUiPBh19Wkr734sZT3rYppoC9fqmQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDbJDgcOwCHR9bizNIuIW3JxgJB9Cuj03V9dy+vz4qKKAIhALsrN2NPo7MefXWjkHHXi6a4BIIuaPc6IRTuX2kRHhzu",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 63501
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-workflow-run",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "8af8bb32c9649c3877a1a5caab1448dd8eea9c4c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-workflow-run/-/dsh-client-ui-workflow-run-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-XuAZStSyy834UdX3jcobv4ZleLXcuwGsn9BVk4/SSi6GKOG1wzsVgxJFi7IhaKGURxuCpheUQKe8+TuE1ScePQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIFc8kqXVRy78LlNcR9sGbNO7B66T47TTnxYjFvJgTzZqAiEA5niPVkb/0WTVHvCYlOE9De7cRdJThGtLOwKv/NVlV1U=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 46168
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-client-ui-workspace",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7fda5382e57c20cc00b985bc1b5d543def76baeb",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-client-ui-workspace/-/dsh-client-ui-workspace-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-k/jB5ke2e+oNyNKzu4/PBlriwCHKVg5bY3kn7Co3MtWZdqbJ42hfwZkRNMnn+nmziQXCVXWRzuiHZt0xNTAveA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDVMpMmVA1MpYiKbgUxjsQ+lG2mqqqqPZ3udiiBKtTU/gIhAOYJr/eZ970S/Bhl4DuLq3Yv/o/v0acts5r75/3xa3Bn",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 173311
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-cmdline",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c86fb7b03308e7ef04ed509a3089c6e2050a51e5",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-cmdline/-/dsh-cmdline-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-0/dEVUm7Xy0aBo0DBqC5F3kxC5ahzKcmHOF+Q6E1lBqTwN2xytGYTh0TSfj+6rS31jDqxeIvWxy35bLl83n/Sg==",
+        "signatures": [
+          {
+            "sig": "MEUCIHn2VxVH/PN7kPQbfxeN6S+Vk+Djq977A1itSTqY/GaFAiEA3mThatZLfuHnR0al3T/B+tESzWjDtIHTp+AKMo83XtE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 22853
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-code-runtime",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "9d6702325fdf458bba509a41aeaed5a1cab3ce5c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-code-runtime/-/dsh-code-runtime-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-SgFresqH5UABzRQZ7tOfqzOLMHF7089VeH+mfcwNQH5peOavgEKrAGOYz/9RnISH0XmMrj/x177t8gfO8Uvo/w==",
+        "signatures": [
+          {
+            "sig": "MEQCIEDL3B7rdmQ7pyW0H4kT/oMql3uycWNOqB/Ia/oIgIglAiA3gjDDpXMP+lsqzJCbOmF80umKXrfZigG3P/4RqukD2w==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 31362
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-code-runtime-worker-thread",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "4b0c84512220393c4c35954a6b36d4da692743db",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-code-runtime-worker-thread/-/dsh-code-runtime-worker-thread-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-wE+6x4yGsyg4kntVQFOcb5PiAg2Wb3gs1UNY7SHWC7WOcWCAbREZRfqaoAAxO7AZuqlFhBou7wWc6dZqtGENkw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCmVrWicAiovJ0LASXW3T18M8tRcb0Y89jGFcc23AdLfwIhANBgY/+bN6V3zm1jLvFM1aQMm/zOum+XlCW5UsrsQNJa",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 113276
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-compact",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "fb979e42bc806c96151d79a7bbd7cafb855d910f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-command-compact/-/dsh-command-compact-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-rLNBnq5jo9nm4Etw5PrVtcYlFDTM8IQt8w5aL+7CQiEpC6OevP7QzvGrIbJ2VTG2GX9yN6fJosPd0Ky18EQuYQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCfrSdu0g491kCvSGapYlrtzuNzobLTJt5zYfCK42UJ6wIhAK7LNvd5Tv+Vc02nLiMcKn1TnUTMsod1fnvVTXBGWXel",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 18360
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-feedback",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f56ce0e0b539f4a2e59cd90e235d1127e44bd38c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-command-feedback/-/dsh-command-feedback-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-0i0EDLFP0h1UpeWq1KrrUXKJFBK7aoCFfzcWnrrD9Lj36I09XfjNDJIm4kcYNTkbOFb4o3MWNw01FKC5rNJjXA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDe4re9uqA/iFmx0fX6gJsWptJyCHrYY0qtRTZuFniitQIgWIAotMmbw/1KCKoFX/27F9CI54JL/Xy2d4Zltjv80ZQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 22930
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-command-goal",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "ffe9a99b136d4bcffa3f68d7e6851cda03fbee2d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-command-goal/-/dsh-command-goal-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-AfiBUOd2QjM2PW73nwQJtSDUri8RtEB6l3XVlznUrfY3VFu5tF7GcFUXffTxgtroWrvaqETs/vQJc/zsn8tGwQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIBXKe3ny/cvYEuNsVqQk33huX4F3ouo9lCx7YYcSPXSEAiAEf0Imzx0BFEeN4JesV5ovF3q5wsuaaD4lW8CIWLjK9A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 22549
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-commands",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7f0b32b61888d9e9b1da76309be8124a428c1e27",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-commands/-/dsh-commands-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-BOIe4Sht9rmMv1a6b3GWjWBbeWr7PtHlAy41vgpaymvUUuzOapOIA648ZMGCI/crRIt72Umev2FHtSwCNSbYZg==",
+        "signatures": [
+          {
+            "sig": "MEQCIC9DlxyfOAsxJTDnACmK1fbLRrMWirjHG+dnivV57y4pAiAPk/+jjWDZMm+BXz46ht0b16TIXQ1QEtGZbUuAj18EWQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 112853
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "5fc296bd066fcc0e3ec88db2ef213a899d3e1743",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-compaction/-/dsh-compaction-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-LV5GAIx7GO8DCRivnN2bmLmuucsYDG+ifG18BaXBqsVKdrzmaIu5o+CBxQAI2bX1N6mfBenLxmvCnROkyumLTg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQC0yIx7LMWd3aJoKMOCIqibhuu2z5jgPmY8zXGZnrr3UgIhAMv1rxKedth/R4/komlvP1zVzVMrCHc1ecZ2r09A7Yk3",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 83974
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-basic",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "30d45fca1904d681a38bd2da8faf9f1ff0b9c43b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-compaction-basic/-/dsh-compaction-basic-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-qNg4JqWlZ5NvlFmaVZtJ+RuvJUtYFgdS7xXlhhBGSHbMZi4sHgB63Mo+9Y0Rl8glLSxLjo2reMMPlECN+duUuw==",
+        "signatures": [
+          {
+            "sig": "MEQCIDKHM3w+ggXNEcu+sMG6qUSCecRvjsVfcSWdAPeXowxRAiAxgR8g4DS+Dzilz7/AfBsJH0VOtDB3yHXqnuG6lmc3+Q==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 98847
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-compaction-tool-result-pruner",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "2a4802755ddc24d22fd4284d15a64c0ce615a3be",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-compaction-tool-result-pruner/-/dsh-compaction-tool-result-pruner-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-HUS95EsuveR8fuzaZW0qSv90mVWbv6aj7W9zfWPbr5BmLJsmomQlw6jFX3GodN1Iv8qWtrzFkMuxDHk4ZTHcAA==",
+        "signatures": [
+          {
+            "sig": "MEQCIBnHqKTwPYI0fF0oDNLlpt4ZWvymAoUIu5bCmazuKsNuAiBb+6xrW3+dcfhun4n1eFzuUQKRA23Y35s5Vs9OVXkI1A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 25508
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-cordis-client-runner",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "520f01f7f14c0f53b32278db9fcf34ed40fd0bf6",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-cordis-client-runner/-/dsh-cordis-client-runner-0.1.1-rc.2.tgz",
+        "fileCount": 20,
+        "integrity": "sha512-4/DNA4fCSa1nIb52mbRT3TV8wpsnDzjMRJfPbffk8+Fv/bj50jaeQY5yMgUXsUYWX98/RlekXTK4u4LdjtyHKQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCw7zMf1+Aglaq0aU+Z3wB7cEN9ct5yL4GF7XciIYT6lwIgRucJNDmfg9blfxI+lvnZnHJozJRCSXEKZY2swELA1es=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 302915
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-cordis-host-runner",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "fd1cfa1327dc588fe15d8597efd1b007e43b22b7",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-cordis-host-runner/-/dsh-cordis-host-runner-0.1.1-rc.2.tgz",
+        "fileCount": 27,
+        "integrity": "sha512-+AQGegPy+gdtcjTTPxDDYwAFUn6BB1J/MFFbmpPr+WIqJoDyVsuCDe8Rr8mCJmxs12CmTZXXSOE03LW203W8fA==",
+        "signatures": [
+          {
+            "sig": "MEUCIH7/5KJ1DSeTE6ur9h7VE9X+KFTq8YiS8l9UFLt6ZTKgAiEAjR0kYPaLJ1rCwXLCV8DSSssiILKy9x8aIynfX+ep5mA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 470689
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-credentials",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "ec27f8a509c867fb04f698cc887e92c3bb0adb87",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-credentials/-/dsh-credentials-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-aeVBaH07rox7NuSNbSqbz8g0eNb2IIhNbrZngj/VxUsr/TR9TXOq7lm1CL6SBUDlstGw3vNWeXyhim/DmA5iSQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDgrWNotIGuCw1/88o5mrPCg/f8KklcNgGX5pAMS48pJAIhAIPCUaWXApHbsZIIxrRH2MWylY8YwWDYtUBiK8a/aGzd",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 51288
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-credentials-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "04e6e371a86587b0d92b5cee3759f21aacea6193",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-credentials-local/-/dsh-credentials-local-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-xlDyX9BrfT579qv6ilh4EsqtMs4A4oYsuCYHvK8UWQ6YRflxC4GiXDU44iNfosQo5BQwzJzUlBmwHy9id3e71g==",
+        "signatures": [
+          {
+            "sig": "MEUCIBMn71IjLN6M4T2qpbWg3d/nyN0LD8FaiSwrLYV4Eje1AiEA3YtGVi+whmRXpFiY+MOXyDR9fsO1C0uA8EYtLEyCQ9A=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 64870
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-file-reference",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "473a4b5b7d8db411796a0869aa60534097884873",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-file-reference/-/dsh-file-reference-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-8Pd4SNHhV6OlbwfV5K4qmFb709I0Z68qgaUQJ7zM4BTjClNe1/dktQnETtWPfqbPTx/2sNKXM1rz4WXuROrIfQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIDtp0m+rpY2PlbsF4JH7B0FLoKlUtVTzhXHUMVGnpqqlAiAJ3HMj21ItfoQg4pIEqhO0x4DN8O52vwOKjWkgWp1cdw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 56203
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-file-reference-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d3eee353b974cc97a01fc3642f580455b68f860f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-file-reference-local/-/dsh-file-reference-local-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-aFOn9vsRfjWJYJyBLLD/kItD/KxAzxLNpKTUlxy8mSBMPUM5HEpUkAopgOg265OsjfvKdAVSt+eY1snrURXNgA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDyMtCO7wnk6tRr/vv+JSSi7Pl7E18SQdj5wd37OVH6HAIgFvsoX/YyEGScO06b10OhJZWP4MRnYxMjVzl0a+JeJZ0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 44886
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "4a506e0a72f26a636c56f106472acb85ac53d21b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-fs/-/dsh-fs-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-8j+6MffvCHATLQrhAVfc9rKyunKu/O7mjjJzmdsUSdID7V4iUYMwqPamhlAyI+tfohZu/vcforKzCRIZGmCYug==",
+        "signatures": [
+          {
+            "sig": "MEQCIAKU+HTgV0xll6q3CsLmExtEF0VrFZj+tFAyVE4BndhrAiAiFzVxeb6dAt3MQfEaak1N85yBJFhYUcPNEnQbsFpeBQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIB4S/0mWoJ4X/QCrHYPUwN8G1H3RQhXL8iQqNt6d1kgoAiEA7xScvtC/gX8n4CEz8QVoFEIHtShxm/+tDhE98j3/f2w=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 46912
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "39b836123e00ed4e5758ddfa144f47464cc9468b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-fs-local/-/dsh-fs-local-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-jvn1MsAMqCmt5SjRNkPjmpc+RIWrZQrBVtf/OpmKr2PaBEGqSbCkPApWDE9iSMhcuQg6k5evScOXwAsduzKOLA==",
+        "signatures": [
+          {
+            "sig": "MEUCIEX2qayp1GK0b8qZnxLPydfz+T0IWCkn8J/tv0dlPaQuAiEA2UGnPfL8aJcpR5An2DiK3TxbLhftaJ/5MFwT56GgSng=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 74577
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-observation-policy",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "fb9953b8e67af43394788f195ba9c89c7ff52104",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-fs-observation-policy/-/dsh-fs-observation-policy-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-rlq7yu4xavkKK1Oa1/aNCOeUW7t/3OXJJOfOcZXuUgJn5f8G0AbpTDpp2CeuL1cHlKpbunGhEkKQ2N/dv7ZR9w==",
+        "signatures": [
+          {
+            "sig": "MEUCIAWdk3fIs0zu6ZiYAFWxpq0aBlJThHku0qw3nKjganmlAiEA1y4nEti8i99DKTVYk5y7z6icDEG67jsIRnzPl5IS8Jg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 23599
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-fs-sandbox",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7806636298bacf6ed6bb567575488f7d7d86b23a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-fs-sandbox/-/dsh-fs-sandbox-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-PI65uLZ3ARkfVV/PXvACS1HEXggoOaXgYQzXQFdLOfm7AiHOdZWZccUAXBetpZhcNYIOKsVoLnfZkXcHByqecQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCQcKzrpgXrr0VI8qi85UAfpkkzvn3XAyjXJEh+8hbnVQIgTPc192rdDLvmeT1keQOlE0LUqcvAa1X0Rau9ZzxdNH4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 29141
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-goal",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "0a1a86728b859606f1ad4e8042dbb68c6a12de8e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-goal/-/dsh-goal-0.1.1-rc.2.tgz",
+        "fileCount": 25,
+        "integrity": "sha512-lSHTh4vfS6eRb9to/y+bjRf2+0QkNpY3tHJ29HMTewR9fJYZsEVVu4Hc+GPhPEjF7RpiD35/sKx+akijtDasyg==",
+        "signatures": [
+          {
+            "sig": "MEQCIEsYqo6OjEGHtT0ZsUYy7VmUo5+aYK7Tr3dzfp8PKfzBAiANUVAPLR8M/doe85B3LwZMNl5rbkzjXr5WWV7Z8PxzRA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 186587
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-goal-round-driver",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "5e3b80bbcf603aeb8457702c5350637dc1bf2a1b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-goal-round-driver/-/dsh-goal-round-driver-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-pWipAFKx0l+ai/gJvNQNNk+ukHkb5Rb85llAhJVwyk7YfXLC2G8lIfnG7ln58M3vfUKuLxQLE/GL1Qbr7FQuyQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIG25SOsGgir/VU1AQm5nHKxK2LdrBFaa0sNGfxyaFsRfAiEA8Rd7YHCv8CIYiimsUZu3BnBVx02qKokYOjfUyKWnVQE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 33636
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-headless",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "96952e7b313b24c9b70fddc86585620a1d676119",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-headless/-/dsh-headless-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-Pk50xwmUUehOxNe8DJ2/tThj7Aw1MmJQeUkfAQh9miF7Tm+WOOxiOOei/H4wjH9cf+FuqtbLDw6jrHmGotfhjw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQC43wnRdPBuu6+DKXFv0xRu216w+1KqILxecWanRi3PAwIhAJCpBjlF48YFmMc8hM1Uma3uawlNMo1CveuWt2/JPQzl",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 19849
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-home-paths",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "ace7cecb1fbc9a80ad08c719f4847ae795a83578",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-home-paths/-/dsh-home-paths-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-lGsP7sbnu20AiRAb+gxYiKx9oa9r1D/8Fr6BwWHXpaPx6ZE4Qg0+ybh5SZVfGQ+XhLcQisu3nwWemEjtTJGiig==",
+        "signatures": [
+          {
+            "sig": "MEQCIEz7b3MPSpRJBKACoJmIbefn9OVV5RxnlnIqWLLDw+bLAiA49SgT0aU+pYwTHIaBQ9vv6hPfbSgJ6UIO9SOW3xp5HQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15980
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-apiproxy",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c865ff7084273c66bafe26ee54594e2145a053d1",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-apiproxy/-/dsh-host-apiproxy-0.1.1-rc.2.tgz",
+        "fileCount": 91,
+        "integrity": "sha512-dplRnGGXXsQYFQ1KMHymAM0iaxuE9Z153JHYcGEgOwXNkS3HA20gSi3yMt6fz+zi/cMHYXvY1JQhS54BTc761A==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCbMMU064EvABf+mTCRmLXGwWueqY2a3Y24lLtFZ+SmaAIgCaPaBsWjGczPYKcVXtiLIoG5cBz6MqJAyJRGEECJnq8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 751940
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-directory-picker",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a8dd246842caa97fc4916fbd28af70144e874c12",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-directory-picker/-/dsh-host-directory-picker-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-m3puwS+bvJQ1eASdpEEwlQqKa9znhBSgtoSSI0GZN5VMynZVl7E31HMltENz3QC2Nd+C3bh7vNjrJFtumUDsLQ==",
+        "signatures": [
+          {
+            "sig": "MEQCICACXmvfveCobNXDuX9FCTaz4dGU+eZxkGI8elKMdL89AiA7mKWiJ96ZgY0inZTq710PnkP3F34/MFp4LqqWn4rAlQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIQCSrDLBsm2U+ntcApAKLAELIJnCnphGVxm7rjWgF5FlKgIgaETLq1lRh5IqfM+/cfq8TtBgf3JNWMVosbYD7Ga9v4I=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 17502
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-directory-picker-auto",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "746d1f0147bbbb749051cb50715b16065f6e9cdd",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-directory-picker-auto/-/dsh-host-directory-picker-auto-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-YW79cegRtVJ3zeVEvYPCpyfIGZV8l5iXUfdm2DI2lwUZsbQ0ZH09AeeLyy6fREmbtuy99l9MExKG1KYWl9No4Q==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDgVTYtwCAT6jFM83dRu0BcCL+k6sJThEPOZHuGwl+7NgIhANxKgtpIsT1IF9hxc/Mp+A6DvPTs+OAy6aWJ5k1XaYrQ",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 24644
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-directory-picker-browse",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "2d73b40bcb9e814b3ed371f96585dabeab512dc5",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-directory-picker-browse/-/dsh-host-directory-picker-browse-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-iLIXqO2fWDsItbtiNPE2Yv2KK0u5A4W5xDbNgd9jpLvzB9vg0NLv4wG9zI4azQ0zf0XgmfPt7BK7UpMM8iStKA==",
+        "signatures": [
+          {
+            "sig": "MEQCIAVe6ldAAJG0qnGjft7l3Sk9Y1FAI07IIby/9FxyJd5TAiBZb9+0gO1Sp4WZC1mM004MszLf9YBHkyU9uUa5SCKH+A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 30409
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-directory-picker-native",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "2bb9f9791ee6779fca705824deb88bd1a77a79fc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-directory-picker-native/-/dsh-host-directory-picker-native-0.1.1-rc.2.tgz",
+        "fileCount": 16,
+        "integrity": "sha512-EvCe+NWYCMvJM1FCZCqrT9ggwcQjCGfnI+9t9F1ZIXbjmnhTD1X9K9xt0Ber61lO7ZN20h98Hls8gkzWbHt42A==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCurZcbF88nn4obYJZ7hEzAgFCTwXGutFIgoBqK8DsgFQIgH7C0tU4cGnzVpNx5k12emC8jV2J8wFVmpEFOQIVYry4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 41958
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-frontend-static",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "fdd6f9388a56cf612096ed749471a48d106e2cbf",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-frontend-static/-/dsh-host-frontend-static-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-KmdcBiprbRPuCK2d5e6VmXbXmT6fwd6nwGtqU6iOxh/Tl3/1V3c/lg7dvJu1LeOmyw8epXFbzgEQNw5ATJtaBA==",
+        "signatures": [
+          {
+            "sig": "MEUCIAjpLjdc1YhyLSc1OyqJTzJpqjP4oNc3qXjVURc1B9dXAiEAhUmef034citHaVvG06V/qBcCngUsQS6U95YAb7doPWI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 14540
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-plugin-inventory",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "dc994c0e600ed130e7056513eac5652ffdc2d9f3",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-plugin-inventory/-/dsh-host-plugin-inventory-0.1.1-rc.2.tgz",
+        "fileCount": 17,
+        "integrity": "sha512-Hud9ezW0bexWfhX7C+c5rdUDX1xzbEGDzj1lGQyj/QxdrxHYHjGrJq3tLRyvN6K4FSmEdG2IBKdQGCOLVrIthA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDdyr6lcRdqXTTo+EQ+/2OukGGW+2v68toPJMn63Uao8AIgWgEAK90vZeyFc0JJjToV6KqLOgLPe2OxCV+/G2JSS54=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 23672
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-host-webserver",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e0af39fc1d68a4059a78835ff03f8908ce207bce",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-host-webserver/-/dsh-host-webserver-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-t9MrjC65QHiiWhG9V8UZxgfE/aWYhJHHrIM0kbTvtXxg4tLGIKo/upHp7iiag65F3HTkVLrH/DUyPMi4v2ZA7g==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCl/aNYCJ7jijO5mI+hQ2INq3fIZuTYZQyoHbCzdDce0gIgVycldabaagVwMsca93DSXIZFotGcrbtRsY9an84QbNg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 32353
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-invariants",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "41587a28c2a3011964d6539ddb1c5d02ad8cb40a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-invariants/-/dsh-invariants-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-l+1Om/EDFyMjhgSuEx2WDLLA2fia/+ga9mBTCoT/MMslsnWaK5G0/lWwbwlTBSaJ6OfmYc3DuBgox8DbgIGHRQ==",
+        "signatures": [
+          {
+            "sig": "MEUCICIaus5/jmezax8jN8S5wPXRYLSRBvvm0Gn0ujjSZApuAiEA9Z1JgQqWeVWfQU8vwsJi2Y2tGn5r47TTF0bzlpVAwfs=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 27308
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-jobs",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "1e6f3db73af555db6c597111db97fe521a4764dd",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-jobs/-/dsh-jobs-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-SXvDJMvcUrGrlzIyE7j8/lI4Pj1nDe/UOR8C05Zagp+/0R8p46n6KylySvZdPAFENV5t8WX3Fw3eOaS4No0+wQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIAt7vqMO6PC2AhBezV1tUSP3HH+jAFrL6n1tMboX0fv1AiBpvE4oYhuouZdlU/kih2S4UXVSz38x3Fz4vp14/TkILg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 39823
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-jobs-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d9e0d8d6c7baf4f39c9aa60bdeb723af944c5c5f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-jobs-local/-/dsh-jobs-local-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-26lg7mi9RKnu8IP8SWLbY+uZenbqF2AkAZvgZaLDlw1z58NtBsbgKgh6FNC8JXEyknAwYc6auQQKF+nLTlEjCw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCPBLE6qhYN6o1UCeS/xXJsI2Pvlkj1mv5WHsU1b9QPdwIhAIxx4osTIGcVAKv93axARdbu3ehfPzfudVV9/wo4o5y1",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 38088
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-launch-environment",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "b7f867e7436c9325d4acb9dc6f4a714f4c98e646",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-launch-environment/-/dsh-launch-environment-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-LIjPUPwaZ2cIiz98Oqxn9TDKXhWlp+0EGmUhk4RerBAkqRVtDl0B/leK1pSZLLIR+qcr+VAwLGJagY8Xm9XWvw==",
+        "signatures": [
+          {
+            "sig": "MEQCIH2WXuMei/M+bd0U4DtSnrWLpnF+gCIrgCcE7N5sgJjSAiBfZg1dX8mQM+CFcgZ4QP3W+fmbHKkoKQrn4W0pk011Wg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15891
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "968b03f5fbfe5d0f054e301405bc0cff44dec8df",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-llm/-/dsh-llm-0.1.1-rc.2.tgz",
+        "fileCount": 35,
+        "integrity": "sha512-ASJfjIdZbIXvLwi3rGo+eZb/GxMVV/WO5/XVD3B96mT8EIzrlw3+nMR6/CvmJVzcycKQ2XN0wj7jD6TasPRySA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCNou7VWCBsRUso2F99ZGPg1hUofCJEL6nL/NYH1TF4RAIgbcea793+1r0yHLzoZL3WnlMMFbczbV+B2LhzXZTJzNg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 278658
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-deepseek",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a4feb640abd873fe7cd0628a0de3104bed7a496f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-llm-deepseek/-/dsh-llm-deepseek-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-GH9AukC2kozv6Q8/9DDhACHSe7fpTG7o0iWGUEN/m7/qajCJ8abySOFi3N7otdVmolR6Mvz2GZDTn2HdHqkWWg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQClOKlIg2y3QDvNc6NjC4fPm6Q36OMzp2a3JZ0M7i5KAAIgQZZZHOCfdkiV8EenFIOPY3fKb9CHzZQEL/ieCpKcDcE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 171773
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-pi-ai",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "4391158740196fea86b25a5f6575cc75d0a5d289",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-llm-pi-ai/-/dsh-llm-pi-ai-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-/02zlUjTHlJkme5+eM6VFtuiK6TacI5rxwIWMaxItp/s8rz91grzWir+qxRsPrz6XIrmKXagyvi3m/tuRCtk5A==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDjG3pI1Ic+gmQphJKN8FHB9gwAMhOr9NNUTQZAOjA3XQIgbBj0llEU1KDP8+35JxxQ0kA5Ukfh93S4jevvAODffpc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIFVnt1MYHTSc1oalAQ5c8qLKqzSkUIoTnhpt0Ojm9qdZAiBJBvVhpxEpNz7psZHb9Ydo6epRi4PXQlWvG2UaRDxusQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 240118
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-llm-retry",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "cb1eab68964b8fa9182e77338a055ed036997e46",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-llm-retry/-/dsh-llm-retry-0.1.1-rc.2.tgz",
+        "fileCount": 17,
+        "integrity": "sha512-a13Fpmn8HFy8LCjl6gljaNPxcVjO/R+/uMPDl0QLjwQcHWVyGW38ZA8jP5iRuFgdyNNXpyxLWuZXi/0VOH00tA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDTepsWdjWS3tbz72jW5a/YJSRVMbbEhj7bLX24iskh4AIhAPhxEx1oWEBcMS82kP4vYifIgN2nSVS/uHtosVGYh883",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIHQy72NcYFftPYZihZYtsHFulqDdFcl3fUIYfhqmTuT8AiAigIVmmmHWn5g1V2i7nnIxakVKvlcEeTxSIBZ65oPsEg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 50042
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-mcp-client",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "78973daedcec4fd17c18760e9aef539588cab5e2",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-mcp-client/-/dsh-mcp-client-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-oxNes59UTkXuTmOqQr6+GhZW7u2JtqSYiI5eZyBQ6K+yjPEQESa3/rYnRI+gHGAtx8EFgn6hsdOS5uoEwtFuXg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDXJ8kMydVR02Gj7HjCyZRsG0ZZ51f5reyZptU7Rfw67QIgEeNQ/8YOCiwmtedEVA0XS41dZWcWYe1OTtG7mE9U174=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 69571
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-message-feedback",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "cdde9bdd346d1145dac70515b45f06c55c938fd2",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-message-feedback/-/dsh-message-feedback-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-GzxDiNvyUVs/bbbm+Hr3MfuU3wM8ErRF5z9XadnSGPYZvipZDAMrvrS5v6JgOUaZt6ApBpEMJ4xVgIel1VnGYQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD0YRq4I3jD9RjXDfrsiDUFl4izKH3mAKkPO1JNTufSxwIhALhrgOk6LrAvN74QuNmhgitWQXPjLJ6yKnRi4UVXvJpq",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 98580
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-native-command",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a463586fb76cdab5040915fa9510d1c9f37f2983",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-native-command/-/dsh-native-command-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-GIknPrwU7vZOUQ2o/ES7Z0uUhUrZGp/yigKP+RXEu41VI9tcybiXQAA8CEdDFmNQ11R2wfYQhr3WO5vy35akWg==",
+        "signatures": [
+          {
+            "sig": "MEQCIFYA6B/JnOdoHw8D8YesweBXuOwMwKXIHcarVjmJmebgAiAKhwAd9XTlYEGqL/r5RJ57jiiO38/YhIBGNQLupb9v+Q==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 9606
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-output-retention",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c2c3b3e17171c652cf7e715500bd7b9b31966aa2",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-output-retention/-/dsh-output-retention-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-tCni+bTEp/FWokfz3fqn4p6SzHn6pkY6H3HkS9UY5PHrztUE1ESUQUp41kIVtwUhRmJU7yissqjxe6kLDB6t2Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCBsZ//HNS6e2AOGYy3dtLw01bdm1lbCCssghdLXl1YswIgf6Dqt7501dlHJNguiihpSBlk7SH8FL7EpvxYpjndqCk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 38087
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-permission-presets",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f096a83187245f7c222252840d71dc64551be144",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-permission-presets/-/dsh-permission-presets-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-k9hdF0lXV6dmVNBeWTmJpk0okaaH3hnvpQVRfUja8mlpJgPr482QMReuQsGJkY8ztzSE+JtzZndPSXjRrvLzSw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDKoED1EZ7NJ4rONcR2wFeaea1Be5QhUr0cke7H/O+7TQIhAMIwC4783hFiyUwt07vJfmciVxvtzX2T3QtEJ4ZZM0+j",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 54132
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-persona",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "89b4fa3e42b1acefa3f1ce1afac15d73eb487491",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-persona/-/dsh-persona-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-3pQjr8qSCVmGtExX9WzGNF9tNHKAFjtDyX6g/2HY3Br/hzANfQY13F/HqdjxufB3K0Rsu4CNkq78TyweXVUZew==",
+        "signatures": [
+          {
+            "sig": "MEUCIDnG5V4euB7ERHceduLnJoZm81ESYJuFM4NWOo8OYzeLAiEA5a32IDL9NWiNdJMS/yfbMzfkPRqS/ro727zfO0J57O0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15228
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-plan-mode",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "9286e4581df606e9d6350384f6431d0f9ea69c85",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-plan-mode/-/dsh-plan-mode-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-jIQ71skseprYkwcIkZfS5jtClF6Z5oDC8JIwMN5ukGRDkkoKTT+uLWnw3AgArAOBi0CIy8j5Khy7GP7v+02F5g==",
+        "signatures": [
+          {
+            "sig": "MEUCIAvrPEBgkKBh/W28N71sWQRtrTCK6kn40vMikANP+1lCAiEA6/kNZrtKIO78Kf/Plua/fP9NVE9sCVtXydDE0dyZ2vU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 70555
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-pwsh-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f57bf1f13908d5a8dc82c50121324883508d072a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-pwsh-local/-/dsh-pwsh-local-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-MtX+IN0dN60n9F8A07ugz4+GptSaoj2Jyub1vkUFkgpdiph9lDAh+PVVG4EKrusu5YG8eXDCDDnb3S1UNtrNiw==",
+        "signatures": [
+          {
+            "sig": "MEUCICz2swMwWtlK0GAbymbhqMJKQPToq35HTxien3GaintdAiEAr45Ga+r06fa7xarWLHDx3rCkNrlDPJqt4OIaFXSilhw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 45746
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-pwsh-sandbox",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f86e91946cc4a9fa1651fd52902e0ec53c8d8770",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-pwsh-sandbox/-/dsh-pwsh-sandbox-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-hBUTg5p8TTQifZrfstbimVlBFyUOb7JhNkWKc+n6UpTzoFRSkPAvrjGeXKDmFI6jXpL4nXzLJoaIssfYnRg7bw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDhNE3Nz4MPhoeDdtIJqxzRWd3pDKunGnbl8gGIQ9JwqwIgJP4ONTdSBdRBPB2za4oYc7BHxSoCguAKMvt4GR5svaI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 27437
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-repeat-tool-reminder",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a854f7b8d7015a0e1c9f6f0c5d8c0331d0a7b9fc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-repeat-tool-reminder/-/dsh-repeat-tool-reminder-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-alDGjPdN1o7BVnBy2h4WZa+Zgb6yT76fyAQ7T7wN6K9jbnenSuvCjQyhoehhSFZUEl8ldRqaafFhS9ErGpVmDg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCgSRm+RLhiAvN5Hie9GVKOu63wmi/oeyP46WDmuJZnrwIhAPmuliSvoVA+nuYifV0v8XmnpqheqDbSQWUUN5j+w7Tc",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 34440
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "56d890b1b7b177d6a71d9fd501d32c6c3e961f61",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-sandbox/-/dsh-sandbox-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-rnO2RqZ+ycpwrXrXlMcrhWAICdui3ZVTjNQ8eZrOPE18hAbX3tw0nLFq26sBjMSnBfDQHNZ4VaFpt0p8qhkPWQ==",
+        "signatures": [
+          {
+            "sig": "MEQCICPgSiCMu7lcM9s7kEQ/meVX9VXAICuX1PtHTdFiKq4DAiBPtoB8m3+2Ej+aA4ZyH+40y05L7LAtT8e1lgmOoVLVGw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIG2XplggYO8zMGdHzi8oYkMFTJeGelvDnPwPBnwqdez7AiBaeZQqWQhyFls/FHXIu8fgcagHLS7oJoxdxyxJBm1k1A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 40859
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7d7087fa00d0defd633c6d7ca9768ede2fd27cf8",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-sandbox-local/-/dsh-sandbox-local-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-Sn1RTGRFLA3fB+thcBwyyfDRdpgXJ7/6qBz/piFh+emJ4IfGFlBEUz7H2QfuwOGAmzlOmncxf2brcM5SfAgJ2A==",
+        "signatures": [
+          {
+            "sig": "MEUCIDc8tCiMm3P57qkwd8zQnBemN1GgOz1Hm+HIDEgfb5YjAiEA9RCBGQDsYRF++RNkaqtcur6tqX4rt4KKJ3j+te42kQU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 49782
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-policy",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "1f1c58b0682ad2748a45f1488509c50a0be4e156",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-sandbox-policy/-/dsh-sandbox-policy-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-cpoIUxCzpZJDTMXVt9gS+qgWEDAWf6rIe715uY1NF0ROoiEXPlmToLsHLF+4pXTW3wWWzpGVswO0bPYEKrQr3g==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCBRV9g+SR4S7qpn2Qut9DtNZH/yxVJoaHJVgEgFvW9FgIhANQOl1CvTD4axfvEet6Ccu1f/OtLqk7xXayHvlYmNTy6",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 33446
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-sandbox-windows-acl",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a22d7ec12b3de299f16b7b028cd052915673ffa6",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-sandbox-windows-acl/-/dsh-sandbox-windows-acl-0.1.1-rc.2.tgz",
+        "fileCount": 21,
+        "integrity": "sha512-DJ5jI8uzJA2VJiIgkUrqNDo1oKMJMaQ1Z8F7kFpxEkI3IMRSfMyqTur740ERBkX3pVc5uDLx6HNeEBx/JR43SQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDG4LZQdQyY7Gv7IhJNTXICLSXt2VXwUXot5QJEM+l+1wIhAKeBe2ezW/Z4rf8EBGpml7PImcjOP2xmBZe45MlrGy+H",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 180142
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-schedule",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "213a882d1bf130b7ffadf8bff98587682470ba19",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-schedule/-/dsh-schedule-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-I/uuXlZv6gc71SdXoV5sGQhh95nNjhy0zJWfhttfapNvuQYxZEzQU0vTAOsQB5FtdZ/xvDZm86z01/E8+usLAA==",
+        "signatures": [
+          {
+            "sig": "MEQCIF2oOdK/soJDvEcTBiGqPKdgt06H/RJmiC1pjucAdCvHAiBaWwakGQ5EXCreIli+8viPLfc2ZAb3AuKM27gIT38OQw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 112640
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-scope",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "97e6ca8dbefe75e01a1b6a634758c853f18924e4",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-scope/-/dsh-scope-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-Xy3ejL6dwVSluZL7XOWy76ya4pCw1uHwxodDK4O9XiQUiUV4FBXnt0aNJUtMeAFN0c1YujxxCmRniMvuuNn1Nw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCG3ZINoR1p1uOhvsHGTpYQ0M7DQsmvDA/w/gBzSUbvVgIgbZQ8VBjfEFYXIgfjzfZ1FM+k66gxePNvwWhYDq9LBQA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 45320
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "9c9335ab55aa9e3ea54102cc986e567bbf877b10",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session/-/dsh-session-0.1.1-rc.2.tgz",
+        "fileCount": 27,
+        "integrity": "sha512-4/cv6X9HPhm47eyRhCu/WZwzrtJKegk5J+0xaxcZ9i8S0smdxP57tqy8a0jkSshLQn7BzMFxneQrlYExrLrDhQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIA1iSgLFj4uisKzvrmFqNyIOdE5dEbZl+vo2Ca5jbFuVAiEAplfBUPmEYbtSHu8eDtqVI9lTqPSpjJLoJIfwbY4yxOw=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 290651
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-checkpoint-policy",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "dd35a5a0da36c9fc2aeaae17ce0d5125ea6e5cf0",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-checkpoint-policy/-/dsh-session-checkpoint-policy-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-VmnQBKuWEHD78CtK1W5Auhz9VayTiNQTpbsNFex4uD/9h0XglFxVN7G3/XVUDOp8VHxReV/Mh8F1RS9s/2yoxg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCXI1vDrC3s8KOsrF7gOnxNweysB1Jir6lm/vVczRhA9wIhAKjWKcMpzMasnSHV0YilD71H6Xq4lfO61f/RwFniEeSg",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15927
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-log-export",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d1d85b980d700b167c7c4793a92d0ed4f5202931",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-log-export/-/dsh-session-log-export-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-IQ0itJ5VsmvTkBZYNnwNIj7h2qaw7dlHrnKt7toUiAc5gC12tFwKouMFdBS5VtOSsxTuQLdnVNPa81XOy24opg==",
+        "signatures": [
+          {
+            "sig": "MEQCIC7McFu78+P5njLIDl80R705VBIEC27y5uw+U8fbsbJoAiACsB0c13HPN5ICg88wmoL+P1RmXYTZTgAbvIkY7JuwRg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 30935
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-persistence",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f0ddbf135374cca8f1eea45ee6f4f05b74bb30b1",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-persistence/-/dsh-session-persistence-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-dxdYxRfmK5jWtiFFabqRNb/jGGjkXyF2djI7O8IIKmDVjhQiv170zpvhbAhRUuqClEdseCtbQpLBrRm2blzt3g==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDz4G8VF2VH3d4ZdYlilNoCrjsLMPZnhLR1GT2stQxzowIgB/2/1VecgJTa0TYW9yAEGIm/XZ8wZonGjQHD9lqcIaY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 129216
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-persistence-jsonl",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "082117ce9a511e664f731fa009e06346f25a568e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-persistence-jsonl/-/dsh-session-persistence-jsonl-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-1H+boST8tlc8fu5VVClcCRFGI18dH1EOAzfC+HsQZ+GiC7jhPN112oJWyzxKot1P07bmKdKev3un4VR2Chr/aw==",
+        "signatures": [
+          {
+            "sig": "MEUCIH8DSaxOIEOJqAdT4l52WOFVeT4eT/UYtjdPM99hzyeQAiEA5KZhpGe0zzkVkJU9S83svIZZBD0D6CyKu+uEv0zAseQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 108096
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-projection",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "8347b10f1ab23882c128e45134e3af13bd5d2968",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-projection/-/dsh-session-projection-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-SNaOrjRS4RMXocna6uL33TeS/uhcQ7jDJtJZ1HyDPL06mXUdAgje2MVt8OZCh6dH95xIiqpQQm+KjzeiQnhYSQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIB8NRb8cbG8yRV5Lt6yUH2fJ6YAwXeWj8i42voYen/vxAiA2auJ4tyQnX9s52ZNTHFC4ak0fUeEYV9WWBZIEXnp4aQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 64084
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-projection-cache",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "66bf8d7e4f55c65f6125df9d5888b1bea3a02258",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-projection-cache/-/dsh-session-projection-cache-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-UvCRpIb+LoQI/nCLof17xc2P2KuZoucU3VuzfAukfsF3dYZAy5OP7jrCRdVZIvjRfvFUd7G+awdS9sWbnjcolg==",
+        "signatures": [
+          {
+            "sig": "MEUCIBj0Tv3RyiYZKqNjko1P75+UkntwIDLC41UzxYtBqFS7AiEA6plLgriJTms7h4KHQvwZh+Xxvu7WPcECcfY5OV17sEU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 37893
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-query",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "08de16a02c13061ae35f147d8890d0a0211c2a4e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-query/-/dsh-session-query-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-QxQFRg/KnrZnYiO7fNtTJVTakuGs9ZFRkGGgYuNPzSz1pRqiohGNE/JZzBtq+HMv38RRTRZrM4aIOUV8OgqoXQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCRG4GCo09CaOdo5CrsFpk/9Vv02uQXf33zXsihnAj25QIgErc1QjS4dGhE8eXBWQj8CQdqjH1YH6vBPHJDUfnHMmU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 88626
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-query-sqlite",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "504fc83b84015dca0e1c764529fd9bf4756bac12",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-query-sqlite/-/dsh-session-query-sqlite-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-gZ9q3v+NdQC5jaArBMQfpX36wLXXvhtEfKK3zu3jOd9HopYxgNKnm/mUX8Ma9P42gR3Q+m5SGU42pow5vy34Cw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCzZd0pDAoizrZPX12vifVfGBBAlRUzGEU8zRyGt03NnAIgKf6uZfdVT+0fSDwISb8iMjtgqyPFJQXwSAdSwTWmcpU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 78176
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-reference",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "45deda1ad139818ce54f0748da6ff386961b871b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-reference/-/dsh-session-reference-0.1.1-rc.2.tgz",
+        "fileCount": 25,
+        "integrity": "sha512-c9mz19ndxjVxSnXEhmJwGDjyKG4oNmu4Sfneix8OUJ+mAr3jIgb/QZZ8rYEc8Bi+Dd1z7Wr90IeWOBF0nolU3A==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDYyPVGMoK2hDNdULdEYIOF6q5mwctHkbpbP00K3ftLNwIgMCqBPzb0r5bWZ2BbXSlQ5r+wvFkP9hG3Cp6Hy9Wn3I0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 117998
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-stats",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "62e36af9a63509ca728c465ce4edc34e97c4d15d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-stats/-/dsh-session-stats-0.1.1-rc.2.tgz",
+        "fileCount": 17,
+        "integrity": "sha512-SKGUZicnHHU8+zCswoluBCHSbTkA5ARQjl7YNxN6qY01ud/azpPdbcVaKO2MUy60Q1myx3W0Xk93VzF7sMt6cA==",
+        "signatures": [
+          {
+            "sig": "MEQCIGHo7mvzAQAD7Lg/ws5fV99iwQmL2ridkJFttBm8ps1vAiBzRA+xs2CvdkNmsvqjGEAWM0O3ZGmcmjh5hPvUtUCp4w==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 38535
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-telemetry",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6e896b90c62918061056cee8bb402b46650cd9fc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-telemetry/-/dsh-session-telemetry-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-yYNUtpxykp10m6YVCcfmxtfiRZeNr9g+Mg5/37oO6W5Fs9A6L3vfCM4Ppn47lwLbQetejsR1QClV4P4I//c01g==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCVAlVZ3UiZLLLfdzKDJuQmP4dNY/IHIABDLdsKsEJNlwIhAL/BWk8dpOIDod14pch6013P/hfTu/Ih9tCeNdaQ84Ol",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 49480
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-telemetry-otel",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "8bbba32d6a6f159265d7b13de9c99edc8f79a79b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-telemetry-otel/-/dsh-session-telemetry-otel-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-a+kmjEWvRZTMW/oGzoF0LwlsEOdtr4zCv0PeFPG5+wA3XGqn+uukgh5LnXJt4htApxPfWVj1qBz5GFRgg6MkNQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDqqVkAq2XSdmr6nUkPjfd71/idWRTofJzJU3jNMXNgiwIgRl9aLRmyg0371bcNXq5bO65Dk3cNkG8vdUv5kwj3lPo=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 35356
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "17c98a2ca9ebc2fb19dae9028671192202c36049",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-title/-/dsh-session-title-0.1.1-rc.2.tgz",
+        "fileCount": 17,
+        "integrity": "sha512-qHv+9nE6J/piHsWwckmbJBS1sJjunCWsv00arhsgjW1XMLCHxG6QOB+U48P4EBZjve798Tz8AQIlWZy+9T8XmA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCPjPOMUEqMaL8bH88nIpReIburqRHJdhFx/iDb9E0rYwIgDD8Z69j4eS6Hte8pYo4IWMbxAoY1p9z+zBZvpmpztBA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 86659
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title-first-prompt-llm",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c648d21e505eb6661e8995a8a89c62dee9a651dc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-title-first-prompt-llm/-/dsh-session-title-first-prompt-llm-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-HWgRO5C+xFOq8dEKwotJ+jNj9SLo222EIlZuTCV3kdEjblLkSJES8jmXsahzLsIEqXfwdplHfgpG+365XE8NWQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIHZ1/myww5GqaAigJAv5RCgXfHlaYZsIpvsid03qZbS6AiBAJrhmEc5Cf78qzqjbV5cMvKqFSDvk7mVBMHFKL+vtrQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIB+scPZPA/1mX//CrPePomPbo1clM7hMWpA0ByOhWLTVAiBwutnlM1DvcUCABaCLGtsOYCpptL2huk9Ibm0s0Qc3KQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 10512
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-session-title-llm",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "5375fae86292a817eb034b1b6150973d58b6fb9f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-session-title-llm/-/dsh-session-title-llm-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-UTdH4h5zuMsNDSEAa3xp6YsfVbLRCCkm/0uBt8wKhu7+rWh7OCgvAgvvwaIKEGST8/8NWC6ogdT2GFNCX4WizQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDm4+/UADbVLaNXeum9i8ecCfHCVImPYkZJwKSep/GTBgIgCsqMG8QxmyIyodOsEKmn1bpR6Wk9aXpbGiHQ6VG7pjU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQCIH9ZxN22KUzJMr50kpQuf0ZPWLJp/xlke3kxHRbPqCwIhAIkJy788v7J8Q1FG6hhI1TMYmXvQxdOfmYS1ZmpniMLX",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 29464
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-settings",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e647a901c6e9b4dcff9dbb009f5e1288c6a92270",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-settings/-/dsh-settings-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-iGdKEt91Im3gE7xA9CzRfTJsPcFcxDeDOCLhAjzbpjEv7TAjx/EoYP7lPtiy+QmOjKSKy206SEtAKol9PXWbOw==",
+        "signatures": [
+          {
+            "sig": "MEQCIHSAstvkFrO0kpsp8KGNemjOO1DG20r1eUKUOgvPu7lyAiAg483/C8sHEPqcr3UIfMhK3i/wfGMpepXxEd3S8XdCFA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 112701
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-settings-file",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "01d782ca729f16379cc4b6272bb6aa27677349d2",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-settings-file/-/dsh-settings-file-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-6EKER/KLEOwmTkB0AMb/Or/UVkeaqxisZ4WKo+tgsYyJYDTBTDOZjVRz+nedK7vLj1AH8JiEKvmAf6FMxkZvrw==",
+        "signatures": [
+          {
+            "sig": "MEQCIBdbO/DmU70FE95GJkmG0Luue/7w19OJwvGBscEzrN2iAiBXQr3tz4/6sIQGlPfTIa5c3x7KgnmWhh1GPWLzkmBRPQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 30674
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-shell",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "17c285e954a96273c4a73de533cd4f4a4da23057",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-shell/-/dsh-shell-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-gEqPUxKOpOV66wvM4o8Z5FEuWmsEvYzD9OQy3cyo/kjzlx+2+KUWi22cl/YWtBs/zUtRJbdG5UqMnh8GUeO8Hg==",
+        "signatures": [
+          {
+            "sig": "MEUCIG7ZtQJMTVzj7GZme+jjYyOfmcnDToryeXqUtIjH98PJAiEAwgO2jU3h6SqraIFty2tufjyOQq/+v2Lczo1PEdtKucA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 36237
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-shell-env",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a48fd3a2d5b6c30ca2b2f60654d397404b496f86",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-shell-env/-/dsh-shell-env-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-dDKKqsxsbklUpxX5ornd/SKJ2yfr/SOHOWDgeJkYvx3SMSXq8EvhCK/VEvHswXQ25rRLFWM4/Mr3htk1hn/GPA==",
+        "signatures": [
+          {
+            "sig": "MEQCIAy57gucSKySLFop5VwJxegX1TQEVoXCRMqwHbZVuX8TAiBckV8zO/HH7qJVextC0gZ+9hpTUrj2iUKbq/TUAJ4vpg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIHdOGZe/bsQSlxZwFZLEPVTUJs0z9F8ZfxGPgmBg2fXRAiEAr+H0pVlwQzJ785rNaUjhuQ5bl0tVBQ5xbCIoVmZw3CA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 22767
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-skill",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f7fe94a978097483f13214789cdcb8cce78c9669",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-skill/-/dsh-skill-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-FACjlOqdsWX+0RtSs3RWrdY0QQEpPJrBfvxUbWSh7E8UyCM8dKdIbsQnuXIjsAgC7GgYp7lyFDSCMovQ3ARp8g==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD9NuB9Ba8+WFyuBYGYl+EG9HGTIpreDddtFvqk19qYlgIhAJTiHCobU39x4XUxMve3IcP5lYmb4cVBf8L4vpe8WccP",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 62482
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-skill-badge",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "60d8e4d51efed149f5f217eee323c8a00f0c2c83",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-skill-badge/-/dsh-skill-badge-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-1JL4KdWk8pApJAVGlX7SS7p/MIhFKSq7GgA32qHIKWZBnL0qkwtaDdGbk2mam00NVcfGnpTPBXjwL1kOboPn8Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCTqNp5Ox2BngkbgdttwSQr9nY+o+MWOCR8djYZ68bTCQIgGneFrGEyzDryEwAvpxIgUms2ybLTZdHDNmWRfSoY0o4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCIB1IJT5KoH9o6u2JgtmI98MkN9l39h13fQV9DuueficXAiBmtxrreCHgXVB9Dc86AnIgZIfG0zQDq5OWoHM3g0allQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 22500
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-skill-filesystem",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "66f3ea10a553fbf33e523d174182e2ced16bf401",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-skill-filesystem/-/dsh-skill-filesystem-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-eyQGv4046c392kIvOCom+gvJpiFbkWsf/VqB7dCQXTZrdXEx99P8oOm3jsagnllcLKYyZVVETs75pPgznye/iw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDlRskUuGM2kTXeJTggTQwCwC8s2XgoLnHQv5CFjI6mnQIgIRRifn+HgnPn6dQgbdvBETlLcP1llB/CIOGfoZeMoQ0=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 56090
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "acc9cb32a2597fee15c8732fa2b57b445a9e9e3c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-spill/-/dsh-spill-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-iayBN51zRj0+ER6KKJM6UlN1dfKXe5eDJeSwYmH+j3wLbCBQTD7Axnhmo9t68JBRrg+eczg2epFMR5RrXrisUQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDLcQt2fiytbrbWdAEslBepeYoveWoDz+GkklbpN/1Q5gIhAJUZ+90UzmrIjYDMMYuAe5psUcBeSpVESeZq05fCVFl6",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 18752
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "fe188bf787ac79c0e4a010a3ed1be3a55e566dc5",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-spill-local/-/dsh-spill-local-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-I2t9BRjFw33Ya7c/nSZEwZeDSOCk06fDnGvTmXZoaP+Y4mWRBKStfRk4DvBsUQJW+/ov/E5OEvhNhzhZcUnXgw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD9ap9I2NGrZx+yMu+HRNMULxMOJHUvXiblt2azuH09RAIhAJY6KCVXXMl/Lw5jW9XXnKTC2HhToAvYZVVCB+V2RP4o",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 19946
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-spill-policy",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "579d6b1bff964e7cb9126c49757a8d2b4c95a893",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-spill-policy/-/dsh-spill-policy-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-ulkAuhjIm9sOzNdZ7TDqXyvk601Wn3mN/d1QkBBNmCnxt8yQY/nS4ixGtqCVWCu/tdzQOlVw55qKrcNvsQAJ0A==",
+        "signatures": [
+          {
+            "sig": "MEQCIH0VPdGooOkgxHOL8L5HP8saSyAe610sGcVyUNgysTKzAiBMZPCXroHXw/OTjTDf5hUqiFAqcE57p+ZpN0/RErjhsQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 27797
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a9b9fc085076139ed7c6b359cbb48dff1191d6b0",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-storage/-/dsh-storage-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-ptJ1ss8spF+Y2VXjsMV37Qh1+hviYWZylDvXtfEBXjLbPi/BP3dktT4B6OMIAD1rRN+0A4HdTqJBgLk7Gp1rig==",
+        "signatures": [
+          {
+            "sig": "MEQCIEQ5IZw/eLGhDaexbko1mPzLtWB80L+tVbNjFDt6JL4ZAiBPn4tTL4Q3t8FUjl7wawq2QvM7fP+qh1EaJcOPTAw+Zw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 22402
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage-domain",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6ca91a4778c973ecfe39259f8c8077cba24f401a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-storage-domain/-/dsh-storage-domain-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-9/3OuaZpxf9NZWhrARpgZ7UBa03pPaTIiDBw+SfESfwVk42NNLVCQgvnEbrWoNwdtzmv0aYCEV23sKwwlQ0LBA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCzWoC+xkiaEcNPMpqtPESUE2DpGWng2ChBptY5cU39kQIhAMLGgnXbgZwLaFDqRXxjA0Fg/In7s7mYCq7gqODWcMrb",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 46228
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-storage-json",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "8801df6196c8fdcdf5280d910031ad52d3ada6ee",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-storage-json/-/dsh-storage-json-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-UNq6yn/iCh6T1TJ+4XN1Gofam3oqqNgENxAcnajRaD8KIsryVstS7Nke+j3vLdu6MDiGjCsilxyZYtqduE+Dog==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCUSeD298ruQlpRDwN6EbCQtezMLzkeI7ycJ5wTZDSqygIgbpu+zZfUcZEL1FZmIplp8o5WOlgtyPwitP1V6JSSlBA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 23986
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "eba6bbe0d3d4c91fba2228b9240c00881719a9bc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-subagent/-/dsh-subagent-0.1.1-rc.2.tgz",
+        "fileCount": 43,
+        "integrity": "sha512-CNa0WuFCR69TMnBKYQInz49/olDSaVHiYkDTyTuDh7YW7Y80/f/HjQe5G0fQaqZMLla3IUSXCIPl5EssWmjcQw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDjBZeWtQ/dZ7IxQK0MJHZuGGwqacp2W6h50CYaM8Qt0gIgcUCFaGApknNZIAN+jkWjyJe0gzRgxrCYsRjomZH3jo8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 454180
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent-fork-in-process",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "504a9222cd8f9d35fdcff9dc191a8b889f678129",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-subagent-fork-in-process/-/dsh-subagent-fork-in-process-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-m5qWHamlJqpwJEUZIZHfKEERhCmsR74B93jGo9ues2pMB7yYjk297oRLQXmaJrQi9FD6zmFntgpwXStK20mbWQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDrl7SjITNqie1LVgv1QUcP2oyP0kJfixSgs9ka3fulWwIgJ/SQ+ki9zHULh/Xg9etpLi7nEI/t49TgpeDgjSrO9PE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 17180
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent-in-process-driver",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "1c39410965a6abbde46f1290e4b975059a27fce9",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-subagent-in-process-driver/-/dsh-subagent-in-process-driver-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-+GCNjPnRJOB4fv6pc4b9qQZvzoluH9neOLCrKEpJsoNn1c2XCQMaylc8G+WEziIbvzDvHcpKJJWm50XlKuDfMg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDE6PCU3FfJjcCrrBNVGm/eWaGP/mryisfjrZzu40JCPAIhAO0ZR1gkNz2ICMPQcYwjaUiVugsky0Bm3A8sfIPrGAxX",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 37904
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-subagent-spawn-in-process",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "dec3ddcc016de9b92428117fb15872d7e681f095",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-subagent-spawn-in-process/-/dsh-subagent-spawn-in-process-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-Xxe9GzhOK4gIfNUG/Wgx3vsCx7aGZTt268943aRO0wlKQ7Jcku5rH84KfJ+IP2ZY0954KRm4+GQLOKJc/1SSjw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDdPu8YTcijyythWEdJNw6OlI8XB5TAowLapkLriqHO7QIgTsYlQkEe3lykHBwXSU2axOTP2fr/MWLpqkWTsfN0eMA=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 13327
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-subprocess",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e1b4df97db4b0a4c9883687a1e019013cd078373",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-subprocess/-/dsh-subprocess-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-YXEBaUfdkCJm4Wj/w08imS+1TMd3K4Rjr/xD5tuJR1I4/EnBCseP6AOlwjcrDP5PPWfOZghrK8H01sk6cqiK8Q==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDIlATE+B+256vxA8aswdhif1aKbvy1zTWGUrdrUf8yJQIgb5DSU6h0Vi0k9rghNw4+tln8YT6OEBlUSg1fwn1BahY=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 35777
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-subprocess-local",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "62ad38970892b31c4ed6ded34a4841553ba71bd0",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-subprocess-local/-/dsh-subprocess-local-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-I4pyzpohZEVRQQbuEpMP0t8oKsf+XIlRo64aJVKGXI2eMcg9f9gbfhKQNYNqRGbegQL1HYpSLU6Rzyibldgwaw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCmxmA3ruDyPGaCAfwPNyUdK5Jh+YmEmtlGjCq3tyXwNQIhANcrbnxIqb35kmS61C37J9H4w6WwutX44ZruEyhO4TxP",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 88803
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-system-prompt",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "bc72b2d75a0bcbc8fdaf647b1a0c93a254f080b6",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-system-prompt/-/dsh-system-prompt-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-on4hjAlYI5uX9q7Sf95YkMMBVe6heywtA/H50ksrIMUub8U2B98hO9iQpHhjwIO1F1vu+5pLcPvRr6yUGGmtXQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDIh1+AMQ39AMWL5L1DFK0DazjmuCwqWrSEnWSB0yaTgAIgXWMB/7ervDkbasgVKKQg4lZQUBJU4MYRd0xI376tDQQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 54953
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-terminal",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d46c2c1d3f80416a71c8164e70642ab3230f81bf",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-terminal/-/dsh-terminal-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-NOsajXg4cX09coiLtCMgSqXAw90uptqyA9Njv6MVAOLgh6ctpjsolL3VIIWapSJ6AngsCTqVXW7sxexwpl0yUw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDEItIxFBxfWuNHOEoh/S9CXt/M8u1mxdIBbzhn+Fl3rgIgW9D5g2/7bQkqGKy7S+++57/2hLiJd12hcorHIb+BIZ4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 37018
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-terminal-bash",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "23c3ed0755a63cf8785ea1c007fad323819f8759",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-terminal-bash/-/dsh-terminal-bash-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-ltR4K6OBe/7I04w4gCGgbxIv8/qVYHO13vAvwfwmrDM5jePbrEPMu5/xpwPbR28C0kOb7dQy2Z1+FwtVGxviqg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCTDMG8kYfWBnpv1mwcTmI3PSDM6zDIpoz/SlVd/ta/5QIhAMyVf6/Pl60siwTFpFc3Ay5SnK9DzbuqcNUbddoliTtm",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 58212
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-time-context",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "fe46d3b4e6ddb99df475fade8c3d3d034e935682",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-time-context/-/dsh-time-context-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-4Q1sCr06SfJ7jkhrvfdg8ZSFp5Ohtl4E9nH19nUbIjcGK8F5yA2h68HPEglztDo54vxI5HZSblLIjdGKZkY+FQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCqhpArtnl3APFSMuoqRBajtZbM8oEZ9MOwcUFyVAXlSAIhAORs5rij1q+ccdKrefXnFDz4gD2fa70eJ3J8+j1SrEEn",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 51378
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-timeout",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "0b84e4a40e24f4dd5a1c9152288651e96a82932f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-timeout/-/dsh-timeout-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-RrouVgU3G5gXr9zHhpThkMG6YKdcRJzXXdPm1dq3ioBxbvxlfMSfNY4tN8lWMJxLyGtvWkPra0HQX+YWxvdOOA==",
+        "signatures": [
+          {
+            "sig": "MEUCIBfgkTX5nBE9o4GVulew/1rLtkz+qklO/UpEzG8l+IGuAiEAmknm6Kc8t7+VqND5m6Z272dq4XLmQeMeh7Gc8nfwJoQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 26868
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tmux-context",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "dd547ebf16d3177e4d0e7584e8ce268ee2939117",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tmux-context/-/dsh-tmux-context-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-gsOY/pbm9gdO2sKlqWymv4UxGocm3/4hU+84eTD/Wi6Vnt0QOPDSHEO/SjZ/sdIxiTxoKQLz4mqy0LYmc7DNDA==",
+        "signatures": [
+          {
+            "sig": "MEQCICuycKWF9Z5RABhapTfEsuQjW76HAPiWfK9GdXLRWsRJAiBVJleJoVhy+4XFMCnPUKyY7gXzs8c7ZPCXskn4tZ2M9A==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 30795
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-token-meter",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "9ec2b7b705cf97b64a27c809a8d7af517674806b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-token-meter/-/dsh-token-meter-0.1.1-rc.2.tgz",
+        "fileCount": 27,
+        "integrity": "sha512-XHSgvMga4h73LHzuG8gztocs74+6NYg7ciHdu2aM2PYC59/rPfxq4Kz9Hq6TTvYa4a/sDgCij/T0tZBNvQixDQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIFd4X9RQz9CzJwg2ADhA8GO7AfkTs7Z2O3qTQ6r5wGdnAiEA6fv6xsZk2kJ+x8JS0y3s5FD7PXZf0JA+/Ao8wWUehiU=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 108895
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-ask-user",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "44a49403f32f8c21645e2165262843bb1f89ad2c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-ask-user/-/dsh-tool-ask-user-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-6zSUxSducAdrSJ9J172rzJrqv0I/LbZQZa2ri3k0shYzM2reOi1tf+xWDxVFafUscxeyBpnpmNfXXBuZPt0HZw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDMAiJ5PK+1kiaJKfynWMZmIk7lYAxSLWj7gyy1Oa1gkQIhAM3Ds/dkGGWfdh/XN4S8cFZpnAeSdSJzbYbBxygEf7xn",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 15188
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-bash",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "35e2023c9cae3c920f20850b9596cd7acf8d5cdf",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-bash/-/dsh-tool-bash-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-YNmrKmBanj5EQn1zejjbo4UUFtg2/h3s9y0lY3vBu+dezNz4HdUlSkSZACbNUAZywyLomdhlt4rJdtdnrqyS7Q==",
+        "signatures": [
+          {
+            "sig": "MEQCIApQ6qpdtAlsu6mbj00AbnjyUxSEk0kSj5q1ZhRLdjdlAiAi2fujngEIn8eBjRkEph6fdYzuubcbBNxnYWZf+DGJLg==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 55134
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-bash-persistent",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "cf9bf8e7f419d015ec7280b85286a7554df5734b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-bash-persistent/-/dsh-tool-bash-persistent-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-pPI2ln6OdlCW6Kks5VWsFm7sC5NEkZetKOJ8TUrsXkbCM32wWLEaMPVsN9p5XcG/ao99p+Nh0Rdx7PYn4lfg0g==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDn4vMtJgp43V81uxubDxunk8wtRnJMrQMyIOb3dOoxSAIgeB0H9V2bf7wxa3PVEn0Y3lVr49jzD52O6dGOBzlomnE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 28105
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-call-timeout-policy",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d53b01ea6c32a2c6511caa55196f7bb18ac6e1b9",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-call-timeout-policy/-/dsh-tool-call-timeout-policy-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-vPYSRvYV9mDSNRl3BU4M76cIA4oigBD16eS/TxFjAj6fpkdc4JgLA9nsvl515/1DJLEIYnp3HQF3iCsptEdurw==",
+        "signatures": [
+          {
+            "sig": "MEUCIGe4ZR62L9+aJE6htFZZBFvcf6W1aPqphO6bCo6idargAiEAxfxk29Tb2353jz06l1J+nV37xNu9PPtPQcuG724qi1A=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 20853
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-cordis",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a7b140930a62da36685234b38359cbe92ede954e",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-cordis/-/dsh-tool-cordis-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-cBgfa+0Al94/ur+jaWk2uHZ2ChFw3Mf9nmgaFcToFxkBDAcSCpeKjXK27aw/g2EIz3MvPMzOJo9MLDF3WkUEZg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCgHzqoz3C0zec2pn47UbQBn0udsvDVd7I10BfdmM0wegIhANfyL6a2x1/8u1j+ztRApLvJcQr2dv7DbOnjaF+EnmZn",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 455610
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-fs",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "f3df3e88ac2a233767d9bb7a20686d57b241f04f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-fs/-/dsh-tool-fs-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-llX8AWbaI3CGme/a2eeTSfy5atk8u3iJeOFzmZV/KZ0v0hMhKZIK1xQInWwC9OmSDJ/StStJe0hDPVLWbB7hVg==",
+        "signatures": [
+          {
+            "sig": "MEUCIDJZG9HUfvEi4zLlo0HzpTpWATLTaxFPyVw5G921+pMCAiEAzOs9KM3Qn7qp08rWaNw7jISjeoLrQChpQROBzI70n4c=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 112282
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-fs-search",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c9e5911d24fea8aa7021f7f97ded785522125d05",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-fs-search/-/dsh-tool-fs-search-0.1.1-rc.2.tgz",
+        "fileCount": 14,
+        "integrity": "sha512-gHu+6Cs9zs1EYd5KSEJxAsw29sz8pGaj+wJb1cwbK39gzK0AUQ10RlBYuxee6SXgMMnD/vFJZFjxRtCAdo1CCA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD0MMh3I/YwEaoGsn6DBus1S73R/us5YQ2T1xTT1GfoJQIhANy/7EmbmvwpmzCO9Z4C+2Y97jsYj0A+KDWmtXnpL877",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 125453
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-goal",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d8f0921ce426bdb96412036b5936acb28be2b815",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-goal/-/dsh-tool-goal-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-kTECpE732uwlxRJr/jBZb1BqaxZzrA7Rv4KuM3eolvhoTJ5zjyiR2YHmDmCSfuI6zmA/BEfWss7D0mLbVtJEZA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDrCnhLvMgfVSBtnE4lQ/aQgeODumOr63mu2mL+px60nwIhAJhqtiAcAJ0MZOWE4Ux6oZGQHYjNun9ytcZpyO1zPV7q",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 38028
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-jobs",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "2e6c74b5885d43e954167d7db81616187228697c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-jobs/-/dsh-tool-jobs-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-wCU7mo2uoQcAtz7de4ZXP2es9lALsmz6XzC+KAlS2e7/yTBi9a5LL2vdSr6XhExVAuhu/6f9eM/w4EQBOxtKlw==",
+        "signatures": [
+          {
+            "sig": "MEUCICknBRpQUsGFbafbbxQy+lHJ2dh531LyjQYL4Kqz3JiNAiEAzEFdoC3fLDrN92XNoi3SpcTV30pACwv00EN1Ho17xUk=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 35135
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-pwsh",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "e5c1a73d899468d4d0cdbe88f3a831f18d63fe32",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-pwsh/-/dsh-tool-pwsh-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-Gr0F4VWCIIR25qWVv4mMEJnewXILHLCkZwrLfbHA2OOI7DNvvdB5wjJxhuo+ZQa8/3KJ/byQGtEBqCY9mb10Zg==",
+        "signatures": [
+          {
+            "sig": "MEUCIFctsiujXZdjNHLTjToXWFOZjq5563Sx1Ax0tGnaWza5AiEAvpz5qh4RMHdGU4L/w2CS8LkKndUZD9OuHgjPkLKoVwI=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 53720
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-pwsh-persistent",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "81f80b57684a90bb11cd8feb69b5cc8f8cf28bd2",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-pwsh-persistent/-/dsh-tool-pwsh-persistent-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-h/CgOw+pZQDl+upWeFdUF1wzgZQ4NgTSMAmlOe60QRObEP8rEYggELP3QQiJbgXs34N5E6Ovf4W/ADtnFJVsEw==",
+        "signatures": [
+          {
+            "sig": "MEUCIEB/VKEPSw3AF70yoEnPwYY8xbQ5rylpEx2JIofap7JdAiEA2IYrzbOVE9dP+sE/SbF0CVndk1X0UEOuHj40UFx5Z0s=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEQCICILF1vUcjofCPXcrvA0YpyR+m0LfDOKoL3JLJDU4RKpAiBs00xdVX90cz6tqWEwT4c0SWE4/sqihRn2b773pGIHJQ==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 32036
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-ralph",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "edd931ebdcbe5e8a114ef1d2b13dd225807d86cc",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-ralph/-/dsh-tool-ralph-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-SGOMIJPufjz+eia6p8lRIZ9ybflk/6m1E+MAm6zg4QeCnXcGr2z3fkA8+/CTViosj9wh8NfXJYMFweRpbigkDA==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDipWmgbkOJb8jfltYGPgValXVpP8jpXMjtOmzw30alfQIgboYp1k+JiePXcqUJ6azpsskMS85KDvXdqFlHI7hXCDQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 38832
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-skill",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "5038f5764495485178b9190f76536701dddd9a33",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-skill/-/dsh-tool-skill-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-ADOjLELlf6QgrJDFdieNDN42pInPHL39ZU/+v+MXxkhE6poM+kcZmn/eCxbfSvMBFQm9E58Zvg60c0hrsi5BCg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD/jM9GvQucoYJWci7p2m/gxexlVau4NqSfH55ZSxc5qwIhAOomAhEQ63l5WXn8nEl9UUyXabZodUgwznfCejQnk1Kc",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 42613
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-str-replace-editor",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "dcb0b8b3f1968da3995d9258a388133b107dc84d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-str-replace-editor/-/dsh-tool-str-replace-editor-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-Pzyjfr3T9VSUKyAmxoejp4GVvwup9gmj2Kx6WmoUEMK17NPZrhRXgMXbzFu2JnRjxRp2p1FSs4JDb2734xMQzA==",
+        "signatures": [
+          {
+            "sig": "MEUCIGtl/1//uOnJCzdFrsprSivaxbyshtIy4vwAEVGaHcEUAiEAwSB5p9jCLeAQua5DCmQ93LWc/xwXnovwnY1LmfnACMg=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 27013
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-subagent",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d8941cd6f7b2496ef58fbbd2733e8529540516dd",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-subagent/-/dsh-tool-subagent-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-26TuzAuxy8x/jDuWJdvCSRQ/ojm7++5FQ6CRLCdZcgU/3Iw2ZY9TKqAIz48cFHOv/wS3+ru0rX3fF1etv6a11Q==",
+        "signatures": [
+          {
+            "sig": "MEUCICF9WmQjaHJWexbNFacXt4R91agG5sZq3wtNSfNJUEEZAiEAlaE/eVp2Ti+0qoLnC0BIZv0VDOaVZcWrmdOdTDOhE7w=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 40926
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-subagent-control",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6fd991c04212178ac581617cb37f2c6178287a07",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-subagent-control/-/dsh-tool-subagent-control-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-I1enWV1Pm045l5usFwpJtbzJEpic/XdPdWOg+l0it4ia1jUq9l5jPZeQ85Z2x4UbyxtXFOMDGvSL+9kMi0LzLQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDnIG3RFvOKoUsD6nGCr10hTdNLTIjVz5d7666efawCgQIhAJKK4vP8YHw97q9WWbl+XogP4TC4lscpAmhI4bgC9Xy2",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 40997
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-subagent-report",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6ffc893625aa57dd3a48e43fc427aab8c424df7b",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-subagent-report/-/dsh-tool-subagent-report-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-nxy8Y4PhhaasMewLb/Cj+gU/CthtXgtrPuR2NZmYr49xWYXBu8A2IoWFwf6Y7HkbZRSPg6LPsQJEpftjnIYc2g==",
+        "signatures": [
+          {
+            "sig": "MEUCIAqi/LebkKrvm3ouiRgaV4B+URtN5xx56f/oCS/JmYBXAiEAwg9bDjIMevq48BE/DfmwvwQKYBxUdkqGbMZC88Wwzsc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 26235
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-todo",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6c0294f67ef2dce235ddf68e7824d5687930e5ec",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-todo/-/dsh-tool-todo-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-YKP77X/fiKxva/ZzcqkDy6WhNUWYA9oTrAPLAVf3GP+ubIu+r4/cPxu6f2+/8rXLYSi47HXAHajeqQbw2UNXnQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCB1Ui4rUg8L47Zjs4D+3FXz4W3z6PNpdqmHXSZFRgpPQIhANVjfW5+TCPhH98Mh2qiHdMvkpTrtzPItUSEtF6At4eK",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 42183
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-web",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "c8b1652c182e60e751178b5d02f0efb50b01c3ad",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-web/-/dsh-tool-web-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-oV54OJFYYseJCT77F8lr9ZU/f/x8ZbPTmgQpYPC/O24Hw5uqUHEADkukC2ajrltZSTd0+OVqxHFwpWH4gjDoHQ==",
+        "signatures": [
+          {
+            "sig": "MEQCIHiEBUwxY3lr80MlS3OoYlkqrCV/XVAdb8n/qvSqlRSTAiBEkrr6/QoQqFS4r2z9DXyXgyggezqgQvU6zIPUaLKtag==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 78802
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tool-workflow",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d590ac808a0338bed5595eafa4a3f403c5251c9a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tool-workflow/-/dsh-tool-workflow-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-tOLaym8/eyHOATADljSbUYBizaYZTqMKp8p+r2SwiWqIjnRral67BwoO5boX+3t+m2Z45+mvrEnHCu1deYLuaA==",
+        "signatures": [
+          {
+            "sig": "MEQCIF15YKUA0EwyR8IRrkgBIT/g2IwO9yNQUWReJ/V/j3LFAiAohAcVsqncf1yF5Qt1NSGoLMpamibAXiuW/wTbm9rdKw==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 61238
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-tools",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "1e1d098e91daeefbf2d346fb88e70183de734049",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-tools/-/dsh-tools-0.1.1-rc.2.tgz",
+        "fileCount": 27,
+        "integrity": "sha512-0GGL4D55MwYDepzZMOI3L0ycu5b2qr96GL0Y7snwhAnpK2Di61rbX3fJE+PB3ZrovGX0csIRdt9n3iJZDVtDrw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDC+GO4RTucWmaxcL7Gz1gCVJTzbACqzDePdQqQRjsRFwIgYBinIPmmaII7HtUUbtPSIXAgFzaOUSycm61SbVP7x8Y=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEUCIEGLmp2g+zVwQIyL3ufBUk0OxxYkSFwt8D2hfJjmMmqvAiEAh2t7CxBit/aYLiGKDxZT/FdOAolE33kJ/uw+cMjEQdc=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 522113
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-loader",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7c22a5b561b1760cdd4c4c399b90d90b87653c82",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-typert-loader/-/dsh-typert-loader-0.1.1-rc.2.tgz",
+        "fileCount": 9,
+        "integrity": "sha512-YTShO0kcBBwXDx8J1Xgn0z4l9nNBqBbpHh2wFAN+PXPORXn0p0F4RY5z2YUVLKLJaL8XRjNKdl43hHK/ttomqw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDgfWhrDah+D2sKuFN+JqikXAWk7ktPbmh86rzrbibmOgIgIBvweC6SILMXSHst4xHXDJ33WzAO0FW1XmreVshMkrE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 28462
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-protocol",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "8dab9f2fa73570899d195d55494c78f1dbcaafef",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-typert-protocol/-/dsh-typert-protocol-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-lxBssDc5Pz1qBE5kuIyaArA7AvIPq9rpaVclylodiSzVJe95e2xruBg73tflyjtd8y00toet+DLgQ6tSSsq6Kw==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCsIncRRQrAdra1Ci49fb6BK7IER3TUALnfmD+aGg+P0gIgIgLr/a0mAWN1OCqYwim6hAGArxHBDGOle0JlrsjrUKQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 49907
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-typert-registry",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "9ece236c7652a1d63576585c7b62512eedfc3b9f",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-typert-registry/-/dsh-typert-registry-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-ATZu3i7UId+ktsWW3pUFm5Hi1fVsRXFmByATVPp2RlxH1zjxXnauVW6k70ZwU/4FOsphRzo65SXOlAXA+natYg==",
+        "signatures": [
+          {
+            "sig": "MEQCIFWZxZmeTEJAklGWNu8v+BBDlea2I0b8BZe8USBkBV79AiBgBgr9Seyqhyu63UYDbd8zOPHF4tKVvAMoW5+hqYT7pA==",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 120796
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-user-approval",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "a092cca13e7459bfd99faa71ae6dcad12a2c7522",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-user-approval/-/dsh-user-approval-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-SdsO4Rs+NeJFoertkVilXBACREOLfkKPJJznYKqDhJxeRo38RJ56dtj0Xd0/6rERmsQiMck4Bwdrzg1ubUqPNA==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCTgPLLn3BzR7z1h5xrGjemo6gia6eXVsaIeZIeL40LSQIhALTGQMoZ68qRLc8+9FBuNxmtlEj81IvhwmjZW3CAlDtu",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 61433
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-user-questions",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "6a46a116d88c91c8b9be1e374b8ef89cf804cd1c",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-user-questions/-/dsh-user-questions-0.1.1-rc.2.tgz",
+        "fileCount": 13,
+        "integrity": "sha512-9lYoB7qCFE+Vvgwjny3MnRfS7QUefOspj4KpE3b30DAAJfxwrU4hRtLCHOKxyurF01qrkoEBBpXn4H5ilXYTKg==",
+        "signatures": [
+          {
+            "sig": "MEUCIAJXZovmdeNL425XwQ67lo3Tt4jCy65ruXwoBuv6p5QQAiEAjglxJiuTcXXJXUfl0cbFyRYVN/U9lX40Broeljtr0l8=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 29120
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-web",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "7876f7fc72610fe27e81f6468fc38bb51efac2ca",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-web/-/dsh-web-0.1.1-rc.2.tgz",
+        "fileCount": 10,
+        "integrity": "sha512-Rtikc8RUlfx6m9+hYvKB3JlAD34PrI2UFHEu1h8UMb7pM/ulIRpjBF7TPlg537WRK4ufCysqCJm0RheNMoYCcQ==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDk4s4FhB7yH1Wol7ciTL9spTR+XRImO5phAiQw+n/MygIgKK/AAZpTbTm++W3gYI0uueBSCP3BnQsZaOeMwL1mSNQ=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 32835
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-app",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "d755134547e65bcc45f64076722cebd972dbfcec",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-web-app/-/dsh-web-app-0.1.1-rc.2.tgz",
+        "fileCount": 12,
+        "integrity": "sha512-1zGHY7qwBVlVJrzIWu+86SuBZXaVUxe2JRfffsuRvKXq2QcR/K4CoJJfZ43cDoWKu9xPvvxz7w2ezV+EdXgg1A==",
+        "signatures": [
+          {
+            "sig": "MEUCIQDW94Ev9alUYCTeDRlkyHPaFF2eoyAMev05qaWDIZXswAIgd/3oL5RTGJ9cidZf89vH3n8QdtaoTdJDtDldTtfIMhE=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 53932
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-frontend",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "b504ffa318e6376e01ffb033c852a9423cc38520",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-web-frontend/-/dsh-web-frontend-0.1.1-rc.2.tgz",
+        "fileCount": 91,
+        "integrity": "sha512-1cjf39g6RW7cgtvwhIF6MSnp5sk3KYRkmRhZM4GETWLXCrTfMD0WCJr3yME1uvJsYPTk28XmKXwwMUPrO3kksQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQD6QSlRPWQNvQRnbN732dLGSkTARMjtIWxyRFkU33VnMgIhAJ7TtwDaKVDFqMoFIuESvwzPMLRKDjrC2uuqvfiHChQb",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 4548138
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-web-search-deepseek",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "aa238b41f222b1bae65283140d1bc5c7df5f22db",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-web-search-deepseek/-/dsh-web-search-deepseek-0.1.1-rc.2.tgz",
+        "fileCount": 11,
+        "integrity": "sha512-g8wl7k0Htd0MI5CCh0XHK768P5u05ge0JRThMSgNYQvuKJ+gY4uVwzPXJb7eZ7xNWgXt8ERLXIOMVRylaJX1XQ==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCLFr3jLEgehLhb25MFZT2lANv0fvMbBrcXxfuWEyev3AIhAMOyMdJ/ONnNPwxXqK13jggXt+84I2aoz2wZ35HSz6bf",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 45147
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-workflow",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "4c802ac400a25770ae10b7e2883c5feada68df85",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-workflow/-/dsh-workflow-0.1.1-rc.2.tgz",
+        "fileCount": 15,
+        "integrity": "sha512-YHUGOBfHGXVr9RRAdCvKZ/1SeeKx4jRumSBMNJo1ETbVqEK+ov2kV61pHFfLu1h+heCsEbOsEJeVXvgYC8EBhw==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDUgsZG7GVhM+zR8S4RHGuwQMsAna3oxT7A7MoL2wBvXwIhAIWnL5py5aB8d/7v/DLaOMdn2rR5hm22Im3Ux3OmG79U",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 46070
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-workflow-worker-thread",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "45d273853c97854821cf6a4377dd09bd9cfb6b6a",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-workflow-worker-thread/-/dsh-workflow-worker-thread-0.1.1-rc.2.tgz",
+        "fileCount": 18,
+        "integrity": "sha512-DdMO6gn56wakPTetkLKwuuj7cI3y3ji6c0oR3ksFQLhkYwaYV1hZSxVU6HEiW3hl2so8C163ms8QBgDyIWZsXg==",
+        "signatures": [
+          {
+            "sig": "MEUCIQCk4rNPwwlb24/Jfg2/mUtTwzeipPx4q6830OElCo1/lAIgeUqDv4wMCgfA3CfiaV5PiaVsrOM0Y1Xti7kzoL0IJM4=",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          },
+          {
+            "sig": "MEYCIQDIyzGfHPZzY44yrgSr5TfRxdT08n3K0frSQFhDoGi7TAIhANGZlj00Sb659MgczX6J/3PSgMSz4liDsc6l3wiqEmva",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 129394
+      }
+    },
+    {
+      "name": "@deepseek-ai/dsh-workspace",
+      "version": "0.1.1-rc.2",
+      "dist": {
+        "shasum": "16e052431311937073dccca97f00434d4cc5984d",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/dsh-workspace/-/dsh-workspace-0.1.1-rc.2.tgz",
+        "fileCount": 19,
+        "integrity": "sha512-jBUob4H5TZAiExq9YNVCglKAFmAKMtd1UbyqFfnZZ1Owm+3c3NbAXY947MHiD6NwCwFEW1y7FjrFj66UQvG90A==",
+        "signatures": [
+          {
+            "sig": "MEYCIQCtE48b7H7wzzs96L3KkeQ+SvdDnjijewwlPl/q58jNZQIhAPL3OmPoCoemzPLnaQBZkt9lqHClNYJT7/FUxPyxcWEc",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 108630
+      }
+    },
+    {
+      "name": "@deepseek-ai/schemastery",
+      "version": "3.18.1",
+      "dist": {
+        "shasum": "b5a37462550431408c94fb0fc31fd8a2a5471576",
+        "tarball": "https://registry.npmjs.org/@deepseek-ai/schemastery/-/schemastery-3.18.1.tgz",
+        "fileCount": 8,
+        "integrity": "sha512-Qn0FCSwCQnpnj6SB31I6i2sIKgKWnkbJM8O0EU91Gv2UsYVvtZTl6IA0sCwk2e2MZf5S8w5hpq9QkeVvK9qwxg==",
+        "signatures": [
+          {
+            "sig": "MEYCIQDiDY040T+cakC5XLybi7F3CR0rxB4x6FzJmfsEr35hFwIhALT6D5SMk+Nt07JGAY/2lsEqP7V5L1sXcwikjjrT/etm",
+            "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+          }
+        ],
+        "unpackedSize": 108021
+      }
+    }
+  ]
+}

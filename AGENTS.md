@@ -22,7 +22,7 @@ better-sidebar 从 v0.4.0 起暴露 `ctx.betterSidebar` 服务（Cordis context 
 2. `scripts/e2e-mount.sh` 用官方 CLI 把它装进一个**全新 scratch profile**（`dsh plugin --profile web add file:<tarball>`，触发 `dsh.profile.bundles` 协调），然后启动真实 `dsh web`（keyless，`--port 0`）。
 3. `tests/e2e/mount.e2e.ts`（Playwright Chromium）加载页面，断言外壳与 `[data-dsh-better-sidebar]` 挂载、无 `dsh-better-sidebar:` 错误条、无 pageerror/插件 console 错误，显式展开面板（`openByDefault` 默认关）后通过「+ 菜单」逐个打开内置 tab（含终端懒加载 chunk）深扫，再经 Files 文件窗口的树打开 seed 文件强制加载 editor 懒加载 chunk（`client-editor.js`，独立模式：每个文件新开 tab，seed 的 home tab 保持资源管理器）——缺失的内置 tab 或 chunk 都会使门禁变红。
 
-本地跑：`pnpm build && pnpm pack && pnpm exec playwright install chromium && pnpm test:mount`（需 PATH 上有 `dsh` 或可经 npx 拉取）。DSH CLI 版本在 CI 钉住 `@deepseek-ai/dsh@0.1.1-rc.2`（挂载冒烟验证基线；peer 下限保持 `^0.1.0-rc.8`，rc.8 与 0.1.1-rc.x 双向兼容）。`tests/e2e` 的 spec 命名 `*.e2e.ts` + vitest `exclude` 双保险与 vitest 隔离；**改动 vitest `exclude` 时必须保留默认排除项**（`exclude` 会整体替换默认值）。
+本地跑：`npm ci --prefix ci/runtime-legacy && pnpm build && pnpm pack && pnpm exec playwright install chromium && pnpm test:mount`。旧 CLI 的完整运行依赖由 [legacy fixture](ci/runtime-legacy/README.md) 的提交锁文件固定，不能只固定 CLI 版本或自动回退到 npx/latest。空 Profile 真启动后，每次插件安装及宿主启动都核对实际 Cordis／DSH peer 的真实目录；同版本的第二份宿主包也失败。`DSH_CMD` 是单一可执行文件路径，候选 Core 调用方必须设置 `DSH_RUNTIME_MODE=core`、`DSH_RUNTIME_ROOT` 和引用执行的 CLI wrapper，并通过 Core 自身 guard 证明本次候选身份。两条挂载检查使用同一准确 tarball，日志与结果保存在 `mount-artifacts`，不因浏览器检查失败跳过 aggregate 检查。`tests/e2e` 的 spec 命名 `*.e2e.ts` + vitest `exclude` 双保险与 vitest 隔离；**改动 vitest `exclude` 时必须保留默认排除项**（`exclude` 会整体替换默认值）。
 
 **DSH 0.1.2-alpha.1 适配（双协议 e2e）**：0.1.2-alpha.1（GitHub tag `dsh-v0.1.2-alpha.1`，**尚未发布 npm**，故 CI 钉版暂不动，发布后再平移）有两项破坏性变更，e2e lane 已经双版本兼容：
 

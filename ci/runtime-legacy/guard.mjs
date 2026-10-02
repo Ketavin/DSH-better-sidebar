@@ -31,6 +31,10 @@ export const PROFILE_REQUIRED = Object.freeze([
   '@deepseek-ai/cordis-plugin-hmr',
   '@deepseek-ai/cordis-plugin-timer',
 ]);
+const SIDEBAR_BROWSER_PEERS = new Set([
+  '@deepseek-ai/dsh-client-ui-primitives',
+  '@deepseek-ai/dsh-client-ui-slots',
+]);
 const json = filename => JSON.parse(readFileSync(filename, 'utf8'));
 const sha256 = filename => createHash('sha256').update(readFileSync(filename)).digest('hex');
 
@@ -136,6 +140,23 @@ export async function cleanupGuardResources(operations) {
 export function inspectConsumerDependencies(consumer, scope, roots, resolutions) {
   const declared = { ...consumer.metadata.dependencies, ...consumer.metadata.peerDependencies };
   for (const name of [...roots.keys()].filter(name => name in declared)) {
+    // The published web frontend compiles these two platform modules into its
+    // static browser seed table. Only Sidebar's peer-only browser face may use
+    // that contract; actual Node dependencies and other consumers stay strict.
+    if (consumer.name === 'dsh-better-sidebar'
+      && consumer.metadata.dsh?.client?.platform === 'web'
+      && SIDEBAR_BROWSER_PEERS.has(name)
+      && name in (consumer.metadata.peerDependencies ?? {})
+      && !(name in (consumer.metadata.dependencies ?? {}))
+      && !(name in (consumer.metadata.optionalDependencies ?? {}))) {
+      const directory = dirname(consumer.manifest);
+      const hostEntry = resolve(directory, consumer.metadata.main ?? 'lib/index.js');
+      assert.ok(hostEntry.startsWith(`${directory}${sep}`), 'Sidebar host entry escapes its package');
+      const hostSource = readFileSync(hostEntry, 'utf8');
+      assert.ok(!hostSource.includes(name), `Sidebar host artifact references browser-only peer ${name}; Node resolution must remain required`);
+      resolutions.push({ scope: 'browser-platform-peer', consumer: consumer.name, dependency: name, hostEntry, nodeResolutionRequired: false, verification: 'delegated-to-real-browser-mount' });
+      continue;
+    }
     const actual = resolvePackage(consumer.manifest, name);
     assertResolutionIdentity(name, actual, roots.get(name));
     resolutions.push({ scope, consumer: consumer.name, dependency: name, version: actual.version, manifest: actual.manifest });
@@ -261,6 +282,7 @@ export async function runGuard({ profile } = {}) {
     installedPackages: inventory.map(({ name, version, manifest }) => ({ name, version, manifest })),
     hostFamily: Object.fromEntries([...roots].map(([name, pkg]) => [name, { version: pkg.version, manifest: pkg.manifest }])),
     resolutions,
+    delegatedBrowserPeers: resolutions.filter(item => item.scope === 'browser-platform-peer'),
     profile: profileReport,
     hmr,
     fullBrowserMountVerified: false,

@@ -59,6 +59,18 @@ unused fixture-only package such as logger-console need not resolve from the
 Profile root. If a consumer declares it, absence or a second instance still
 fails; no missing actual dependency is silently skipped.
 
+Sidebar's peer-only `dsh-client-ui-primitives` and `dsh-client-ui-slots` belong
+to the browser face: official frontend 0.1.1-rc.2's compiled `dist` supplies
+both in the static module table passed to `__ModuleLoader__.create`. Sidebar's
+client factory and lazy chunks resolve them from that table, while its packed
+Node host entry does not reference them. The guard records exactly those two
+Sidebar web peers as `delegated-to-real-browser-mount`; it does not claim their
+browser verification passed. The real mount and deep sweep must activate
+Sidebar's `slots` injection, its primitives factory imports and rendered UI.
+If either package is a declared host dependency, is referenced by Sidebar's
+host artifact, or is requested by another Node consumer, ordinary Node
+resolution and instance checks remain required. No extra fallback is injected.
+
 The fixture has no profile lock for Sidebar's own installable dependencies.
 The actual tarball install stays in the existing scratch-profile lane, with
 automatic peer installation disabled; its host peer resolution is checked

@@ -132,3 +132,49 @@ test('same-version unused logger shadow in the parent fallback is rejected', asy
     assert.throws(() => inspectProfileDependencies(profile, roots), /duplicate or shadow host instance.*logger-console/);
   });
 });
+
+async function browserPeerConsumer(profile, { name = 'dsh-better-sidebar', hostSource = 'export const name = "guard-host";', hostDependency = false } = {}) {
+  const directory = join(profile, 'node_modules', name);
+  await mkdir(join(directory, 'lib'), { recursive: true });
+  const peers = { '@deepseek-ai/dsh-client-ui-primitives': '^0.1.0-rc.8', '@deepseek-ai/dsh-client-ui-slots': '^0.1.0-rc.8' };
+  const metadata = { name, version: '0.17.8', main: 'lib/index.js', peerDependencies: peers, dsh: { client: { platform: 'web' } } };
+  if (hostDependency) metadata.dependencies = { '@deepseek-ai/dsh-client-ui-primitives': '^0.1.0-rc.8' };
+  await writeFile(join(directory, 'package.json'), JSON.stringify(metadata));
+  await writeFile(join(directory, 'lib', 'index.js'), hostSource);
+  return directory;
+}
+
+test('only Sidebar browser peers delegate when native Node fallback omits static frontend seeds', async () => {
+  await withNativeProfile(async ({ profile, roots }) => {
+    const consumer = await browserPeerConsumer(profile);
+    for (const name of ['@deepseek-ai/dsh-client-ui-primitives', '@deepseek-ai/dsh-client-ui-slots']) {
+      assert.throws(() => resolvePackage(join(consumer, 'package.json'), name), /Cannot find module/);
+    }
+    const resolutions = [];
+    inspectProfileDependencies(profile, roots, resolutions);
+    const browserPeers = resolutions.filter(item => item.scope === 'browser-platform-peer');
+    assert.equal(browserPeers.length, 2);
+    assert.ok(browserPeers.every(item => item.nodeResolutionRequired === false && item.verification === 'delegated-to-real-browser-mount'));
+  });
+});
+
+test('a browser peer declared as a real Sidebar host dependency remains mandatory', async () => {
+  await withNativeProfile(async ({ profile, roots }) => {
+    await browserPeerConsumer(profile, { hostDependency: true });
+    assert.throws(() => inspectProfileDependencies(profile, roots), /Cannot find module.*client-ui-primitives/);
+  });
+});
+
+test('another consumer cannot opt into the Sidebar browser peer exception', async () => {
+  await withNativeProfile(async ({ profile, roots }) => {
+    await browserPeerConsumer(profile, { name: 'another-browser-consumer' });
+    assert.throws(() => inspectProfileDependencies(profile, roots), /Cannot find module.*client-ui-primitives/);
+  });
+});
+
+test('an actual Sidebar host reference cannot be hidden as a browser peer', async () => {
+  await withNativeProfile(async ({ profile, roots }) => {
+    await browserPeerConsumer(profile, { hostSource: 'import { Menu } from "@deepseek-ai/dsh-client-ui-primitives";' });
+    assert.throws(() => inspectProfileDependencies(profile, roots), /host artifact references browser-only peer.*Node resolution must remain required/);
+  });
+});

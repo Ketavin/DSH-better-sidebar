@@ -167,6 +167,31 @@ test('plugin mounts into the DSH shell and survives a built-in tab sweep', async
   // The unified panel host: the fixed containing block every panel lives in
   // (data-dsh-panel-host). Its presence is part of the injection contract.
   await expect(page.locator('[data-dsh-panel-host]')).toBeAttached({ timeout: 90_000 })
+  // These peers are supplied by the compiled frontend's module table, not
+  // by the scratch Profile's Node fallback. Verify their actual browser
+  // exports and singleton identity before exercising the menus below.
+  const browserPeers = await page.evaluate(async () => {
+    const modules = (globalThis as unknown as {
+      __dshSidebarModuleSystem__?: { import: (name: string) => Promise<Record<string, unknown>> }
+    }).__dshSidebarModuleSystem__
+    if (!modules) throw new Error('Sidebar did not receive the browser module system')
+    const primitives = await modules.import('@deepseek-ai/dsh-client-ui-primitives')
+    const slots = await modules.import('@deepseek-ai/dsh-client-ui-slots')
+    return {
+      menu: typeof primitives.Menu,
+      modal: typeof primitives.Modal,
+      slotCore: typeof slots.SlotCore,
+      primitivesSingleton: primitives === await modules.import('@deepseek-ai/dsh-client-ui-primitives'),
+      slotsSingleton: slots === await modules.import('@deepseek-ai/dsh-client-ui-slots'),
+    }
+  })
+  expect(browserPeers).toEqual({
+    menu: 'function', modal: 'function', slotCore: 'function',
+    primitivesSingleton: true, slotsSingleton: true,
+  })
+  await test.info().attach('browser-client-peer-providers', {
+    body: Buffer.from(JSON.stringify(browserPeers, null, 2)), contentType: 'application/json',
+  })
   // The host's global z-index is part of the layering contract: it must
   // sit above the AppFrame overlay layer (20) and below DSH's ui-cordis
   // dynamic-plugin panel (fixed, 30) so that surface is never hidden behind

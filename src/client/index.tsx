@@ -16,6 +16,7 @@ import { createBetterSidebarService, matchUrlTarget } from './service.ts'
 import { revalidateChunksOnReactivate, setChunkModuleSystem } from './chunk-loader.ts'
 import { registerBuiltins } from './builtins/index.ts'
 import { Sidebar } from './Sidebar.tsx'
+import { createHeaderControlPlacement, registerHeaderPanelControls } from './header-panel-controls.tsx'
 import { RenderBoundary } from './RenderBoundary.tsx'
 import { registerOpenPathInterception, registerTurnTailInterception } from './intercept.tsx'
 import { registerLinkInterception } from './link-intercept.ts'
@@ -116,6 +117,7 @@ export function apply(ctx: Context): void {
   // registrations (the official createXXXStore() factory rule — no
   // module-level singleton).
   const sidebarStore = createSidebarStore()
+  const headerControls = createHeaderControlPlacement()
   // The sidebar registry service: external plugins register tab types and
   // file previewers through `ctx.betterSidebar.registerTab/registerFileViewer`.
   // Published before the panel mounts so consumers injecting 'betterSidebar'
@@ -181,11 +183,14 @@ export function apply(ctx: Context): void {
       let root: Root | undefined
       let host: HTMLDivElement | undefined
       let mounted = false
+      let offHeaderControls: (() => void) | undefined
       let bodyObserver: MutationObserver | undefined
       let hostCheckFrame: number | null = null
       const unmount = (): void => {
         if (!mounted) return
         mounted = false
+        offHeaderControls?.()
+        offHeaderControls = undefined
         bodyObserver?.disconnect()
         bodyObserver = undefined
         if (hostCheckFrame !== null) {
@@ -263,7 +268,8 @@ export function apply(ctx: Context): void {
           host.setAttribute('data-dsh-better-sidebar', '')
           document.body.appendChild(host)
           root = createRoot(host)
-          root.render(createElement(RenderBoundary, { className: css.boundaryError }, createElement(Sidebar, { ctx, store: sidebarStore })))
+          root.render(createElement(RenderBoundary, { className: css.boundaryError }, createElement(Sidebar, { ctx, store: sidebarStore, headerControls })))
+          offHeaderControls = registerHeaderPanelControls(ctx, sidebarStore, headerControls)
           mounted = true
           guardAnchor()
           scheduleHostCheck()

@@ -100,7 +100,8 @@ test('width drag tracks the shell 1:1 with transitions disabled (issue #92)', as
   // the collapsed layout push still writes `--dsh-sidebar-width: 0px` — so the
   // geometry checks below are meaningless until the panel is expanded through
   // the toggle cluster.
-  const expandButton = sidebar.getByRole('button', { name: 'Expand sidebar' })
+  const expandButton = page.locator('[data-dsh-header-panel-controls], [data-dsh-toggle-cluster]')
+    .getByRole('button', { name: 'Expand sidebar' })
   await expect(expandButton, 'the collapsed toggle cluster must offer the expand button').toHaveCount(1)
   await expandButton.click()
 
@@ -273,7 +274,8 @@ test('a very fast width drag still commits the dragged position (no rollback on 
     if (!dismissed) break
   }
 
-  const expandButton = sidebar.getByRole('button', { name: 'Expand sidebar' })
+  const expandButton = page.locator('[data-dsh-header-panel-controls], [data-dsh-toggle-cluster]')
+    .getByRole('button', { name: 'Expand sidebar' })
   await expect(expandButton, 'the collapsed toggle cluster must offer the expand button').toHaveCount(1)
   await expandButton.click()
   await expect
@@ -373,7 +375,8 @@ async function dismissOnboarding(page: Page): Promise<void> {
 
 /** Open the sidebar panel and wait for the layout push to go live. */
 async function expandSidebar(page: Page, sidebar: Locator): Promise<void> {
-  const expandButton = sidebar.getByRole('button', { name: 'Expand sidebar' })
+  const expandButton = page.locator('[data-dsh-header-panel-controls], [data-dsh-toggle-cluster]')
+    .getByRole('button', { name: 'Expand sidebar' })
   await expect(expandButton, 'the collapsed toggle cluster must offer the expand button').toHaveCount(1)
   await expandButton.click()
   await expect
@@ -534,7 +537,8 @@ test('bottom panel never flashes full-width after a width drag release (issue #2
 
   // The bottom panel must be OPEN too — its right edge is what tracks the
   // center column (and what flashes full-width on release).
-  const bottomExpand = sidebar.getByRole('button', { name: 'Expand bottom panel' })
+  const bottomExpand = page.locator('[data-dsh-header-panel-controls], [data-dsh-toggle-cluster]')
+    .getByRole('button', { name: 'Expand bottom panel' })
   await expect(bottomExpand, 'the toggle cluster must offer the bottom-panel expand button').toHaveCount(1)
   await bottomExpand.click()
   await expect

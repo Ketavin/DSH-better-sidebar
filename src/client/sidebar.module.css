@@ -68,13 +68,25 @@
 .toggleCluster {
   position: absolute;
   /* env() resolves to 0 on devices without a top inset (desktops). */
-  top: calc(3px + env(safe-area-inset-top));
+  top: var(--dsh-toggle-top, calc(3px + env(safe-area-inset-top)));
   right: calc(10px + var(--dsh-activity-rail-width, 0px));
   z-index: 45;
   display: flex;
   flex-direction: row;
   gap: 4px;
   pointer-events: auto;
+}
+
+/* Native header.utilities is already an align-items:center flex row. The
+   same 28px icon buttons now share Session log's vertical center, without
+   hard-coded offsets tied to a particular host header height. */
+.headerToggles {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  pointer-events: auto;
+  -webkit-app-region: no-drag;
 }
 
 .activityRail {
@@ -145,7 +157,8 @@
    right end, so the tabs and the + menu genuinely yield space to the cluster
    (never hiding under it). */
 .panel:not(.panelHidden) .tabBar {
-  padding-right: 72px;
+  padding-right: var(--dsh-toggle-reserve-width, 72px);
+  height: var(--dsh-toggle-tab-height, 34px);
 }
 
 /* The closed-state affordance is the native rail icon control: a plain
@@ -172,6 +185,11 @@
 .toggleButton:hover:not(:disabled):not([aria-disabled='true']) {
   background: var(--dsw-alias-interactive-bg-hover);
   color: var(--dsw-alias-label-primary);
+}
+
+.toggleButton:focus-visible {
+  outline: 2px solid var(--dsw-alias-state-business-primary);
+  outline-offset: -2px;
 }
 
 .toggleButton:disabled,
@@ -539,7 +557,7 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
    `titleBarStripPx`; 40px fallback). The bottom panel is unaffected: it
    sits at the window's bottom, never under the top strip. */
 :global(body[data-dsh-title-bar-compat]) .toggleCluster {
-  top: calc(var(--dsh-title-bar-strip, 40px) + 3px);
+  top: var(--dsh-toggle-top, calc(var(--dsh-title-bar-strip, 40px) + 3px));
 }
 
 :global(body[data-dsh-title-bar-compat]) .panel {
@@ -2879,7 +2897,7 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
      reserves 40px instead of the desktop 72px — the tabs and + menu still
      yield space to the one remaining control. */
   .panel:not(.panelHidden) .tabBar {
-    padding-right: 40px;
+    padding-right: var(--dsh-toggle-reserve-width, 40px);
   }
 
   /* Narrower tabs: a phone-width drawer fits more open tabs before the

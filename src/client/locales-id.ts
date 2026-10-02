@@ -14,6 +14,8 @@
  */
 
 export const id: Record<string, string> = {
+  explorerWorkspace: "Ruang kerja",
+  explorerViewFailed: "Tampilan ini tidak tersedia. Kembali ke ruang kerja.",
   files: 'Berkas',
   explorer: 'Explorer',
   git: 'Source Control',

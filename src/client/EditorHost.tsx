@@ -96,6 +96,7 @@ export function EditorHost(props: {
   store: SidebarStore
   scope: SessionScope
   tab: SidebarTab
+  visible?: boolean
   expanded: string[]
   revealed: string[]
   onToggleDir: (path: string) => void
@@ -139,6 +140,10 @@ export function EditorHost(props: {
   // revision makes useSyncExternalStore race-free and still observes a
   // synchronous dispose+register replacement using the same viewer id.
   const service = ctx.get('betterSidebar')
+  useSyncExternalStore(
+    useCallback(callback => service?.subscribeExplorerViews(callback) ?? (() => {}), [service]),
+    useCallback(() => service?.getExplorerViewRevision() ?? 0, [service]),
+  )
   const viewerRegistryRevision = useSyncExternalStore(
     useCallback((callback: () => void) => service?.subscribeFileViewers(callback) ?? (() => {}), [service]),
     useCallback(() => service?.getFileViewerRevision() ?? 0, [service]),
@@ -386,11 +391,12 @@ export function EditorHost(props: {
   // chrome. File opens land in new per-path tabs through openFile above.
   // A folder window (meta.dir, any mode) renders the SAME surface rooted
   // at the folder instead of the session cwd.
-  if (treeOnly || folderRoot !== undefined) {
+  if (treeOnly || folderRoot !== undefined || showEmpty && (service?.getExplorerViews().length ?? 0) > 0) {
     return (
       <div className={css.editor}>
         <TreePanel
           full
+          explorerView={service === undefined ? undefined : { service, ctx, scope, visible: props.visible !== false, onOpenFile: openFileNewTab }}
           sessionId={scope.sessionId}
           cwd={folderRoot ?? scope.cwd}
           expanded={expanded}
@@ -510,6 +516,7 @@ export function EditorHost(props: {
               onPointerCancel={onResizeEnd}
             />
             <TreePanel
+              explorerView={service === undefined ? undefined : { service, ctx, scope, visible: props.visible !== false, onOpenFile: openFileNewTab }}
               sessionId={scope.sessionId}
               cwd={scope.cwd}
               expanded={expanded}

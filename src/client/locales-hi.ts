@@ -16,6 +16,8 @@
 
 /** The hi dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const hi: Record<string, string> = {
+  explorerWorkspace: "कार्यस्थान",
+  explorerViewFailed: "यह दृश्य उपलब्ध नहीं है। कार्यस्थान पर वापस जाएँ।",
   files: 'फ़ाइलें',
   explorer: 'एक्सप्लोरर',
   git: 'सोर्स कंट्रोल',

@@ -16,6 +16,8 @@
 
 /** The ja dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const ja: Record<string, string> = {
+  explorerWorkspace: "ワークスペース",
+  explorerViewFailed: "このビューは利用できません。ワークスペースに戻ってください。",
   files: 'ファイル',
   explorer: 'エクスプローラー',
   git: 'ソース管理',

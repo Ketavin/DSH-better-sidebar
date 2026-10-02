@@ -2,6 +2,8 @@
  * German dictionary for better-sidebar.
  */
 export const de: Record<string, string> = {
+  explorerWorkspace: "Arbeitsbereich",
+  explorerViewFailed: "Diese Ansicht ist nicht verfügbar. Wechseln Sie zum Arbeitsbereich.",
   files: 'Dateien',
   explorer: 'Explorer',
   git: 'Quellcodeverwaltung',

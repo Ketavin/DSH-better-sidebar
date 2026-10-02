@@ -1,4 +1,6 @@
 export const sv: Record<string, string> = {
+  explorerWorkspace: "Arbetsyta",
+  explorerViewFailed: "Den här vyn är inte tillgänglig. Gå tillbaka till arbetsytan.",
   files: 'Filer',
   explorer: 'Utforskare',
   git: 'Källkodshantering',

@@ -16,6 +16,8 @@
 
 /** The tr dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const tr: Record<string, string> = {
+  explorerWorkspace: "Çalışma alanı",
+  explorerViewFailed: "Bu görünüm kullanılamıyor. Çalışma alanına dönün.",
   files: 'Dosyalar',
   explorer: 'Gezgin',
   git: 'Kaynak denetimi',

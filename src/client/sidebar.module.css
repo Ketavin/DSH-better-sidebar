@@ -3072,3 +3072,24 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
   animation: dsh-toc-flash 1.2s ease-out;
   border-radius: 4px;
 }
+.explorerViews {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+}
+.explorerViews button {
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font: inherit;
+  font: var(--dsw-font-xxxs-11);
+  cursor: pointer;
+}
+.explorerViews button[aria-selected='true'] { background: var(--dsw-alias-bg-layer-2); }
+.explorerViews button:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); }
+.explorerViewContent { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+.explorerViewContent[hidden] { display: none; }

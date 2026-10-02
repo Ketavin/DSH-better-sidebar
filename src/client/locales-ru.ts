@@ -12,6 +12,8 @@
  */
 
 export const ru: Record<string, string> = {
+  explorerWorkspace: "Рабочая область",
+  explorerViewFailed: "Это представление недоступно. Вернитесь в рабочую область.",
   files: 'Файлы',
   explorer: 'Проводник',
   git: 'Контроль версий',

@@ -8,6 +8,8 @@
  */
 
 export const ko: Record<string, string> = {
+  explorerWorkspace: "작업 공간",
+  explorerViewFailed: "이 보기를 사용할 수 없습니다. 작업 공간으로 돌아가세요.",
   files: '파일',
   explorer: '탐색기',
   git: '소스 제어',

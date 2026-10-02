@@ -18,6 +18,8 @@
 
 /** The pl dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const pl: Record<string, string> = {
+  explorerWorkspace: "Obszar roboczy",
+  explorerViewFailed: "Ten widok jest niedostępny. Wróć do obszaru roboczego.",
   files: 'Pliki',
   explorer: 'Eksplorator',
   git: 'Kontrola źródła',

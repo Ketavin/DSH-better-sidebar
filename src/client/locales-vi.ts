@@ -16,6 +16,8 @@
 
 /** The vi dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const vi: Record<string, string> = {
+  explorerWorkspace: "Không gian làm việc",
+  explorerViewFailed: "Chế độ xem này không khả dụng. Quay lại không gian làm việc.",
   files: 'Tệp',
   explorer: 'Trình khám phá',
   git: 'Quản lý mã nguồn',

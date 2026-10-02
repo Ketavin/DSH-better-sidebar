@@ -7,6 +7,8 @@
  */
 
 export const it: Record<string, string> = {
+  explorerWorkspace: "Area di lavoro",
+  explorerViewFailed: "Questa vista non è disponibile. Torna all’area di lavoro.",
   files: 'File',
   explorer: 'Esplora risorse',
   git: 'Controllo del codice sorgente',

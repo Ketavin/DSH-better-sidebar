@@ -23,6 +23,8 @@
 
 /** The zh dictionary (also registered into the DSH locale registry under {@link LOCALE_NS}). */
 export const zh = {
+  explorerWorkspace: '工作区',
+  explorerViewFailed: '此视图暂时不可用，可切回工作区。',
   files: '文件',
   explorer: '资源管理器',
   git: '源代码管理',
@@ -379,6 +381,8 @@ export const zh = {
 
 /** The en dictionary (key-set-equal to zh, enforced by the type annotation). */
 export const en: Record<keyof typeof zh, string> = {
+  explorerWorkspace: 'Workspace',
+  explorerViewFailed: 'This view is unavailable. Switch back to Workspace.',
   files: 'Files',
   explorer: 'Explorer',
   git: 'Source Control',

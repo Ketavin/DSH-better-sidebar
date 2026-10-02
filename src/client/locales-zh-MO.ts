@@ -31,6 +31,8 @@
 
 /** The zh-HK dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const zhMO: Record<string, string> = {
+  explorerWorkspace: "工作區",
+  explorerViewFailed: "此視圖暫時無法使用，可切回工作區。",
   files: '檔案',
   explorer: '檔案總管',
   git: '原始碼管理',

@@ -1,4 +1,6 @@
 export const pt: Record<string, string> = {
+  explorerWorkspace: "Área de trabalho",
+  explorerViewFailed: "Esta visualização não está disponível. Volte à área de trabalho.",
   files: 'Arquivos',
   explorer: 'Explorador',
   git: 'Controle de código-fonte',

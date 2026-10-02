@@ -30,6 +30,8 @@ import {
   UPLOAD_HINT_MS, type UploadItem,
 } from './upload.ts'
 import css from './sidebar.module.css'
+import { ExplorerViews } from './ExplorerViews.tsx'
+import type { BetterSidebarService, ExplorerViewProps } from './service.ts'
 
 /** One in-flight upload session (the overlay's progress source). */
 interface UploadSession {
@@ -63,6 +65,7 @@ export function TreePanel(props: {
   /** Full-window presentation: the panel fills its host instead of docking
    *  at a fixed width. */
   full?: boolean
+  explorerView?: ExplorerViewProps & { service: BetterSidebarService }
 }) {
   const { sessionId, cwd, expanded, revealed, onToggle, onOpenFile, onOpenFileNewTab, onOpenFileSide, openWithTargets, openWithPinned, openWithSsh, onOpenWith, onToggleOpenWithPin, onReferenceFile, full } = props
   const [query, setQuery] = useState('')
@@ -153,8 +156,7 @@ export function TreePanel(props: {
 
   const busy = upload !== null
 
-  return (
-    <div className={clsx(css.editorTreePanel, full === true && css.editorTreePanelFull)}>
+  const contents = <>
       <div className={css.editorTreeSearch}>
         <input
           className={css.editorSearchInput}
@@ -270,6 +272,8 @@ export function TreePanel(props: {
           cancelling={cancelling}
         />
       )}
-    </div>
-  )
+  </>
+  return <div className={clsx(css.editorTreePanel, full === true && css.editorTreePanelFull)}>
+    {props.explorerView === undefined ? contents : <ExplorerViews {...props.explorerView}>{contents}</ExplorerViews>}
+  </div>
 }

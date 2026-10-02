@@ -537,3 +537,12 @@ Thanks to everyone who contributed:
 <div align="center">
   <sub>MIT License · Built for the <a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a> ecosystem · discover more on the <a href="https://github.com/topics/dsh-better-sidebar">dsh-better-sidebar topic</a></sub>
 </div>
+# Session deliverables extension (0.17.7)
+
+Plugins can register a view inside Files through `betterSidebar.registerExplorerView()`
+when the service advertises `explorerViews`. This does not add a rail icon.
+A descriptor has `id`, `title`, optional `order`, and a React `component` receiving
+`{ctx, scope, visible, onOpenFile}`. Pause polling while hidden and manage the
+returned disposer with `ctx.effect`. `subscribeExplorerViews/getExplorerViewRevision`
+is independent of the previewer registry. Workspace uploads remain mounted during
+view switches, and removing an extension restores Workspace.

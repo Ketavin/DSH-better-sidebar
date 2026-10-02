@@ -528,3 +528,12 @@ Windows / Linux / macOS 三平台适配（macOS 日常验证；其余经单元�
 <div align="center">
   <sub>MIT License · Built for the <a href="https://github.com/deepseek-ai/deepseek-harness">DeepSeek Harness</a> ecosystem · 在 <a href="https://github.com/topics/dsh-better-sidebar">topic dsh-better-sidebar</a> 发现更多生态插件</sub>
 </div>
+# 会话交付物扩展（0.17.7）
+
+文件窗口允许外部插件通过 `betterSidebar.registerExplorerView()` 添加内部视图。
+扩展不增加右侧图标；`explorerViews` capability 表示此 API 可用。
+descriptor 包含 `id`、`title`、可选 `order` 和 React `component`；组件收到
+`{ctx, scope, visible, onOpenFile}`。`visible=false` 时应暂停轮询。
+注册返回 disposer；使用 `ctx.effect` 管理，卸载后自动恢复工作区。
+`subscribeExplorerViews/getExplorerViewRevision` 提供独立于文档预览器的订阅，
+扩展加载不会触发已有文档预览器重新挂载。工作区在切换视图时保留挂载和上传状态。

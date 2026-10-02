@@ -340,12 +340,31 @@ export interface OpenTabSeed {
   meta?: unknown
 }
 
+/** A plugin-owned view inside the Files explorer, without adding a rail tab. */
+export interface ExplorerViewProps {
+  ctx: Context
+  scope: SessionScope
+  visible: boolean
+  onOpenFile(path: string): void
+}
+
+export interface ExplorerViewDescriptor {
+  id: string
+  title: string | (() => string)
+  order?: number
+  component: (props: ExplorerViewProps) => ReactNode
+}
+
 /**
  * The registry service published as `ctx.betterSidebar`.
  */
 export interface BetterSidebarService {
   registerTab(descriptor: TabDescriptor): () => void
   registerFileViewer(descriptor: FileViewerDescriptor): () => void
+  registerExplorerView(descriptor: ExplorerViewDescriptor): () => void
+  getExplorerViews(): readonly ExplorerViewDescriptor[]
+  subscribeExplorerViews(listener: () => void): () => void
+  getExplorerViewRevision(): number
   getTabs(): readonly TabDescriptor[]
   getFileViewers(): readonly FileViewerDescriptor[]
   /** Find a tab descriptor by id (undefined if not registered). */
@@ -476,7 +495,7 @@ export function matchUrlTarget(tabs: readonly TabDescriptor[], url: URL): TabDes
  * The plugin version this service instance reports. Keep in lockstep with
  * `package.json`'s version — `tests/service.spec.ts` asserts the pair.
  */
-export const SIDEBAR_SERVICE_VERSION = '0.17.6'
+export const SIDEBAR_SERVICE_VERSION = '0.17.7'
 
 /**
  * Monotonic capability list consumers use to gate new API usage (features
@@ -490,6 +509,7 @@ export const SIDEBAR_SERVICE_VERSION = '0.17.6'
  * - 'tabMeta': SidebarTab.meta (seeds, createTab, updateTab, persistence)
  * - 'pluginSettings': SidebarSettingsDeclaration.pluginToggles/render
  * - 'viewerRegistrySubscription': subscribeFileViewers/getFileViewerRevision
+ * - 'explorerViews' (v0.17.7): registerExplorerView/getExplorerViews and isolated revision subscription
  * - 'urlTarget' (v0.13.0): TabDescriptor.urlTarget (external-link claims)
  * - 'settingSelect': SidebarSettingToggle type 'select' (options/multi)
  * - 'floatWindows' (v0.16.0): tabs float as free windows — openTab's dedupe/
@@ -509,6 +529,7 @@ export const SIDEBAR_FEATURES = [
   'urlTarget',
   'settingSelect',
   'floatWindows',
+  'explorerViews',
 ] as const
 
 /** Run one plugin callback; a throw is logged and never breaks the caller. */
@@ -528,6 +549,9 @@ function safeCall(fn: () => void): void {
 export function createBetterSidebarService(store: SidebarStore): BetterSidebarService {
   const tabs = new Map<string, TabDescriptor>()
   const viewers = new Map<string, FileViewerDescriptor>()
+  const explorerViews = new Map<string, ExplorerViewDescriptor>()
+  const explorerListeners = new Set<() => void>()
+  let explorerRevision = 0
   const listeners = new Set<() => void>()
   const viewerListeners = new Set<() => void>()
   let viewerRevision = 0
@@ -584,6 +608,30 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
   }
 
   const getTabs = (): readonly TabDescriptor[] => Array.from(tabs.values())
+  const registerExplorerView = (descriptor: ExplorerViewDescriptor): (() => void) => {
+    if (!descriptor.id || descriptor.id === 'workspace' || typeof descriptor.component !== 'function') {
+      throw new TypeError('[dsh-better-sidebar] invalid explorer view')
+    }
+    if (explorerViews.has(descriptor.id)) throw new Error(`explorer view "${descriptor.id}" already registered`)
+    const changed = (): void => {
+      explorerRevision += 1
+      for (const listener of [...explorerListeners]) safeCall(listener)
+    }
+    explorerViews.set(descriptor.id, descriptor)
+    changed()
+    return () => {
+      if (explorerViews.get(descriptor.id) !== descriptor) return
+      explorerViews.delete(descriptor.id)
+      changed()
+    }
+  }
+  const getExplorerViews = (): readonly ExplorerViewDescriptor[] =>
+    [...explorerViews.values()].sort((a, b) => (a.order ?? 100) - (b.order ?? 100))
+  const subscribeExplorerViews = (listener: () => void): (() => void) => {
+    explorerListeners.add(listener)
+    return () => { explorerListeners.delete(listener) }
+  }
+  const getExplorerViewRevision = (): number => explorerRevision
   const getFileViewers = (): readonly FileViewerDescriptor[] => Array.from(viewers.values())
   const getTab = (id: string): TabDescriptor | undefined => tabs.get(id)
 
@@ -842,6 +890,10 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
   return {
     registerTab,
     registerFileViewer,
+    registerExplorerView,
+    getExplorerViews,
+    subscribeExplorerViews,
+    getExplorerViewRevision,
     getTabs,
     getFileViewers,
     getTab,

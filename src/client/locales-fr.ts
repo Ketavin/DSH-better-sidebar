@@ -9,6 +9,8 @@
 
 /** fr dictionary for the `betterSidebar` namespace. */
 export const fr: Record<string, string> = {
+  explorerWorkspace: "Espace de travail",
+  explorerViewFailed: "Cette vue est indisponible. Revenez à l’espace de travail.",
   files: 'Fichiers',
   explorer: 'Explorateur',
   git: 'Gestion de code source',

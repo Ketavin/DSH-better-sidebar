@@ -14,6 +14,8 @@
  * - English brand names (VS Code, Cursor, Zed, SSH) stay as-is.
  */
 export const nl: Record<string, string> = {
+  explorerWorkspace: "Werkruimte",
+  explorerViewFailed: "Deze weergave is niet beschikbaar. Ga terug naar de werkruimte.",
   files: 'Bestanden',
   explorer: 'Verkenner',
   git: 'Bronbeheer',

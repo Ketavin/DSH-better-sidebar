@@ -262,6 +262,9 @@ export const zh = {
   viewerBinary: '二进制下载',
   viewerHtml: 'HTML',
   browser: '浏览器',
+  browserModeLabel: '浏览器模式',
+  browserModePreview: '网页预览',
+  browserModeAgent: 'Agent 浏览器',
   browserPlaceholder: '输入网址，例如 example.com',
   browserGo: '前往',
   browserBack: '后退',
@@ -620,6 +623,9 @@ export const en: Record<keyof typeof zh, string> = {
   viewerBinary: 'Binary download',
   viewerHtml: 'HTML',
   browser: 'Browser',
+  browserModeLabel: 'Browser mode',
+  browserModePreview: 'Web preview',
+  browserModeAgent: 'Agent browser',
   browserPlaceholder: 'Enter a URL, e.g. example.com',
   browserGo: 'Go',
   browserBack: 'Back',
@@ -768,24 +774,34 @@ import { zhMO as zhMODict } from './locales-zh-MO.ts'
 
 /** The ja dictionary (key-set-equal to zh, enforced by the type annotation). */
 export const ja: Record<keyof typeof zh, string> = jaDict as Record<keyof typeof zh, string>
-export const de: Record<keyof typeof zh, string> = deDict as Record<keyof typeof zh, string>
-export const fr: Record<keyof typeof zh, string> = frDict as Record<keyof typeof zh, string>
-export const pt: Record<keyof typeof zh, string> = ptDict as Record<keyof typeof zh, string>
-export const ko: Record<keyof typeof zh, string> = koDict as Record<keyof typeof zh, string>
-export const ar: Record<keyof typeof zh, string> = arDict as Record<keyof typeof zh, string>
-export const hi: Record<keyof typeof zh, string> = hiDict as Record<keyof typeof zh, string>
-export const id: Record<keyof typeof zh, string> = idDict as Record<keyof typeof zh, string>
-export const tr: Record<keyof typeof zh, string> = trDict as Record<keyof typeof zh, string>
-export const vi: Record<keyof typeof zh, string> = viDict as Record<keyof typeof zh, string>
-export const th: Record<keyof typeof zh, string> = thDict as Record<keyof typeof zh, string>
-export const ru: Record<keyof typeof zh, string> = ruDict as Record<keyof typeof zh, string>
-export const it: Record<keyof typeof zh, string> = itDict as Record<keyof typeof zh, string>
-export const nl: Record<keyof typeof zh, string> = nlDict as Record<keyof typeof zh, string>
-export const sv: Record<keyof typeof zh, string> = svDict as Record<keyof typeof zh, string>
-export const pl: Record<keyof typeof zh, string> = plDict as Record<keyof typeof zh, string>
-export const zhHK: Record<keyof typeof zh, string> = zhHKDict as Record<keyof typeof zh, string>
-export const zhTW: Record<keyof typeof zh, string> = zhTWDict as Record<keyof typeof zh, string>
-export const zhMO: Record<keyof typeof zh, string> = zhMODict as Record<keyof typeof zh, string>
+// Newly introduced mode copy falls back to English until the remaining dictionaries
+// translate it. Preserve their existing entries and their public key-set parity.
+function withBrowserModeFallback(dict: Record<string, string>): Record<keyof typeof zh, string> {
+  return {
+    browserModeLabel: en.browserModeLabel,
+    browserModePreview: en.browserModePreview,
+    browserModeAgent: en.browserModeAgent,
+    ...dict,
+  } as Record<keyof typeof zh, string>
+}
+export const de = withBrowserModeFallback(deDict)
+export const fr = withBrowserModeFallback(frDict)
+export const pt = withBrowserModeFallback(ptDict)
+export const ko = withBrowserModeFallback(koDict)
+export const ar = withBrowserModeFallback(arDict)
+export const hi = withBrowserModeFallback(hiDict)
+export const id = withBrowserModeFallback(idDict)
+export const tr = withBrowserModeFallback(trDict)
+export const vi = withBrowserModeFallback(viDict)
+export const th = withBrowserModeFallback(thDict)
+export const ru = withBrowserModeFallback(ruDict)
+export const it = withBrowserModeFallback(itDict)
+export const nl = withBrowserModeFallback(nlDict)
+export const sv = withBrowserModeFallback(svDict)
+export const pl = withBrowserModeFallback(plDict)
+export const zhHK = withBrowserModeFallback(zhHKDict)
+export const zhTW = withBrowserModeFallback(zhTWDict)
+export const zhMO = withBrowserModeFallback(zhMODict)
 
 /** The DSH locale service attached by the client apply (absent → browser detection). */
 let localeService: { getSnapshot(): { active: string } } | undefined

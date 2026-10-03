@@ -23,7 +23,7 @@ import type { ReactNode } from 'react'
 import type { Context } from '../context-types.ts'
 import {
   activateTab as activateTabReducer, allLeaves, closeTab as closeTabReducer, closeFloatByTab, floatWithTab,
-  leafWithTab, openTabInActivePane, patchTab, raiseFloat, tabOpenIn, togglePanel, treeOf,
+  leafWithTab, makeDefaultState, openTabInActivePane, patchTab, raiseFloat, tabOpenIn, togglePanel, treeOf,
   type SidebarSnapshot, type SidebarState, type SidebarStore, type SidebarTab,
 } from './state.ts'
 import { isNarrowWidth } from './breakpoints.ts'
@@ -157,6 +157,23 @@ export interface TabComponentProps {
   onSubagentJump?: (childSessionId: string) => void
 }
 
+/** One explicit, session-scoped URL request. No browser credentials belong here. */
+export interface BrowserUrlRequest {
+  url: string
+  /** Optional display title, preserving sidebar_open's existing URL label. */
+  title?: string
+  scope: SessionScope
+  /** Omitted: preserve enabled urlTarget claims, then use ordinary preview. */
+  mode?: 'preview' | 'agent'
+  source: 'address-bar' | 'markdown' | 'sidebar_open' | 'plugin'
+  /** Correlation identity; an adapter owns any durable operation deduplication. */
+  requestId: string
+}
+
+export type BrowserUrlOutcome =
+  | { ok: true; type: string; url: string }
+  | { ok: false; code: 'invalid-url' | 'missing-session' | 'unavailable' | 'disabled' | 'handler-unavailable' | 'handler-failed' | 'stale-registration'; message: string }
+
 /** Describes one kind of sidebar tab (builtins register themselves too). */
 export interface TabDescriptor {
   /** Unique id; also the `SidebarTab.type` value (`'explorer'`, `'my-plugin:db'`). */
@@ -210,6 +227,13 @@ export interface TabDescriptor {
    * existing tab of the same type and the new URL is not applied.
    */
   urlTarget?: (url: URL) => boolean
+  /**
+   * Optional asynchronous URL adapter. Resolve only after the owning backend
+   * has navigated the request's session/space; throw on failure. The service
+   * then opens/focuses this descriptor's actual tab type. No observer tab may
+   * claim successful Agent navigation merely by accepting a URL seed.
+   */
+  onOpenUrl?: (request: BrowserUrlRequest) => void | Promise<void>
   /**
    * Declarative settings shown in the Side card settings page: every
    * registered tab gets an enable/disable switch (icon + title + id), and
@@ -408,6 +432,8 @@ export interface BetterSidebarService {
    * refuse `openTab` (only the settings disable switch does).
    */
   openTab(seed: OpenTabSeed, scope?: SessionScope): void
+  /** HTTP(S) URL entry with an explicit result; openTab keeps its existing void contract. */
+  openBrowserUrl(request: BrowserUrlRequest): Promise<BrowserUrlOutcome>
   /**
    * Close a tab by id (fires descriptor.onClose). An unknown tab id is a
    * strict no-op (no state churn, no callbacks). `scope` (v0.12.0+) rides
@@ -530,6 +556,7 @@ export const SIDEBAR_FEATURES = [
   'settingSelect',
   'floatWindows',
   'explorerViews',
+  'browserUrl',
 ] as const
 
 /** Run one plugin callback; a throw is logged and never breaks the caller. */
@@ -546,8 +573,10 @@ function safeCall(fn: () => void): void {
  * tab/viewer registries (Map + listener set) and proxies openTab/closeTab
  * to the store's reducer. One instance per client plugin activation.
  */
-export function createBetterSidebarService(store: SidebarStore): BetterSidebarService {
+export function createBetterSidebarService(store: SidebarStore, ctx?: Context): BetterSidebarService {
   const tabs = new Map<string, TabDescriptor>()
+  const tabEpochs = new Map<string, number>()
+  let nextTabEpoch = 0
   const viewers = new Map<string, FileViewerDescriptor>()
   const explorerViews = new Map<string, ExplorerViewDescriptor>()
   const explorerListeners = new Set<() => void>()
@@ -582,10 +611,12 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
       throw new Error(`[dsh-better-sidebar] tab type "${descriptor.id}" already registered`)
     }
     tabs.set(descriptor.id, descriptor)
+    tabEpochs.set(descriptor.id, ++nextTabEpoch)
     notify()
     return () => {
       if (tabs.get(descriptor.id) === descriptor) {
         tabs.delete(descriptor.id)
+        tabEpochs.delete(descriptor.id)
         notify()
       }
     }
@@ -838,6 +869,73 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
     }
   }
 
+  const openBrowserUrl = async (request: BrowserUrlRequest): Promise<BrowserUrlOutcome> => {
+    const refused = (code: Extract<BrowserUrlOutcome, { ok: false }>['code'], message: string): BrowserUrlOutcome => ({ ok: false, code, message })
+    if (typeof request.scope?.sessionId !== 'string' || request.scope.sessionId.trim() === '') {
+      return refused('missing-session', 'Choose a conversation before opening a browser URL.')
+    }
+    if (typeof request.requestId !== 'string' || request.requestId.trim() === '') {
+      return refused('invalid-url', 'The browser request needs a correlation identity.')
+    }
+    let url: URL
+    try {
+      url = new URL(request.url)
+      if (!['http:', 'https:'].includes(url.protocol) || url.username !== '' || url.password !== '') {
+        return refused('invalid-url', 'Only HTTP(S) URLs without embedded credentials can be opened.')
+      }
+    } catch {
+      return refused('invalid-url', 'The browser URL is invalid.')
+    }
+    if (store.getSuspended()) return refused('disabled', 'The sidebar is disabled.')
+    const enabledTabs = Array.from(tabs.values()).filter(tab => isTabEnabled(tab.id))
+    const type = request.mode === 'agent' ? 'ego-browser:watch'
+      : request.mode === 'preview' ? 'browser'
+        : matchUrlTarget(enabledTabs, url)?.id ?? 'browser'
+    if (!isTabEnabled(type)) return refused('disabled', 'This browser mode is disabled.')
+    const descriptor = tabs.get(type)
+    if (descriptor === undefined) return refused('unavailable', 'This browser mode is not registered.')
+    const epoch = tabEpochs.get(type)
+    const scope = Object.freeze({ ...request.scope })
+    const normalized: BrowserUrlRequest = Object.freeze({ ...request, scope, url: url.href })
+    const available = (): boolean => {
+      if (descriptor.available === undefined) return true
+      if (ctx === undefined) return false
+      const state = store.getSessionStates().get(scope.sessionId) ?? makeDefaultState()
+      try { return descriptor.available(ctx, scope, state) === true } catch { return false }
+    }
+    // Navigating needs the backend; activating an already-open tab is a
+    // separate rail action and intentionally does not use this predicate.
+    if (!available()) return refused('unavailable', 'This browser mode cannot navigate right now.')
+    if (type === 'ego-browser:watch' && descriptor.onOpenUrl === undefined) {
+      return refused('handler-unavailable', 'Agent browser navigation has not been connected.')
+    }
+    if (descriptor.onOpenUrl !== undefined) {
+      try { await descriptor.onOpenUrl(normalized) } catch {
+        return refused('handler-failed', 'The browser could not finish navigation.')
+      }
+      // Disposal/re-registration during an awaited backend operation must
+      // never open a replacement plugin's tab with an old result.
+      if (tabs.get(type) !== descriptor || tabEpochs.get(type) !== epoch) {
+        return refused('stale-registration', 'The browser mode changed during navigation.')
+      }
+      if (store.getSuspended() || !isTabEnabled(type)) return refused('disabled', 'This browser mode is disabled.')
+      if (!available()) return refused('unavailable', 'This browser mode is no longer available.')
+      try { openTab({ type }, scope) } catch {
+        return refused('unavailable', 'The browser tab could not be opened.')
+      }
+    } else {
+      // Preserve ordinary preview and existing specialized URL viewer seeds.
+      try { openTab({ type, url: normalized.url, title: normalized.title ?? url.hostname }, scope) } catch {
+        return refused('unavailable', 'The browser tab could not be opened.')
+      }
+    }
+    const landed = store.getSessionStates().get(scope.sessionId)
+    const opened = landed !== undefined && [...allLeaves(landed.splits), ...allLeaves(landed.bottomSplits)]
+      .flatMap(leaf => leaf.tabs).concat(landed.floats.map(float => float.tab)).some(tab => tab.type === type)
+    if (!opened) return refused('unavailable', 'The browser tab could not be opened.')
+    return { ok: true, type, url: normalized.url }
+  }
+
   /** The snapshot the store publishes (state/prefs carry the active session). */
   const getSnapshot = (): SidebarSnapshot => store.getSnapshot()
 
@@ -901,6 +999,7 @@ export function createBetterSidebarService(store: SidebarStore): BetterSidebarSe
     isViewerEnabled,
     matchFileViewer,
     openTab,
+    openBrowserUrl,
     closeTab,
     subscribe,
     subscribeFileViewers,

@@ -45,6 +45,7 @@ export type {
   TabType,
 } from './state.ts'
 export type { SessionScope } from './api.ts'
+export type { SidechatQuote } from './sidechat-quote.ts'
 export type { SidebarPrefs } from '../prefs-shared.ts'
 
 /** The row control a declarative setting renders as in the settings popup. */
@@ -210,7 +211,7 @@ export interface TabDescriptor {
    * mint `terminal:<n>` ids and bump `nextTerminal`.
    * When omitted, a default `{ id, type, title }` tab is created.
    */
-  createTab?: (state: SidebarState) => { tab: SidebarTab; patch?: Partial<SidebarState> } | null
+  createTab?: (state: SidebarState, seed?: OpenTabSeed) => { tab: SidebarTab; patch?: Partial<SidebarState> } | null
   /**
    * External-link target claim (v0.13.0+): when a GUI external-link click
    * is taken over (the `browserInterceptLinks` master AND the URL's
@@ -362,6 +363,8 @@ export interface OpenTabSeed {
   url?: string
   /** JSON-serializable custom state carried on the minted tab (persisted across reloads; v0.12.0+). */
   meta?: unknown
+  /** Reveal an explicitly requested tab in the current session. */
+  reveal?: boolean
 }
 
 /** A plugin-owned view inside the Files explorer, without adding a rail tab. */
@@ -465,7 +468,7 @@ export interface BetterSidebarService {
   /** Subscribe to snapshot changes (session switch, state changes, prefs changes). Returns the disposer. */
   subscribeState(listener: () => void): () => void
   /** Update an open tab's display fields (title / path / meta); a missing tab id is a no-op. */
-  updateTab(tabId: string, patch: { title?: string; path?: string; meta?: unknown }): void
+  updateTab(tabId: string, patch: { title?: string; path?: string; meta?: unknown }, scope?: SessionScope): boolean
   /**
    * Activate an open tab (the tab-bar activation path; fires
    * descriptor.onActivate). An unknown tab id is a strict no-op. `scope`
@@ -529,6 +532,9 @@ export const SIDEBAR_SERVICE_VERSION = '0.17.8'
  * - 'badge': TabDescriptor.badge
  * - 'tabLifecycle': TabDescriptor.onOpen/onActivate/onClose
  * - 'updateTab': BetterSidebarService.updateTab
+ * - 'scopedTabUpdate': updateTab's optional scope and boolean found result
+ * - 'sidechatQuoteDraft': createTab receives its seed; sidechat accepts validated
+ *   meta.quoteDraft; seed.reveal expands only the active session's panel
  * - 'openFile': BetterSidebarService.openFile
  * - 'targetedOpen': BetterSidebarService.openTab(seed, scope?)
  * - 'stateSubscription': getSnapshot/subscribeState
@@ -546,6 +552,8 @@ export const SIDEBAR_FEATURES = [
   'badge',
   'tabLifecycle',
   'updateTab',
+  'sidechatQuoteDraft',
+  'scopedTabUpdate',
   'openFile',
   'targetedOpen',
   'stateSubscription',
@@ -730,7 +738,7 @@ export function createBetterSidebarService(store: SidebarStore, ctx?: Context): 
       let tab: SidebarTab
       let next: SidebarState
       if (descriptor.createTab !== undefined) {
-        const result = descriptor.createTab(state)
+        const result = descriptor.createTab(state, seed)
         if (result === null) return state
         tab = result.tab
         next = applyDedupe(state, result.tab, descriptor)
@@ -815,7 +823,7 @@ export function createBetterSidebarService(store: SidebarStore, ctx?: Context): 
       if (
         !targetsInactiveSession
         && typeof window !== 'undefined'
-        && (seed.path !== undefined || seed.url !== undefined)
+        && (seed.path !== undefined || seed.url !== undefined || seed.reveal === true)
       ) {
         if (isNarrowWidth(window.innerWidth)) {
           if (!landed.panelOpen) return togglePanel(landed)
@@ -942,13 +950,21 @@ export function createBetterSidebarService(store: SidebarStore, ctx?: Context): 
   /** Store changes: session switch, state mutations, prefs writes. */
   const subscribeState = (listener: () => void): (() => void) => store.subscribe(listener)
 
-  /** Patch an open tab's display fields (a missing tab id is a no-op). */
-  const updateTab = (tabId: string, patch: { title?: string; path?: string; meta?: unknown }): void => {
-    store.reduce((state) => patchTab(state, tabId, {
-      ...(patch.title !== undefined ? { title: patch.title } : {}),
-      ...(patch.path !== undefined ? { path: patch.path } : {}),
-      ...(patch.meta !== undefined ? { meta: patch.meta } : {}),
-    }))
+  /** Patch an open tab, optionally in its owning session. Returns false if closed. */
+  const updateTab = (tabId: string, patch: { title?: string; path?: string; meta?: unknown }, scope?: SessionScope): boolean => {
+    let found = false
+    const reducer = (state: SidebarState): SidebarState => {
+      if (!tabOpenIn(state, tabId)) return state
+      found = true
+      return patchTab(state, tabId, {
+        ...(patch.title !== undefined ? { title: patch.title } : {}),
+        ...(patch.path !== undefined ? { path: patch.path } : {}),
+        ...(patch.meta !== undefined ? { meta: patch.meta } : {}),
+      })
+    }
+    if (scope === undefined || scope.sessionId === store.getSnapshot().sessionId) store.reduce(reducer)
+    else store.reduceFor(scope.sessionId, reducer)
+    return found
   }
 
   /** Activate an open tab (the tab-bar activation path; fires onActivate). */

@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * The th (Thai) dictionary for the betterSidebar namespace.
  *
@@ -16,6 +17,7 @@
 
 /** The th dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const th: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "พื้นที่ทำงาน",
   explorerViewFailed: "มุมมองนี้ไม่พร้อมใช้งาน โปรดกลับไปที่พื้นที่ทำงาน",
   files: 'ไฟล์',

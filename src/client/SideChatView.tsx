@@ -1,3 +1,4 @@
+import { buildSidechatQuotePrompt, parseSidechatQuotePrompt, patchSidechatMeta, returnToQuoteSource, sidechatQuoteFromMeta, type SidechatQuote } from './sidechat-quote.ts'
 /**
  * Side Chat page: Codex-style side conversations for the current session.
  *
@@ -70,10 +71,8 @@ export function sidechatThreadIdOf(tab: SidebarTab): string | undefined {
   return typeof meta?.threadId === 'string' ? meta.threadId : undefined
 }
 
-/** The parked reopen target consumed by the descriptor's createTab (the
- *  service's createTab receives no seed, so a thread-switch parks the id
- *  here and openTab picks it up synchronously — exactly one consume per
- *  park). */
+/** Legacy header-history reopen target, consumed synchronously by createTab.
+ * Quote producers use the explicit per-call seed instead of this parked slot. */
 let parkedReopen: string | undefined
 
 /** Park a thread id for the NEXT sidechat openTab to reattach. */
@@ -182,14 +181,26 @@ function CollapsibleRow(props: {
 }
 
 /** One row renderer (React keys ride the source event seq). */
-function renderRow(row: SidechatTranscriptRow, labels: RowLabels): React.ReactNode {
+function renderRow(row: SidechatTranscriptRow, labels: RowLabels, onReturnSource: (quote: SidechatQuote) => void): React.ReactNode {
   switch (row.kind) {
-    case 'user':
+    case 'user': {
+      const quoted = parseSidechatQuotePrompt(row.text)
       return (
         <div key={`${row.kind}:${row.seq}`} className={css.sidechatUser}>
-          <MarkdownText {...markdownTextProps(row.text, labels)} />
+          <MarkdownText {...markdownTextProps(quoted?.question ?? row.text, labels)} />
+          {quoted !== undefined && (
+            <details className={css.sidechatQuote}>
+              <summary>{t('sideChatQuotedSource')} · {quoted.quote.source.kind === 'file' ? quoted.quote.source.path : t('sideChatChatSource')}</summary>
+              <pre>{quoted.quote.text}</pre>
+              {quoted.quote.truncated && <div>{t('sideChatQuoteTruncated', { kept: quoted.quote.text.length, total: quoted.quote.originalLength })}</div>}
+              <button type="button" onClick={() => { onReturnSource(quoted.quote) }}>
+                {t(quoted.quote.source.kind === 'file' ? 'sideChatOpenSourceFile' : 'sideChatReturnSource')}
+              </button>
+            </details>
+          )}
         </div>
       )
+    }
     case 'assistant':
       return (
         <div key={`${row.kind}:${row.seq}`} className={css.sidechatAssistant}>
@@ -263,6 +274,8 @@ export function SideChatView(props: {
   )
 
   // The thread this tab is bound to rides tab.meta (refresh-restored).
+  const quoteDraft = sidechatQuoteFromMeta(tab.meta)
+  const quoteSource = quoteDraft ?? sidechatQuoteFromMeta(tab.meta, 'quoteSource')
   const threadId = sidechatThreadIdOf(tab)
   const autoCreate = (tab.meta as { autoCreate?: unknown } | undefined)?.autoCreate === true
 
@@ -296,14 +309,16 @@ export function SideChatView(props: {
     setError(null)
     try {
       const { childId } = await api.sidechatStart(scope.sessionId)
-      ctx.get('betterSidebar')?.updateTab(tab.id, { meta: { threadId: childId } })
+      const bound = ctx.get('betterSidebar')?.updateTab(tab.id, { meta: patchSidechatMeta(tab.meta, { threadId: childId, autoCreate: false }) }, scope)
+      // A tab closed while creation was in flight must not leak a live child.
+      if (bound !== true) await api.sidechatDispose(childId)
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : String(cause))
     } finally {
       inFlightStarts.delete(tab.id)
       setBusy(null)
     }
-  }, [ctx, scope.sessionId, tab.id])
+  }, [ctx, scope.sessionId, tab.id, tab.meta])
 
   // Codex-style immediate create: an autoCreate tab spawns its thread as
   // soon as it first renders.
@@ -320,12 +335,12 @@ export function SideChatView(props: {
     const title = threadDisplayTitle(display)
     if (title !== '' && title !== tab.title) {
       try {
-        ctx.get('betterSidebar')?.updateTab(tab.id, { title })
+        ctx.get('betterSidebar')?.updateTab(tab.id, { title }, scope)
       } catch {
         // A stale title is cosmetic; the thread keeps working.
       }
     }
-  }, [summary, tab.id, tab.title, ctx])
+  }, [summary, tab.id, tab.title, ctx, scope.sessionId])
 
   /** One transcript pull: the first read walks back to the seed boundary
    *  (big pages — chunk deltas re-expand on cold reads), later reads fetch
@@ -463,10 +478,15 @@ export function SideChatView(props: {
   const handleSend = async (): Promise<void> => {
     const text = composer.trim()
     if (text === '' || threadId === undefined || busy !== null) return
+    if (quoteDraft !== undefined && quoteDraft.source.sessionId !== scope.sessionId) {
+      setError(t('sideChatSourceUnavailable'))
+      return
+    }
     setBusy('sending')
     setError(null)
     try {
-      await api.sidechatPrompt(threadId, text)
+      await api.sidechatPrompt(threadId, buildSidechatQuotePrompt(text, quoteDraft))
+      if (quoteDraft !== undefined) ctx.get('betterSidebar')?.updateTab(tab.id, { meta: patchSidechatMeta(tab.meta, { quoteDraft: undefined, quoteSource: quoteDraft }) }, scope)
       setComposer('')
       const field = composerRef.current
       if (field !== null) field.style.height = ''
@@ -586,13 +606,37 @@ export function SideChatView(props: {
       {saved && <div className={css.sidechatHint}>{t('sideChatSaved')}</div>}
       {error !== null && <div className={css.sidechatError}>{t('sideChatError', { message: error })}</div>}
       <div ref={scrollRef} className={css.sidechatScroll}>
-        {rows.map(row => renderRow(row, rowLabels))}
+        {rows.map(row => renderRow(row, rowLabels, quote => {
+          if (!returnToQuoteSource(ctx.get('betterSidebar'), scope, quote)) setError(t('sideChatSourceUnavailable'))
+        }))}
       </div>
       {running && (
         <div className={css.sidechatStatus}>
           <StateDot state="ongoing" size={8} />
           <span className={css.sidechatStatusText}>{t('sideChatThinking')}</span>
         </div>
+      )}
+      <div className={css.sidechatHint}>{t('sideChatContextSnapshot')}</div>
+      {quoteSource !== undefined && (
+        <section className={css.sidechatQuote} aria-label={t(quoteDraft === undefined ? 'sideChatQuotedSource' : 'sideChatQuoteDraft')}>
+          <div className={css.sidechatQuoteHeader}>
+            <strong>{t(quoteDraft === undefined ? 'sideChatQuotedSource' : 'sideChatQuoteDraft')}</strong>
+            <button type="button" onClick={() => {
+              if (!returnToQuoteSource(ctx.get('betterSidebar'), scope, quoteSource)) setError(t('sideChatSourceUnavailable'))
+            }}>{t(quoteSource.source.kind === 'file' ? 'sideChatOpenSourceFile' : 'sideChatReturnSource')}</button>
+            {quoteDraft !== undefined && <button type="button" disabled={busy !== null} onClick={() => {
+              ctx.get('betterSidebar')?.updateTab(tab.id, { meta: patchSidechatMeta(tab.meta, { quoteDraft: undefined }) }, scope)
+            }}>{t('sideChatRemoveQuote')}</button>}
+          </div>
+          <div className={css.sidechatQuoteLocation}>
+            {quoteSource.source.kind === 'file'
+              ? `${quoteSource.source.path}${quoteSource.source.lines === undefined ? '' : `:${quoteSource.source.lines.start}-${quoteSource.source.lines.end}`}`
+              : `${t('sideChatChatSource')} · ${quoteSource.source.anchorKey}`}
+          </div>
+          {quoteDraft !== undefined && <pre>{quoteDraft.text}</pre>}
+          {quoteSource.truncated && <div>{t('sideChatQuoteTruncated', { kept: quoteSource.text.length, total: quoteSource.originalLength })}</div>}
+          {quoteSource.source.kind === 'file' && <div>{t(quoteSource.source.snapshot === 'draft' ? 'sideChatDraftSource' : 'sideChatFileSource')}</div>}
+        </section>
       )}
       <div className={css.sidechatComposer}>
         <textarea

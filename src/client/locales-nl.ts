@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * The nl (Dutch) dictionary for the betterSidebar namespace.
  *
@@ -14,6 +15,7 @@
  * - English brand names (VS Code, Cursor, Zed, SSH) stay as-is.
  */
 export const nl: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Werkruimte",
   explorerViewFailed: "Deze weergave is niet beschikbaar. Ga terug naar de werkruimte.",
   files: 'Bestanden',

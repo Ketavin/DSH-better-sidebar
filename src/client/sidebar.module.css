@@ -3150,3 +3150,8 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
 .explorerViews button:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); }
 .explorerViewContent { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
 .explorerViewContent[hidden] { display: none; }
+
+.selectionActions { padding: 0; max-width: calc(100vw - 16px); }
+.selectionActions > button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 0 8px; height: 100%; }
+.selectionActions > button:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.selectionActions > button:focus-visible { outline: 2px solid var(--dsw-alias-label-primary); outline-offset: -2px; }

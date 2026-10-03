@@ -158,7 +158,7 @@ interface TabDescriptor {
    * 返回 null 拒绝创建。terminal 用它生成 terminal:<n> id 并递增 nextTerminal。
    * 省略时用默认 { id, type, title } + seed 里的 path/diff。
    */
-  createTab?: (state: SidebarState) => { tab: SidebarTab; patch?: Partial<SidebarState> } | null
+  createTab?: (state: SidebarState, seed?: OpenTabSeed) => { tab: SidebarTab; patch?: Partial<SidebarState> } | null
   /**
    * 声明式设置（v0.4.1+）：见 §8。v0.12.0 起增加 `pluginToggles`（插件自有
    * 设置行，key 无需宿主 schema 字段）与 `render`（自定义设置面板）。
@@ -557,7 +557,7 @@ interface BetterSidebarService {
   /** 订阅快照变化（会话切换/状态变更/prefs 写入）；返回 disposer */
   subscribeState(listener: () => void): () => void
   /** 更新一个已打开 tab 的显示字段（title/path/meta）；tab 不存在时 no-op */
-  updateTab(tabId: string, patch: { title?: string; path?: string; meta?: unknown }): void
+  updateTab(tabId: string, patch: { title?: string; path?: string; meta?: unknown }, scope?: SessionScope): boolean
   /** 激活一个已打开的 tab（tab 栏点击路径；触发 descriptor.onActivate；
    *  未知 id 严格 no-op）；scope（v0.12.0+）随回调传递，同 closeTab */
   activateTab(tabId: string, scope?: SessionScope): void
@@ -576,6 +576,8 @@ interface OpenTabSeed {
   url?: string
   /** JSON 可序列化的自定义状态，随 tab 持久化（刷新后原样恢复） */
   meta?: unknown
+  /** 显式展开当前会话的目标面板；后台会话不会抢焦点 */
+  reveal?: boolean
 }
 ```
 
@@ -793,3 +795,11 @@ better-sidebar 的内置 tab 和 viewer 就是参考实现（"吃狗粮"）：
 通过 `ctx.betterSidebar` 的三方插件[dsh-sidebar-qa](https://github.com/ChenRuoT/dsh-sidebar-qa) —— 基于 better-sidebar 的划选提问。tab分页: 对话划选 → 右侧面板提问 → 同工作区独立追问会话（❓追问·主题）：快速无思考模型压缩主对话上下文后与引文一起注入，不打断主对话；追问可嵌套、可继续、可归档
 
 更多插件接入后欢迎在此登记（一句话 + 链接）。
+
+## SideChat 引文桥接（联合发布候选）
+
+先检查 `features.includes('sidechatQuoteDraft')`，然后调用 `openTab({ type: 'sidechat', meta: { quoteDraft }, reveal: true }, scope)`。`quoteDraft` 的公开类型为 `SidechatQuote`（主入口或 `client/service` type-only 导入）。它包含 `version: 1`、`text`（最多 2000 UTF-16 字符，不切开代理对）、`originalLength`、`truncated`、`source`。来源必须携带当前 `sessionId`；文件使用 `{ kind: 'file', path, snapshot: 'saved' | 'draft', lines?: { start, end } }`，主消息使用 `{ kind: 'chat', anchorKey }`。插件自身拥有来源捕获与校验，不能把未知消息 ID 冒充 Core 的 DOM anchor。跨会话引用不能发送。
+
+此调用只创建引文草稿与空子会话，不发送消息。SideChat 沿用完整父上下文快照及现有 stop/close/fork 生命周期；明确 Send 时把引用作为有边界的 JSON 数据写入真实 child prompt。引用文本是来源数据，不是高优先级指令。关闭重开后从持久 prompt 恢复引文；文件返回只打开路径，行号是捕获时的参考，消息返回仅在原会话且 anchor 仍挂载时可用。Workbench 的 revision/page 引文需单独适配，不能据此宣称支持。
+
+`createTab(state, seed?)` 现在收到该次调用的 seed（旧单参数 callback 兼容）。`features.includes('scopedTabUpdate')` 时，`updateTab(tabId, patch, scope?)` 返回 tab 是否仍存在；显式 scope 更新后台会话时不改变当前会话或展开面板。异步创建拥有者据 false 释放迟到资源，避免把绑定写入新会话。开启 SideChat 后中/英/日提供新文案，其余可选语言的新引文文案暂用英文。

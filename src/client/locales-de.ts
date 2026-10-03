@@ -1,7 +1,9 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * German dictionary for better-sidebar.
  */
 export const de: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Arbeitsbereich",
   explorerViewFailed: "Diese Ansicht ist nicht verfügbar. Wechseln Sie zum Arbeitsbereich.",
   files: 'Dateien',

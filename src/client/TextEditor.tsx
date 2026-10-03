@@ -1,3 +1,4 @@
+import { captureSidechatQuote, openSidechatQuote, type SidechatQuote } from './sidechat-quote.ts'
 /**
  * The code/markdown file viewer: a CodeMirror 6 editor with line wrapping,
  * syntax highlighting (extension-keyed language), a dirty dot and Ctrl/Cmd+S
@@ -53,6 +54,7 @@ function clampTextZoom(scale: number): number {
 /** The floating "add to conversation" action: payload + viewport anchor. */
 interface SelectionPopup {
   insert: string
+  quote: SidechatQuote
   left: number
   top: number
 }
@@ -82,6 +84,7 @@ export function TextEditor(props: FileViewerProps) {
   const hostRef = useRef<HTMLDivElement>(null)
   const viewRef = useRef<CodeMirrorView | null>(null)
   const savingRef = useRef(false)
+  const savedTextRef = useRef(content)
   /** The theme compartment of the current view (reconfigured on scheme flip). */
   const themeCompRef = useRef<CmThemeCompartment | null>(null)
   /** The app's resolved color scheme; the editor re-themes in place on flips. */
@@ -99,11 +102,12 @@ export function TextEditor(props: FileViewerProps) {
   }
 
   /** Anchor the popup above the selection center; clamp inside the viewport. */
-  const showPopup = (insert: string, left: number, top: number): void => {
+  const showPopup = (insert: string, quote: SidechatQuote, left: number, top: number): void => {
     const next: SelectionPopup = {
       insert,
-      left: Math.min(Math.max(left, 80), window.innerWidth - 80),
-      top,
+      quote,
+      left: Math.min(Math.max(left, 145), window.innerWidth - 145),
+      top: Math.max(40, top),
     }
     popupRef.current = next
     setPopup(next)
@@ -121,6 +125,7 @@ export function TextEditor(props: FileViewerProps) {
 
   // A new file (tab switch) starts clean: fresh preview mode, no draft.
   useEffect(() => {
+    savedTextRef.current = content
     setMode('preview')
     setContentZoom(1)
     setDraft(null)
@@ -206,6 +211,9 @@ export function TextEditor(props: FileViewerProps) {
                 start: doc.lineAt(sel.from).number,
                 end: doc.lineAt(sel.to).number,
               }, text),
+              captureSidechatQuote(text, { kind: 'file', sessionId: scope.sessionId, path,
+                snapshot: update.state.doc.toString() === savedTextRef.current ? 'saved' : 'draft',
+                lines: { start: doc.lineAt(sel.from).number, end: doc.lineAt(Math.max(sel.from, sel.to - 1)).number } }),
               rect.left - window.scrollX + (rect.right - rect.left) / 2,
               rect.top - window.scrollY,
             )
@@ -247,7 +255,9 @@ export function TextEditor(props: FileViewerProps) {
     if (view === null || savingRef.current) return
     savingRef.current = true
     setSaveState('saving')
-    api.fsWrite(scope, path, view.state.doc.toString()).then(() => {
+    const savedText = view.state.doc.toString()
+    api.fsWrite(scope, path, savedText).then(() => {
+      savedTextRef.current = savedText
       savingRef.current = false
       setDraft(null)
       setDirty(false)
@@ -328,6 +338,8 @@ export function TextEditor(props: FileViewerProps) {
     const lines = linesOfSelection(mdText, text)
     showPopup(
       buildSelectionInsert(path, scope.cwd, lines ?? undefined, text),
+      captureSidechatQuote(text, { kind: 'file', sessionId: scope.sessionId, path,
+        snapshot: draft === null ? 'saved' : 'draft', ...(lines === null ? {} : { lines }) }),
       rect.left + rect.width / 2,
       rect.top,
     )
@@ -474,17 +486,17 @@ export function TextEditor(props: FileViewerProps) {
         </>
       )}
       {popup !== null && createPortal(
-        <button
-          type="button"
-          className={css.selectionPopup}
-          style={{ left: popup.left, top: popup.top }}
-          // Keep the selection (and CodeMirror focus) alive until the click
-          // commits — without this the popup unmounts before click lands.
-          onMouseDown={(event) => { event.preventDefault() }}
-          onClick={commitPopup}
-        >
-          {t('addToConversation')}
-        </button>,
+        <div className={`${css.selectionPopup} ${css.selectionActions}`} role="group" aria-label={t('sideChatSelectionActions')}
+          style={{ left: popup.left, top: popup.top }} onMouseDown={event => { event.preventDefault() }}>
+          <button type="button" onClick={commitPopup}>{t('addToConversation')}</button>
+          {ctx.get?.('betterSidebar')?.isTabEnabled('sidechat') === true && (
+            <button type="button" onClick={() => {
+              const current = popupRef.current
+              if (current !== null) openSidechatQuote(ctx.get('betterSidebar'), scope, current.quote)
+              hidePopup()
+            }}>{t('sideChatAskSelection')}</button>
+          )}
+        </div>,
         document.body,
       )}
     </div>

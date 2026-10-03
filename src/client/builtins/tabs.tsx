@@ -1,3 +1,4 @@
+import { sidechatQuoteFromMeta } from '../sidechat-quote.ts'
 /**
  * The 7 built-in tab descriptors: the plugin registers its own pages
  * (editor / git / subagent / sidechat / terminal / browser / diff) through
@@ -185,8 +186,10 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
       // mints a fresh tab flagged `autoCreate` (the view creates the EMPTY
       // thread on mount); a thread switch from the header menu parks the
       // target id for a deterministic `sidechat:<threadId>` reattach tab.
-      createTab: () => {
-        const threadId = consumeSidechatSeed()
+      createTab: (_state, seed) => {
+        const quoteDraft = sidechatQuoteFromMeta(seed?.meta)
+        const parked = consumeSidechatSeed()
+        const threadId = quoteDraft === undefined ? parked : undefined
         if (threadId !== undefined) {
           return {
             tab: {
@@ -202,7 +205,7 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
             id: `sidechat:new-${crypto.randomUUID()}`,
             type: 'sidechat',
             title: t('sideChatUntitled'),
-            meta: { autoCreate: true },
+            meta: { autoCreate: true, ...(quoteDraft === undefined ? {} : { quoteDraft }) },
           },
         }
       },

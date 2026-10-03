@@ -1,3 +1,4 @@
+import { ChatQuoteSelection } from './ChatQuoteSelection.tsx'
 /**
  * The sidebar shell: panels mounted inside the unified panel host — a
  * fixed, viewport-sized containing block ([data-dsh-panel-host]) appended
@@ -1660,6 +1661,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
 
   return (
     <div data-dsh-panel-host style={hostStyle} {...osFileDragShield}>
+      <ChatQuoteSelection ctx={ctx} scope={{ sessionId, cwd }} />
       {!narrow && <ActivityRail options={railOptions} activeType={activeRailType} onSelect={onRailSelect} />}
       {/* The corner is retained for legacy/blank headers and for closing a
           narrow drawer that covers the native conversation header. */}

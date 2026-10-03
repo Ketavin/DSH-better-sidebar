@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * Korean dictionary for the better-sidebar plugin (LOCALE_NS `betterSidebar`).
  *
@@ -8,6 +9,7 @@
  */
 
 export const ko: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "작업 공간",
   explorerViewFailed: "이 보기를 사용할 수 없습니다. 작업 공간으로 돌아가세요.",
   files: '파일',

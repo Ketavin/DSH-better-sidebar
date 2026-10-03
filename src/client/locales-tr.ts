@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * The tr (Turkish) dictionary for the betterSidebar namespace.
  *
@@ -16,6 +17,7 @@
 
 /** The tr dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const tr: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Çalışma alanı",
   explorerViewFailed: "Bu görünüm kullanılamıyor. Çalışma alanına dönün.",
   files: 'Dosyalar',

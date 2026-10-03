@@ -23,6 +23,20 @@
 
 /** The zh dictionary (also registered into the DSH locale registry under {@link LOCALE_NS}). */
 export const zh = {
+  sideChatAskSelection: "向 SideChat 提问",
+  sideChatSelectionActions: "划选操作",
+  sideChatQuoteDraft: "引文草稿",
+  sideChatQuotedSource: "本次引文来源",
+  sideChatOpenSourceFile: "打开源文件",
+  sideChatReturnSource: "返回来源",
+  sideChatRemoveQuote: "移除引文",
+  sideChatChatSource: "主对话消息",
+  sideChatSourceUnavailable: "来源当前不可定位，请返回原会话或重新打开来源。",
+  sideChatQuoteTruncated: "已截取 {kept}/{total} 个 UTF-16 字符。",
+  sideChatDraftSource: "来自未保存的编辑快照；打开文件不会恢复此快照或精确定位行号。",
+  sideChatFileSource: "行号属于引用时的快照；打开文件不会精确定位到该行。",
+  sideChatContextSnapshot: "继承创建时的主对话完整上下文；之后的主对话变化不会实时同步。引文仅在发送后交给子会话。",
+
   explorerWorkspace: '工作区',
   explorerViewFailed: '此视图暂时不可用，可切回工作区。',
   files: '文件',
@@ -384,6 +398,20 @@ export const zh = {
 
 /** The en dictionary (key-set-equal to zh, enforced by the type annotation). */
 export const en: Record<keyof typeof zh, string> = {
+  sideChatAskSelection: "Ask SideChat",
+  sideChatSelectionActions: "Selection actions",
+  sideChatQuoteDraft: "Quote draft",
+  sideChatQuotedSource: "Quoted source",
+  sideChatOpenSourceFile: "Open source file",
+  sideChatReturnSource: "Return to source",
+  sideChatRemoveQuote: "Remove quote",
+  sideChatChatSource: "Main chat message",
+  sideChatSourceUnavailable: "The source cannot be located here. Return to its original chat or reopen the source.",
+  sideChatQuoteTruncated: "Excerpt limited to {kept}/{total} UTF-16 characters.",
+  sideChatDraftSource: "Captured from unsaved edits. Opening the file does not restore this snapshot or jump to its line.",
+  sideChatFileSource: "Line numbers refer to the captured snapshot. Opening the file does not jump to that line.",
+  sideChatContextSnapshot: "Inherits the full main-chat context at creation; later changes are not synced live. The quote reaches the child only when you send.",
+
   explorerWorkspace: 'Workspace',
   explorerViewFailed: 'This view is unavailable. Switch back to Workspace.',
   files: 'Files',

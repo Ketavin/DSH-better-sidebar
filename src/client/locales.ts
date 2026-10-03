@@ -803,14 +803,15 @@ import { zhTW as zhTWDict } from './locales-zh-TW.ts'
 import { zhMO as zhMODict } from './locales-zh-MO.ts'
 
 /** The ja dictionary (key-set-equal to zh, enforced by the type annotation). */
-export const ja: Record<keyof typeof zh, string> = jaDict as Record<keyof typeof zh, string>
-// Newly introduced mode copy falls back to English until the remaining dictionaries
+export const ja: Record<keyof typeof zh, string> = withBrowserModeFallback(jaDict)
+// Newly introduced extension copy falls back to English until the remaining dictionaries
 // translate it. Preserve their existing entries and their public key-set parity.
 function withBrowserModeFallback(dict: Record<string, string>): Record<keyof typeof zh, string> {
   return {
     browserModeLabel: en.browserModeLabel,
     browserModePreview: en.browserModePreview,
     browserModeAgent: en.browserModeAgent,
+    taskViewFailed: en.taskViewFailed,
     ...dict,
   } as Record<keyof typeof zh, string>
 }

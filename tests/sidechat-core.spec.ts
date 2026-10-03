@@ -7,6 +7,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import type { SidebarHistoryEntry, SidebarSessionEvent, SidebarSessionSummary } from '../src/context-types.ts'
+import { buildSidechatQuotePrompt, captureSidechatQuote } from '../src/sidechat-quote.ts'
 import {
   boundaryDelivered,
   buildOpenTurnSnapshot,
@@ -248,6 +249,23 @@ describe('buildOpenTurnSnapshot', () => {
 })
 
 describe('sideLabel', () => {
+  it('labels validated quoted prompts from the question without exposing source metadata', () => {
+    const quote = captureSidechatQuote('Evidence in the document', {
+      kind: 'file', sessionId: 'parent', path: '/private/source.md', snapshot: 'saved', lines: { start: 2, end: 2 },
+    })
+    expect(sideLabel(buildSidechatQuotePrompt('Explain this evidence', quote))).toBe('Side: Explain this evidence')
+    expect(sideLabel(buildSidechatQuotePrompt('x'.repeat(100), quote))).toBe(sideLabel('x'.repeat(100)))
+  })
+
+  it('preserves literal reference-marker text when it is not a valid quote envelope', () => {
+    const plain = '[BEGIN QUOTED REFERENCE] is literal text'
+    expect(sideLabel(plain)).toBe(`Side: ${plain}`)
+    const malformed = buildSidechatQuotePrompt('Literal note', captureSidechatQuote('text', {
+      kind: 'chat', sessionId: 'parent', anchorKey: 'message-1',
+    })).replace('"version":1', '"version":2')
+    expect(sideLabel(malformed)).toContain('Literal note [BEGIN QUOTED REFERENCE]')
+  })
+
   it('prefixes and truncates', () => {
     expect(sideLabel('hello')).toBe('Side: hello')
     expect(sideLabel('  a   b ')).toBe('Side: a b')

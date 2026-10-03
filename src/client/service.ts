@@ -382,6 +382,21 @@ export interface ExplorerViewDescriptor {
   component: (props: ExplorerViewProps) => ReactNode
 }
 
+/** Optional views inside the existing Tasks page; never separate rail tabs. */
+export interface TaskViewProps {
+  ctx: Context
+  scope: SessionScope
+  visible: boolean
+  onSubagentJump?: (childSessionId: string) => void
+}
+
+export interface TaskViewDescriptor {
+  id: string
+  title: string | (() => string)
+  order?: number
+  component: (props: TaskViewProps) => ReactNode
+}
+
 /**
  * The registry service published as `ctx.betterSidebar`.
  */
@@ -392,6 +407,10 @@ export interface BetterSidebarService {
   getExplorerViews(): readonly ExplorerViewDescriptor[]
   subscribeExplorerViews(listener: () => void): () => void
   getExplorerViewRevision(): number
+  registerTaskView(descriptor: TaskViewDescriptor): () => void
+  getTaskViews(): readonly TaskViewDescriptor[]
+  subscribeTaskViews(listener: () => void): () => void
+  getTaskViewRevision(): number
   getTabs(): readonly TabDescriptor[]
   getFileViewers(): readonly FileViewerDescriptor[]
   /** Find a tab descriptor by id (undefined if not registered). */
@@ -564,6 +583,7 @@ export const SIDEBAR_FEATURES = [
   'settingSelect',
   'floatWindows',
   'explorerViews',
+  'taskViews',
   'browserUrl',
 ] as const
 
@@ -589,6 +609,9 @@ export function createBetterSidebarService(store: SidebarStore, ctx?: Context): 
   const explorerViews = new Map<string, ExplorerViewDescriptor>()
   const explorerListeners = new Set<() => void>()
   let explorerRevision = 0
+  const taskViews = new Map<string, TaskViewDescriptor>()
+  const taskListeners = new Set<() => void>()
+  let taskRevision = 0
   const listeners = new Set<() => void>()
   const viewerListeners = new Set<() => void>()
   let viewerRevision = 0
@@ -671,6 +694,30 @@ export function createBetterSidebarService(store: SidebarStore, ctx?: Context): 
     return () => { explorerListeners.delete(listener) }
   }
   const getExplorerViewRevision = (): number => explorerRevision
+  const registerTaskView = (descriptor: TaskViewDescriptor): (() => void) => {
+    if (!descriptor.id || descriptor.id === 'tasks' || typeof descriptor.component !== 'function') {
+      throw new TypeError('[dsh-better-sidebar] invalid task view')
+    }
+    if (taskViews.has(descriptor.id)) throw new Error(`task view "${descriptor.id}" already registered`)
+    const changed = (): void => {
+      taskRevision += 1
+      for (const listener of [...taskListeners]) safeCall(listener)
+    }
+    taskViews.set(descriptor.id, descriptor)
+    changed()
+    return () => {
+      if (taskViews.get(descriptor.id) !== descriptor) return
+      taskViews.delete(descriptor.id)
+      changed()
+    }
+  }
+  const getTaskViews = (): readonly TaskViewDescriptor[] =>
+    [...taskViews.values()].sort((a, b) => (a.order ?? 100) - (b.order ?? 100))
+  const subscribeTaskViews = (listener: () => void): (() => void) => {
+    taskListeners.add(listener)
+    return () => { taskListeners.delete(listener) }
+  }
+  const getTaskViewRevision = (): number => taskRevision
   const getFileViewers = (): readonly FileViewerDescriptor[] => Array.from(viewers.values())
   const getTab = (id: string): TabDescriptor | undefined => tabs.get(id)
 
@@ -1008,6 +1055,10 @@ export function createBetterSidebarService(store: SidebarStore, ctx?: Context): 
     getExplorerViews,
     subscribeExplorerViews,
     getExplorerViewRevision,
+    registerTaskView,
+    getTaskViews,
+    subscribeTaskViews,
+    getTaskViewRevision,
     getTabs,
     getFileViewers,
     getTab,

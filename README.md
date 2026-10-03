@@ -538,3 +538,9 @@ descriptor 包含 `id`、`title`、可选 `order` 和 React `component`；组件
 注册返回 disposer；使用 `ctx.effect` 管理，卸载后自动恢复工作区。
 `subscribeExplorerViews/getExplorerViewRevision` 提供独立于文档预览器的订阅，
 扩展加载不会触发已有文档预览器重新挂载。工作区在切换视图时保留挂载和上传状态。
+
+## Tasks 内部视图扩展
+
+`taskViews` capability 提供 `registerTaskView/getTaskViews/subscribeTaskViews/getTaskViewRevision`。descriptor 为 `{id,title,order?,component}`；组件收到 `{ctx,scope,visible,onSubagentJump?}`。这只增加现有任务页内部切换，不注册新的右侧入口。
+
+原任务视图始终默认；更换会话或卸载当前扩展恢复原视图。隐藏扩展会卸载组件，扩展必须在 React effect 清理中取消订阅。原 Tasks 在选择扩展时收到 `active=false`，暂停它自己的轮询。用 `ctx.effect` 管理注册 disposer；重复 ID 和保留 ID `tasks` 被拒绝。

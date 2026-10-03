@@ -547,3 +547,9 @@ A descriptor has `id`, `title`, optional `order`, and a React `component` receiv
 returned disposer with `ctx.effect`. `subscribeExplorerViews/getExplorerViewRevision`
 is independent of the previewer registry. Workspace uploads remain mounted during
 view switches, and removing an extension restores Workspace.
+
+## Views inside Tasks
+
+The `taskViews` capability exposes `registerTaskView/getTaskViews/subscribeTaskViews/getTaskViewRevision`. A descriptor is `{id,title,order?,component}`; its component receives `{ctx,scope,visible,onSubagentJump?}`. Registration adds a choice inside the existing Tasks page, never a rail entry.
+
+Native Tasks remains the default. Changing session or removing the active extension restores it. Hidden extension components unmount and must dispose subscriptions in their React effect cleanup. Native Tasks receives `active=false` while another view is selected, pausing its own polling. Own the registration disposer through `ctx.effect`; duplicate IDs and the reserved `tasks` ID are rejected.

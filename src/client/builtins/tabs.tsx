@@ -19,6 +19,7 @@ import { lazyChunkComponent } from '../lazy-chunk.tsx'
 import { GitView } from '../GitView.tsx'
 import { DiffTab } from '../DiffTab.tsx'
 import { SubagentView } from '../SubagentView.tsx'
+import { TaskViews } from '../TaskViews.tsx'
 import { consumeSidechatSeed, SideChatView, sidechatThreadIdOf } from '../SideChatView.tsx'
 import { api } from '../api.ts'
 import { BrowserView } from '../BrowserView.tsx'
@@ -169,11 +170,9 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
         }],
       },
       component: ({ ctx, scope, visible, onSubagentJump }) => (
-        <SubagentView
-          sessionId={scope.sessionId}
-          ctx={ctx}
-          active={visible}
-          onOpenChild={(address) => { onSubagentJump?.(address.childSessionId) }}
+        <TaskViews ctx={ctx} scope={scope} visible={visible} onSubagentJump={onSubagentJump} service={ctx.betterSidebar}
+          renderTasks={active => <SubagentView sessionId={scope.sessionId} ctx={ctx} active={active}
+            onOpenChild={(address) => { onSubagentJump?.(address.childSessionId) }} />}
         />
       ),
     },

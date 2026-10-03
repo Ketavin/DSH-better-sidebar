@@ -39,6 +39,7 @@ export const zh = {
 
   explorerWorkspace: '工作区',
   explorerViewFailed: '此视图暂时不可用，可切回工作区。',
+  taskViewFailed: '此视图暂时不可用，可切回任务管理。',
   files: '文件',
   explorer: '资源管理器',
   git: '源代码管理',
@@ -414,6 +415,7 @@ export const en: Record<keyof typeof zh, string> = {
 
   explorerWorkspace: 'Workspace',
   explorerViewFailed: 'This view is unavailable. Switch back to Workspace.',
+  taskViewFailed: 'This view is unavailable. Switch back to Tasks.',
   files: 'Files',
   explorer: 'Explorer',
   git: 'Source Control',

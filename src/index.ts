@@ -71,6 +71,8 @@ export type {
   BrowserUrlOutcome,
   TabDescriptor,
   TabComponentProps,
+  TaskViewDescriptor,
+  TaskViewProps,
   FileViewerDescriptor,
   FileViewerProps,
   FileFetchStrategy,

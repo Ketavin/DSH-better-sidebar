@@ -39,7 +39,16 @@ export function groupBrowserOptions(
       icon: option.id === BROWSER_ENTRY_TYPE ? icons?.preview ?? option.icon : icons?.agent ?? option.icon,
     }))
   // Keep the existing Preview-only entry unchanged when Ego is not registered/enabled.
-  if (!modes.some(mode => mode.id === EGO_BROWSER_TYPE)) return [...options]
+  if (!modes.some(mode => mode.id === EGO_BROWSER_TYPE)) {
+    // With a supplied family glyph the lone known browser option is still the
+    // family's OUTER entry, so it presents the globe (its descriptor carries
+    // the Web-preview window); only this known option is touched — every
+    // other option passes through untouched and keeps its own id, label,
+    // disabled state and absence of submenu. Omitted icons keep the original
+    // contract of returning the options exactly as supplied.
+    if (icons?.browser === undefined) return [...options]
+    return options.map(option => option.id === BROWSER_ENTRY_TYPE ? { ...option, icon: icons.browser } : option)
+  }
   const entry: NewTabOption = {
     id: BROWSER_ENTRY_TYPE,
     label: labels.browser,

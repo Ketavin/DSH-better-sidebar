@@ -543,7 +543,7 @@ export function matchUrlTarget(tabs: readonly TabDescriptor[], url: URL): TabDes
  * The plugin version this service instance reports. Keep in lockstep with
  * `package.json`'s version — `tests/service.spec.ts` asserts the pair.
  */
-export const SIDEBAR_SERVICE_VERSION = '0.17.9-dsh-browser-icons.1'
+export const SIDEBAR_SERVICE_VERSION = '0.17.9'
 
 /**
  * Monotonic capability list consumers use to gate new API usage (features

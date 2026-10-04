@@ -12,6 +12,21 @@ describe('Browser entry grouping', () => {
     expect(browserModes(options)).toEqual([preview])
   })
 
+  it('presents the globe on a lone Preview entry with supplied glyphs, keeping its id/label/disabled and other options', () => {
+    // Without Ego the known browser option IS the family's outer entry, so a
+    // supplied family glyph replaces its descriptor window — nothing else
+    // changes: no submenu, no invented mode, third-party options untouched.
+    const preview = { id: 'browser', label: 'Original browser', icon: 'preview-icon', disabled: true }
+    const third = { id: 'other-plugin:web', label: 'Other', icon: 'other-icon', disabled: false }
+    const grouped = groupBrowserOptions([third, preview], labels, { browser: 'globe-glyph' })
+    expect(grouped).toEqual([
+      third,
+      { id: 'browser', label: 'Original browser', icon: 'globe-glyph', disabled: true },
+    ])
+    expect(browserModes(grouped)).toEqual([{ id: 'browser', label: 'Original browser', icon: 'globe-glyph', disabled: true }])
+    expect(browserModes(grouped).every(mode => mode.submenu === undefined)).toBe(true)
+  })
+
   it('replaces two family entries with one ordered entry and preserves real child ids', () => {
     const options = [
       { id: 'editor', label: 'Files' },

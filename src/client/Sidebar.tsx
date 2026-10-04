@@ -43,13 +43,13 @@ import {
   type DropZone, type SidebarState, type SidebarStore, type SidebarTab, type SplitNode,
 } from './state.ts'
 import { activePinnedIdFor, collectPinnedTabs, createPinnedVirtualTab, getPinnedHomeScope, injectPinnedIntoTree, isPinnedVirtualId, isPinnedVirtualTab, parsePinnedVirtualId, shouldRenderPinnedContent, type PinnedTabEntry } from './pinned.ts'
-import { IconPinOutline16 } from './icons.tsx'
+import { IconBrowserWindowOutline16, IconGlobeOutline16, IconPinOutline16, IconRobotPointerOutline16 } from './icons.tsx'
 import { PanelToggleButtons, useHeaderControlsCenter, useHeaderControlsPresent, useHeaderControlsVisible, type HeaderControlPlacement } from './header-panel-controls.tsx'
 import { Workbench, type WorkbenchActions } from './split-pane.tsx'
 import { isNarrowWidth, useViewportSize } from './breakpoints.ts'
 import { layoutPushSize } from './layout-push.ts'
 import { ACTIVITY_RAIL_WIDTH, railActiveType, railPushWidth, railTarget } from './activity-rail.ts'
-import { BROWSER_ENTRY_TYPE, browserEntryType, browserModes, groupBrowserOptions, isBrowserType } from './browser-entry.ts'
+import { BROWSER_ENTRY_TYPE, EGO_BROWSER_TYPE, browserEntryType, browserModes, groupBrowserOptions, isBrowserType } from './browser-entry.ts'
 import { parseDesktopEnv } from './desktop-env.ts'
 import { getWcoSnapshot, subscribeWco } from './wco.ts'
 import { getShellPreset } from './shell-presets.ts'
@@ -181,6 +181,13 @@ function buildNewTabOptions(state: SidebarState | undefined, ctx: Context, scope
     }))
   return groupBrowserOptions(options, {
     browser: t('browser'), preview: t('browserModePreview'), agent: t('browserModeAgent'),
+  }, {
+    // The family's three marks: the unified entry keeps the neutral globe,
+    // Web preview gets the browser window, Agent browser the robot + pointer
+    // — same outline/currentColor set, distinguishable at 16px without color.
+    browser: <IconGlobeOutline16 />,
+    preview: <IconBrowserWindowOutline16 />,
+    agent: <IconRobotPointerOutline16 />,
   })
 }
 
@@ -1559,10 +1566,15 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
    * ctx and the conversation input service at click time; a missing service
    * or scope degrades to a logged no-op, never a crash.
    */
-  /** The tab icon from the tab-type registry (shared by every workbench). */
+  /** The tab icon from the tab-type registry (shared by every workbench).
+   *  The browser family's Agent mode is a third-party descriptor; its tab
+   *  presents the family's robot glyph so both real family types stay
+   *  visually distinct from each other (only this known type is mapped —
+   *  every other third-party tab keeps its own icon). */
   const tabIconOf = (tab: SidebarTab): ReactNode => {
     const descriptor = ctx.get('betterSidebar')?.getTab(tab.type)
     if (descriptor === undefined) return null
+    if (tab.type === EGO_BROWSER_TYPE) return <IconRobotPointerOutline16 size={14} />
     return typeof descriptor.icon === 'function' ? descriptor.icon(14) : descriptor.icon
   }
 
@@ -1650,7 +1662,12 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
                 disabled={mode.disabled === true && railTarget(state, mode.id) === undefined}
                 data-dsh-browser-mode={mode.id}
                 onClick={() => { onBrowserMode(mode.id, paneId, placement) }}
-              >{mode.label}</button>
+              >
+                {mode.icon === undefined ? null : (
+                  <span className={css.browserModeIcon} aria-hidden="true">{mode.icon}</span>
+                )}
+                {mode.label}
+              </button>
             ))}
           </div>
         )}

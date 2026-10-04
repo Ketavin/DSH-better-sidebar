@@ -23,7 +23,7 @@ import { TaskViews } from '../TaskViews.tsx'
 import { consumeSidechatSeed, SideChatView, sidechatThreadIdOf } from '../SideChatView.tsx'
 import { api } from '../api.ts'
 import { BrowserView } from '../BrowserView.tsx'
-import { IconTerminalOutline16, IconDiffOutline16, IconGlobeOutline16 } from '../icons.tsx'
+import { IconTerminalOutline16, IconDiffOutline16, IconBrowserWindowOutline16 } from '../icons.tsx'
 import { TERMINAL_FONT_SIZE_MAX, TERMINAL_FONT_SIZE_MIN } from '../../prefs-shared.ts'
 import type { ComponentType } from 'react'
 import type { SessionScope } from '../api.ts'
@@ -290,7 +290,9 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
     {
       id: 'browser',
       title: () => t('browser'),
-      icon: (size: number) => <IconGlobeOutline16 size={size} />,
+      // The Web preview mode's own mark (a browser window with a top bar);
+      // the family's unified entry keeps the globe (browser-entry grouping).
+      icon: (size: number) => <IconBrowserWindowOutline16 size={size} />,
       order: 50,
       // Declarative settings: the sandbox escape hatch, the link-takeover
       // MASTER switch, and the per-protocol takeover switches (http on /

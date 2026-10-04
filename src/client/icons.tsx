@@ -129,6 +129,32 @@ export const IconGlobeOutline16 = ({ size = 16, className }: IconProps) => (
   </svg>
 )
 
+/**
+ * Web preview glyph (the browser family's preview mode): a browser window
+ * with a top bar, two dots and content lines, in the app's outline style.
+ * Distinguishes the plain preview mode from the family's unified globe.
+ */
+export const IconBrowserWindowOutline16 = ({ size = 16, className }: IconProps) => (
+  <svg width={size} height={size} className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="1.5" y="2.5" width="13" height="11" rx="1.6" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M1.5 6h13M4 4.3h.1M6.2 4.3h.1M4.5 8.8h7M4.5 11h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
+/**
+ * Agent browser glyph (the browser family's agent mode): a robot head
+ * (antenna, ears, eyes, mouth) with an operation pointer at its corner.
+ * Same outline/currentColor style; slightly thinner stroke for the denser
+ * shape so both modes stay readable at 16px.
+ */
+export const IconRobotPointerOutline16 = ({ size = 16, className }: IconProps) => (
+  <svg width={size} height={size} className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7.3 1.3v2.4M1.2 7v2.7M13.2 7v1.7" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    <rect x="2.6" y="3.7" width="9.5" height="8.5" rx="2" stroke="currentColor" strokeWidth="1.3" />
+    <path d="M5.2 7h.1M9.4 7h.1M5.1 9.7h3.2M10.8 9.3v5.2l1.7-1.6 1.5 1.6.9-.9-1.5-1.6 1.85-.8z" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
 /** History glyph (thread switcher): a clock with a counterclockwise arrow,
  *  in the app's outline style — the "past conversations" mark. */
 export const IconHistoryOutline16 = ({ size = 16, className }: IconProps) => (

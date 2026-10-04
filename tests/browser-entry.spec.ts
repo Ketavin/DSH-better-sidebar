@@ -46,6 +46,21 @@ describe('Browser entry grouping', () => {
     expect(browserModes(grouped).every(mode => mode.disabled)).toBe(true)
   })
 
+  it('maps the family glyphs: the globe on the unified entry, per-mode marks on the children', () => {
+    const icons = { browser: 'globe-glyph', preview: 'window-glyph', agent: 'robot-glyph' }
+    const grouped = groupBrowserOptions([
+      { id: 'browser', label: 'Browser', icon: 'descriptor-icon' },
+      { id: 'ego-browser:watch', label: 'Ego', icon: 'ego-own-icon' },
+    ], labels, icons)
+    // The unified entry keeps the globe instead of inheriting the first
+    // mode's mark, and each mode row carries its own glyph — the Agent mode's
+    // own descriptor icon is superseded so both modes stay distinct.
+    expect(grouped[0]!.icon).toBe('globe-glyph')
+    expect(browserModes(grouped).map(mode => [mode.id, mode.icon])).toEqual([
+      ['browser', 'window-glyph'], ['ego-browser:watch', 'robot-glyph'],
+    ])
+  })
+
   it('does not highlight an enabled Agent entry on behalf of a disabled Preview type', () => {
     expect(browserEntryType('browser', ['ego-browser:watch'])).toBeUndefined()
     expect(browserEntryType('ego-browser:watch', ['browser'])).toBeUndefined()

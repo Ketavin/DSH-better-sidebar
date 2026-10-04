@@ -1,4 +1,5 @@
 /** Presentation-only grouping: neither real tab type nor state is rewritten. */
+import type { ReactNode } from 'react'
 import type { NewTabOption } from './TabBar.tsx'
 
 export const BROWSER_ENTRY_TYPE = 'browser'
@@ -8,20 +9,41 @@ export function isBrowserType(type: string): boolean {
   return type === BROWSER_ENTRY_TYPE || type === EGO_BROWSER_TYPE
 }
 
+/**
+ * The family's three glyphs (outline/currentColor, distinct at 16px): the
+ * unified outer entry keeps the neutral globe while the two modes get their
+ * own marks — Web preview a browser window, Agent browser a robot head with
+ * a pointer. The caller supplies the elements so this module stays free of
+ * React values; omitted glyphs fall back to the descriptor icons.
+ */
+export interface BrowserEntryIcons {
+  /** The unified outer entry: a neutral globe outline. */
+  browser?: ReactNode
+  /** The Web preview mode: a browser window with a top bar. */
+  preview?: ReactNode
+  /** The Agent browser mode: a robot head with a pointer. */
+  agent?: ReactNode
+}
+
 /** The caller supplies only registered, enabled, non-hidden descriptors. */
 export function groupBrowserOptions(
   options: readonly NewTabOption[],
   labels: { browser: string; preview: string; agent: string },
+  icons?: BrowserEntryIcons,
 ): NewTabOption[] {
   const modes = [BROWSER_ENTRY_TYPE, EGO_BROWSER_TYPE]
     .flatMap(type => options.filter(option => option.id === type))
-    .map(option => ({ ...option, label: option.id === BROWSER_ENTRY_TYPE ? labels.preview : labels.agent }))
+    .map(option => ({
+      ...option,
+      label: option.id === BROWSER_ENTRY_TYPE ? labels.preview : labels.agent,
+      icon: option.id === BROWSER_ENTRY_TYPE ? icons?.preview ?? option.icon : icons?.agent ?? option.icon,
+    }))
   // Keep the existing Preview-only entry unchanged when Ego is not registered/enabled.
   if (!modes.some(mode => mode.id === EGO_BROWSER_TYPE)) return [...options]
   const entry: NewTabOption = {
     id: BROWSER_ENTRY_TYPE,
     label: labels.browser,
-    icon: modes[0]?.icon,
+    icon: icons?.browser ?? modes[0]?.icon,
     disabled: modes.every(mode => mode.disabled === true),
     submenu: modes,
   }

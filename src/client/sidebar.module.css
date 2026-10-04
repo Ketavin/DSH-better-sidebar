@@ -1678,6 +1678,9 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
 }
 
 .browserMode {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   padding: 4px 8px;
   border: none;
   border-radius: 6px;
@@ -1685,6 +1688,18 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
   color: var(--dsw-alias-label-secondary);
   font: var(--dsw-font-xxs-12);
   cursor: pointer;
+}
+
+/* The decorative mode glyph sits slightly smaller than the menu/rail scale —
+   the pill is 12px-type chrome, not an icon surface. */
+.browserModeIcon {
+  display: inline-flex;
+  flex: none;
+}
+
+.browserModeIcon svg {
+  width: 14px;
+  height: 14px;
 }
 
 .browserMode:hover,

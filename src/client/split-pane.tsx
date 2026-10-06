@@ -136,7 +136,13 @@ function PaneEmptyCards(props: {
           className={css.paneCard}
           disabled={option.disabled === true}
           title={option.label}
-          onClick={() => { onNewTab(option.id) }}
+          onClick={() => {
+            // A grouped welcome card creates its first usable real mode; a
+            // menu's explicit mode selection still keeps that mode's own id.
+            const mode = option.submenu?.find(child => child.disabled !== true)
+            if (option.submenu === undefined) onNewTab(option.id)
+            else if (mode !== undefined) onNewTab(mode.id)
+          }}
         >
           {option.icon ?? null}
           <span>{option.label}</span>

@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * The zh-HK (Traditional Chinese — Hong Kong) dictionary for the betterSidebar
  * namespace.
@@ -31,6 +32,7 @@
 
 /** The zh-HK dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const zhMO: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "工作區",
   explorerViewFailed: "此視圖暫時無法使用，可切回工作區。",
   files: '檔案',

@@ -15,6 +15,7 @@ import { once } from 'node:events'
 import { createWriteStream } from 'node:fs'
 import { mkdir, rename, rm, stat } from 'node:fs/promises'
 import { basename, dirname, join } from 'node:path'
+import { setTimeout as delay } from 'node:timers/promises'
 import type { SidebarHttpRequest } from './context-types.ts'
 import { requireAbsolute } from './fs-tree.ts'
 import { ensureWorkspacePath, ensureWorkspaceWritePath } from './path-security.ts'
@@ -32,6 +33,20 @@ export interface WorkspaceUploadInput {
   chunks: AsyncIterable<string | Uint8Array>
   /** Byte cap; an oversized upload is refused without touching the target. */
   limit: number
+}
+
+/** Windows replacement can briefly conflict with another rename or a reader. */
+async function replaceUpload(source: string, target: string): Promise<void> {
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await rename(source, target)
+      return
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code
+      if (process.platform !== 'win32' || attempt >= 9 || !['EPERM', 'EACCES', 'EBUSY'].includes(code ?? '')) throw error
+      await delay(Math.min(10 * (attempt + 1), 50))
+    }
+  }
 }
 
 /**
@@ -80,8 +95,11 @@ export async function writeWorkspaceUpload(input: WorkspaceUploadInput): Promise
     await new Promise<void>((resolve, reject) => {
       stream.end((error?: Error | null) => (error === undefined || error === null ? resolve() : reject(error)))
     })
+    // Writable finish precedes file-descriptor close. Windows can still hold
+    // the temporary file open here, especially with concurrent uploads.
+    await closed
     if (streamError !== undefined) throw streamError
-    await rename(tmp, safeTarget)
+    await replaceUpload(tmp, safeTarget)
     const info = await stat(safeTarget)
     return { path: target, size: info.size }
   } catch (error) {

@@ -1,4 +1,6 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 export const pt: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Área de trabalho",
   explorerViewFailed: "Esta visualização não está disponível. Volte à área de trabalho.",
   files: 'Arquivos',

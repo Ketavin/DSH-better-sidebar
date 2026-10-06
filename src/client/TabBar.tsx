@@ -27,6 +27,8 @@ export interface NewTabOption {
   disabled?: boolean
   /** Leading icon (Menu row). */
   icon?: ReactNode
+  /** Real tab types beneath one shared entry; the menu remains a creation menu. */
+  submenu?: NewTabOption[]
 }
 
 /** Drag payload for tab moves (HTML5 DnD dataTransfer). */
@@ -254,12 +256,7 @@ export function TabBar(props: {
         <Menu
           open={menuOpen}
           onClose={() => { setMenuOpen(false) }}
-          items={newTabOptions.map(option => ({
-            id: option.id,
-            label: option.label,
-            ...(option.disabled === true ? { disabled: true } : {}),
-            ...(option.icon !== undefined ? { icon: option.icon } : {}),
-          }))}
+          items={newTabOptions}
           onSelect={(id) => {
             onNewTab(id)
             setMenuOpen(false)

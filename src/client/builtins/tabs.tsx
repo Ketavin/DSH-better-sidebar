@@ -1,3 +1,4 @@
+import { sidechatQuoteFromMeta } from '../sidechat-quote.ts'
 /**
  * The 7 built-in tab descriptors: the plugin registers its own pages
  * (editor / git / subagent / sidechat / terminal / browser / diff) through
@@ -18,10 +19,11 @@ import { lazyChunkComponent } from '../lazy-chunk.tsx'
 import { GitView } from '../GitView.tsx'
 import { DiffTab } from '../DiffTab.tsx'
 import { SubagentView } from '../SubagentView.tsx'
+import { TaskViews } from '../TaskViews.tsx'
 import { consumeSidechatSeed, SideChatView, sidechatThreadIdOf } from '../SideChatView.tsx'
 import { api } from '../api.ts'
 import { BrowserView } from '../BrowserView.tsx'
-import { IconTerminalOutline16, IconDiffOutline16, IconGlobeOutline16 } from '../icons.tsx'
+import { IconTerminalOutline16, IconDiffOutline16, IconBrowserWindowOutline16 } from '../icons.tsx'
 import { TERMINAL_FONT_SIZE_MAX, TERMINAL_FONT_SIZE_MIN } from '../../prefs-shared.ts'
 import type { ComponentType } from 'react'
 import type { SessionScope } from '../api.ts'
@@ -168,11 +170,9 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
         }],
       },
       component: ({ ctx, scope, visible, onSubagentJump }) => (
-        <SubagentView
-          sessionId={scope.sessionId}
-          ctx={ctx}
-          active={visible}
-          onOpenChild={(address) => { onSubagentJump?.(address.childSessionId) }}
+        <TaskViews ctx={ctx} scope={scope} visible={visible} onSubagentJump={onSubagentJump} service={ctx.betterSidebar}
+          renderTasks={active => <SubagentView sessionId={scope.sessionId} ctx={ctx} active={active}
+            onOpenChild={(address) => { onSubagentJump?.(address.childSessionId) }} />}
         />
       ),
     },
@@ -185,8 +185,10 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
       // mints a fresh tab flagged `autoCreate` (the view creates the EMPTY
       // thread on mount); a thread switch from the header menu parks the
       // target id for a deterministic `sidechat:<threadId>` reattach tab.
-      createTab: () => {
-        const threadId = consumeSidechatSeed()
+      createTab: (_state, seed) => {
+        const quoteDraft = sidechatQuoteFromMeta(seed?.meta)
+        const parked = consumeSidechatSeed()
+        const threadId = quoteDraft === undefined ? parked : undefined
         if (threadId !== undefined) {
           return {
             tab: {
@@ -202,7 +204,7 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
             id: `sidechat:new-${crypto.randomUUID()}`,
             type: 'sidechat',
             title: t('sideChatUntitled'),
-            meta: { autoCreate: true },
+            meta: { autoCreate: true, ...(quoteDraft === undefined ? {} : { quoteDraft }) },
           },
         }
       },
@@ -288,7 +290,9 @@ export function builtinTabs(ctx: Context, options: BuiltinTabOptions = {}): read
     {
       id: 'browser',
       title: () => t('browser'),
-      icon: (size: number) => <IconGlobeOutline16 size={size} />,
+      // The Web preview mode's own mark (a browser window with a top bar);
+      // the family's unified entry keeps the globe (browser-entry grouping).
+      icon: (size: number) => <IconBrowserWindowOutline16 size={size} />,
       order: 50,
       // Declarative settings: the sandbox escape hatch, the link-takeover
       // MASTER switch, and the per-protocol takeover switches (http on /

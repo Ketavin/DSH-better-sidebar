@@ -357,6 +357,18 @@ ctx.effect(() => {
 })
 ```
 
+**统一 Browser URL 入口（P3 隔离候选，尚未正式发布）**：`features.includes('browserUrl')` 时可调用 `openBrowserUrl({ url, scope, source, requestId, mode? })`，得到明确的 `Promise<BrowserUrlOutcome>`。`scope` 必须保留发起会话，`source` 为 `address-bar` / `markdown` / `sidebar_open` / `plugin`；URL 只接受无内嵌凭据的 HTTP(S)。省略 `mode` 保持已启用 `urlTarget` 的专用 Viewer 优先、普通 Browser 兜底；显式 `preview` 或 `agent` 不悄悄换模式。原 `openTab` 仍是同步 `void`，生命周期/真实 tab type 不变。
+
+Agent 导航须由注册 `ego-browser:watch` 的插件提供 `TabDescriptor.onOpenUrl(request)`：只有在授权后的同会话 backend 真实导航完成时 resolve，失败时 throw；服务随后才打开/激活该真实 tab。只有观察 descriptor、没有 handler 时返回 `handler-unavailable`，不能仅接受 URL seed 就称导航成功。异步操作中 descriptor 卸载/重注册、设置禁用、不可用会返回明确失败。`available` 对 URL 导航表示 backend 可执行；rail/模式栏激活已有实例与新建分开处理。`requestId` 是关联身份，backend 自己负责需要持久化的去重。
+
+```ts
+const result = await ctx.betterSidebar.openBrowserUrl({
+  url: 'https://example.com', scope: { sessionId }, mode: 'agent',
+  source: 'plugin', requestId: crypto.randomUUID(),
+})
+if (!result.ok) showNavigationFailure(result.code)
+```
+
 ### 3.4 内置 tab（不可重复注册）
 
 | id | order | single | hidden | 用途 |

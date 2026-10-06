@@ -16,6 +16,20 @@
 
 /** The ja dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const ja: Record<string, string> = {
+  sideChatAskSelection: "SideChat に質問",
+  sideChatSelectionActions: "選択範囲の操作",
+  sideChatQuoteDraft: "引用の下書き",
+  sideChatQuotedSource: "引用元",
+  sideChatOpenSourceFile: "元のファイルを開く",
+  sideChatReturnSource: "引用元に戻る",
+  sideChatRemoveQuote: "引用を削除",
+  sideChatChatSource: "メインチャットのメッセージ",
+  sideChatSourceUnavailable: "引用元を表示できません。元のチャットに戻るか、引用元を開き直してください。",
+  sideChatQuoteTruncated: "{total} UTF-16 文字のうち {kept} 文字を引用しました。",
+  sideChatDraftSource: "未保存の編集から引用。ファイルを開いても、この状態の復元や行への移動は行われません。",
+  sideChatFileSource: "行番号は引用時のものです。ファイルを開いても、その行には移動しません。",
+  sideChatContextSnapshot: "作成時のメインチャットの全コンテキストを継承します。以後の変更は同期されません。引用は送信時のみ子チャットに渡されます。",
+
   explorerWorkspace: "ワークスペース",
   explorerViewFailed: "このビューは利用できません。ワークスペースに戻ってください。",
   files: 'ファイル',
@@ -255,6 +269,9 @@ export const ja: Record<string, string> = {
   viewerBinary: 'バイナリダウンロード',
   viewerHtml: 'HTML',
   browser: 'ブラウザー',
+  browserModeLabel: 'ブラウザーモード',
+  browserModePreview: 'ウェブプレビュー',
+  browserModeAgent: 'Agent ブラウザー',
   browserPlaceholder: 'URL を入力、例: example.com',
   browserGo: '開く',
   browserBack: '戻る',

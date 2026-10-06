@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * The id (Indonesian) dictionary for the betterSidebar namespace.
  *
@@ -14,6 +15,7 @@
  */
 
 export const id: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Ruang kerja",
   explorerViewFailed: "Tampilan ini tidak tersedia. Kembali ke ruang kerja.",
   files: 'Berkas',

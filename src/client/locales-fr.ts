@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * French translation of the better-sidebar copy.
  *
@@ -9,6 +10,7 @@
 
 /** fr dictionary for the `betterSidebar` namespace. */
 export const fr: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Espace de travail",
   explorerViewFailed: "Cette vue est indisponible. Revenez à l’espace de travail.",
   files: 'Fichiers',

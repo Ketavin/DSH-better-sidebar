@@ -17,6 +17,7 @@
  * snapshot inside the boundary prompt.
  */
 import type { SidebarHistoryEntry, SidebarSessionSummary } from './context-types.ts'
+import { parseSidechatQuotePrompt } from './sidechat-quote.ts'
 
 /** The durable thread-label prefix (also the row filter in the client list). */
 export const SIDE_LABEL_PREFIX = 'Side: '
@@ -354,7 +355,7 @@ export function sideThreadRows(
 
 /** Truncate + prefix a question into a durable thread label. */
 export function sideLabel(question: string): string {
-  const flat = question.replace(/\s+/g, ' ').trim()
+  const flat = (parseSidechatQuotePrompt(question)?.question ?? question).replace(/\s+/g, ' ').trim()
   const max = Math.max(1, LABEL_MAX_CHARS - SIDE_LABEL_PREFIX.length)
   const body = flat.length > max ? `${flat.slice(0, max - 1)}…` : flat
   return `${SIDE_LABEL_PREFIX}${body}`

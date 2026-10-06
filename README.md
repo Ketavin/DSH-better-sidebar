@@ -49,6 +49,7 @@
 - **🌿 Git 面板**：真 diff + VSCode 式 diff tab、历史、右键暂存 / 提交 / 还原；工作区容器下自动发现子仓库并显示**仓库选择器**，支持 linked worktree 变更发现
 - **🧩 后台任务页**：subagent 拓扑 + 后台任务（退出码 / 实时输出 / 强制终止）
 - **💬 侧边对话(beta)**：Codex 风格的侧边线程——继承主会话完整上下文（含进行中的回合与工具调用）独立运行，不进入主会话；线程内可持续追问，一键「保存为新会话」提升为顶层会话
+- **SideChat 引文草稿**：在 Files 文本/Markdown 或已完成的主对话单条消息中划选，点击「向 SideChat 提问」。预览来源与截断信息后，明确发送才把引文交给真实子会话；保留「加入对话」和完整主上下文继承。引文写入子会话历史，重新打开后可回来源。文件仅重新打开，不保证引用时行号精确跳转；未保存快照、主对话后续变化及 Workbench revision 引文不会自动同步。
 - **🪟 双工作台**：右侧栏 + 底部面板；拖 Tab 拆分 / 合并分栏（可跨面板），移动端自动合并全宽抽屉
 - **🪟 自由窗口**：把标签栏的任一 tab 拖到主会话区域——成为可移动 / 缩放 / 置顶的悬浮窗口（默认 390×780），拖回侧边栏 pane 即停靠，随会话持久化；`features` 含 `'floatWindows'`，插件 tab 无差别支持
 - **📌 固定终端**：右键终端 Tab 可「固定到工作区 / 固定到全局」——固定后切换会话不消失，在 TabBar 内联呈现（跨会话虚拟 Tab，点击就地激活，PTY 按 home 会话 id+tab 直连宿主 PTY，无需切回宿主会话）；Agent 终端被 reconcile 移除时豁免保留
@@ -537,3 +538,9 @@ descriptor 包含 `id`、`title`、可选 `order` 和 React `component`；组件
 注册返回 disposer；使用 `ctx.effect` 管理，卸载后自动恢复工作区。
 `subscribeExplorerViews/getExplorerViewRevision` 提供独立于文档预览器的订阅，
 扩展加载不会触发已有文档预览器重新挂载。工作区在切换视图时保留挂载和上传状态。
+
+## Tasks 内部视图扩展
+
+`taskViews` capability 提供 `registerTaskView/getTaskViews/subscribeTaskViews/getTaskViewRevision`。descriptor 为 `{id,title,order?,component}`；组件收到 `{ctx,scope,visible,onSubagentJump?}`。这只增加现有任务页内部切换，不注册新的右侧入口。
+
+原任务视图始终默认；更换会话或卸载当前扩展恢复原视图。隐藏扩展会卸载组件，扩展必须在 React effect 清理中取消订阅。原 Tasks 在选择扩展时收到 `active=false`，暂停它自己的轮询。用 `ctx.effect` 管理注册 disposer；重复 ID 和保留 ID `tasks` 被拒绝。

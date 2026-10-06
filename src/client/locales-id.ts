@@ -16,6 +16,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 
 export const id: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: 'Maksimalkan panel',
+  restorePanel: 'Pulihkan ukuran panel',
   explorerWorkspace: "Ruang kerja",
   explorerViewFailed: "Tampilan ini tidak tersedia. Kembali ke ruang kerja.",
   files: 'Berkas',

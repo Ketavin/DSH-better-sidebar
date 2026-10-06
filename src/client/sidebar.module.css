@@ -263,6 +263,36 @@
   touch-action: none;
 }
 
+.maximizePanel {
+  position: absolute;
+  top: calc(var(--dsh-title-bar-strip, 0px) + 3px);
+  right: calc(var(--dsh-toggle-reserve-width, 0px) + 3px);
+  z-index: 3;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 6px;
+  color: var(--dsw-alias-label-secondary);
+  background: var(--dsw-alias-bg-layer-1);
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+.maximizePanel:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.maximizePanel:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); }
+.panel[data-dsh-maximizable] .tabBar { padding-right: calc(var(--dsh-toggle-reserve-width, 0px) + 34px); }
+.bottomPanel[data-dsh-maximizable] .tabBar { padding-right: 68px; }
+.bottomPanel .maximizePanel { top: 3px; right: 37px; }
+:global([data-dsh-panel-host][data-dsh-maximized]) > .panel,
+:global([data-dsh-panel-host][data-dsh-maximized]) > .bottomPanel { transition: none; }
+:global([data-dsh-panel-host][data-dsh-maximized="right"]) > .bottomPanel,
+:global([data-dsh-panel-host][data-dsh-maximized="bottom"]) > .panel,
+:global([data-dsh-panel-host][data-dsh-maximized]) > .floatWindow,
+:global([data-dsh-panel-host][data-dsh-maximized]) > .toggleCluster,
+:global([data-dsh-panel-host][data-dsh-maximized]) > :global([data-dsh-sidebar-rail]) { visibility: hidden; }
+
 .panelResizeActive {
   background: var(--dsw-alias-interactive-bg-hover-accent);
 }

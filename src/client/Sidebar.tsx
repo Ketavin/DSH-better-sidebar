@@ -338,6 +338,26 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
 
   const state = snapshot.state
   const sessionId = snapshot.sessionId
+  // Presentation only: never move tabs, change saved geometry or remount a
+  // browser/terminal when maximizing. Session switches restore immediately.
+  const [maximized, setMaximized] = useState<{ sessionId: string; panel: 'right' | 'bottom' } | undefined>()
+  const maximizedPanel = maximized !== undefined && maximized.sessionId === sessionId
+    && (maximized.panel === 'right' ? state?.panelOpen : state?.bottomOpen) ? maximized.panel : undefined
+  useEffect(() => { setMaximized(undefined) }, [sessionId])
+  useEffect(() => {
+    setMaximized(current => current && !(current.panel === 'right' ? state?.panelOpen : state?.bottomOpen) ? undefined : current)
+  }, [state?.panelOpen, state?.bottomOpen])
+  useEffect(() => {
+    if (!maximizedPanel) return
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+      const target = event.target as HTMLElement | null
+      if (target?.closest?.('input,textarea,select,[contenteditable="true"]')) return
+      event.preventDefault(); setMaximized(undefined)
+    }
+    document.addEventListener('keydown', escape)
+    return () => document.removeEventListener('keydown', escape)
+  }, [maximizedPanel])
   // Floating windows have no persisted activePane. Keep focus session-scoped in
   // the shell so their real tab type can activate the shared Browser rail entry.
   const [floatFocus, setFloatFocus] = useState<{ sessionId: string; tabId: string } | undefined>(undefined)
@@ -1677,7 +1697,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
   }
 
   return (
-    <div data-dsh-panel-host style={hostStyle} {...osFileDragShield}>
+    <div data-dsh-panel-host data-dsh-maximized={maximizedPanel} style={hostStyle} {...osFileDragShield}>
       <ChatQuoteSelection ctx={ctx} scope={{ sessionId, cwd }} />
       {!narrow && <ActivityRail options={railOptions} activeType={activeRailType} onSelect={onRailSelect} />}
       {/* The corner is retained for legacy/blank headers and for closing a
@@ -1700,8 +1720,11 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
         ref={panelRef}
         className={clsx(css.panel, !state.panelOpen && css.panelHidden)}
         data-dsh-panel
+        data-dsh-maximizable="right"
         style={{
-          width: narrow ? '100vw' : Math.min(state.width, Math.max(0, window.innerWidth - ACTIVITY_RAIL_WIDTH)),
+          width: maximizedPanel === 'right' || narrow ? '100vw' : Math.min(state.width, Math.max(0, window.innerWidth - ACTIVITY_RAIL_WIDTH)),
+          right: maximizedPanel === 'right' ? 0 : undefined,
+          zIndex: maximizedPanel === 'right' ? 44 : undefined,
           // Narrow drawer: keep the bottom-anchored sheet above the on-screen
           // keyboard (visualViewport inset); desktop panels are full-height
           // and unaffected.
@@ -1710,7 +1733,16 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
        
         data-dragging={anyDragging || undefined}
       >
-          {!narrow && (
+          <button type="button" className={css.maximizePanel} data-dsh-maximize="right"
+            aria-label={t(maximizedPanel === 'right' ? 'restorePanel' : 'maximizePanel')}
+            title={t(maximizedPanel === 'right' ? 'restorePanel' : 'maximizePanel')}
+            aria-pressed={maximizedPanel === 'right'} disabled={anyDragging}
+            onClick={() => setMaximized(maximizedPanel === 'right' ? undefined : { sessionId, panel: 'right' })}>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <path d={maximizedPanel === 'right' ? 'M6 2v4H2m8-4v4h4M6 14v-4H2m8 4v-4h4' : 'M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4'} />
+            </svg>
+          </button>
+          {!narrow && !maximizedPanel && (
             <div
               className={clsx(css.panelResize, draggingWidth && css.panelResizeActive)}
              
@@ -1770,7 +1802,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
           coordinates to keep in sync. (Never on narrow viewports: the
           bottom panel does not exist there.)
         */}
-        {!narrow && state.panelOpen && state.bottomOpen && (
+        {!narrow && !maximizedPanel && state.panelOpen && state.bottomOpen && (
           <div
             className={css.cornerHandle}
             data-dragging={draggingCorner || undefined}
@@ -1833,9 +1865,11 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
         className={clsx(css.bottomPanel, !state.bottomOpen && css.bottomPanelHidden)}
         data-dsh-panel
         data-dsh-bottom-panel
+        data-dsh-maximizable="bottom"
         style={{
-          height: bottomPanelHeight,
-          left: centerRectRef.current.left,
+          height: maximizedPanel === 'bottom' ? `calc(100% - ${titleBarStrip}px)` : bottomPanelHeight,
+          left: maximizedPanel === 'bottom' ? 0 : centerRectRef.current.left,
+          zIndex: maximizedPanel === 'bottom' ? 44 : undefined,
           // Keep the panel above the on-screen keyboard when the visual
           // viewport shrinks (see the keyboardInset effect).
           bottom: keyboardInset > 0 ? `${keyboardInset}px` : undefined,
@@ -1844,19 +1878,19 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
           // details column's left edge (the details column sits between the
           // center and the right panel, and the right panel's margin-right
           // push is already baked into centerRect.right).
-          right: window.innerWidth - centerRectRef.current.right,
+          right: maximizedPanel === 'bottom' ? 0 : window.innerWidth - centerRectRef.current.right,
           // The seam against the open right panel needs its own hairline
           // (the right panel's border-left alone is covered by this panel's
           // fill — without it the corner looks cut off).
           borderRight: state.panelOpen ? '1px solid var(--dsw-alias-border-l2)' : undefined,
           // Unmeasured center column → keep the panel invisible (zero-size
           // geometry would flash full-width overflow instead).
-          visibility: centerMeasured ? undefined : 'hidden',
+          visibility: maximizedPanel === 'bottom' || centerMeasured ? undefined : 'hidden',
         }}
        
         data-dragging={(draggingBottom || draggingCorner) || undefined}
       >
-        <div
+        {!maximizedPanel && <div
           className={clsx(css.bottomResize, draggingBottom && css.bottomResizeActive)}
          
           onPointerDown={(event) => {
@@ -1886,7 +1920,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
           }}
           onPointerCancel={(event) => { abortDrag(() => setDraggingBottom(false), event) }}
           onLostPointerCapture={() => { abortDrag(() => setDraggingBottom(false)) }}
-        />
+        />}
         {/*
           The bottom panel's own close control at its tab strip's right end
           (the strip reserves the width via CSS so the + menu never hides
@@ -1902,6 +1936,15 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
             <IconCloseFill14 />
           </button>
         </Tooltip>
+        <button type="button" className={css.maximizePanel} data-dsh-maximize="bottom"
+          aria-label={t(maximizedPanel === 'bottom' ? 'restorePanel' : 'maximizePanel')}
+          title={t(maximizedPanel === 'bottom' ? 'restorePanel' : 'maximizePanel')}
+          aria-pressed={maximizedPanel === 'bottom'} disabled={anyDragging}
+          onClick={() => setMaximized(maximizedPanel === 'bottom' ? undefined : { sessionId, panel: 'bottom' })}>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+            <path d={maximizedPanel === 'bottom' ? 'M6 2v4H2m8-4v4h4M6 14v-4H2m8 4v-4h4' : 'M6 2H2v4m8-4h4v4M2 10v4h4m8-4v4h-4'} />
+          </svg>
+        </button>
         <div className={css.panelBody}>
           <Workbench
             state={state}

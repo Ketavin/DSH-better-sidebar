@@ -14,6 +14,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 
 export const ru: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: 'Развернуть панель',
+  restorePanel: 'Восстановить размер панели',
   explorerWorkspace: "Рабочая область",
   explorerViewFailed: "Это представление недоступно. Вернитесь в рабочую область.",
   files: 'Файлы',

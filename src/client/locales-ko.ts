@@ -10,6 +10,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 
 export const ko: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: '패널 최대화',
+  restorePanel: '패널 크기 복원',
   explorerWorkspace: "작업 공간",
   explorerViewFailed: "이 보기를 사용할 수 없습니다. 작업 공간으로 돌아가세요.",
   files: '파일',

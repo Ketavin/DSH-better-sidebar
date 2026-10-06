@@ -20,6 +20,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** The pl dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const pl: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: 'Maksymalizuj panel',
+  restorePanel: 'Przywróć rozmiar panelu',
   explorerWorkspace: "Obszar roboczy",
   explorerViewFailed: "Ten widok jest niedostępny. Wróć do obszaru roboczego.",
   files: 'Pliki',

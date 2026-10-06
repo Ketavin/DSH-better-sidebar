@@ -18,6 +18,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** The vi dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const vi: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: 'Phóng to bảng',
+  restorePanel: 'Khôi phục kích thước bảng',
   explorerWorkspace: "Không gian làm việc",
   explorerViewFailed: "Chế độ xem này không khả dụng. Quay lại không gian làm việc.",
   files: 'Tệp',

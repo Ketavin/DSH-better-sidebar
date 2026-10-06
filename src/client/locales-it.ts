@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * Italian copy for the sidebar. Key-set-equal to `zh` in `locales.ts`;
  * consumed by the better-locale override store (see `locales.ts` for the
@@ -7,6 +8,7 @@
  */
 
 export const it: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Area di lavoro",
   explorerViewFailed: "Questa vista non è disponibile. Torna all’area di lavoro.",
   files: 'File',

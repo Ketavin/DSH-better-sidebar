@@ -49,6 +49,7 @@ Sidebar content, file viewers and general-setting switches share DSH's theme acc
 - **🌿 Git Panel**: real diff + VSCode-style diff tabs, history, right-click to stage / commit / revert; under a workspace container it discovers child repositories and shows a **repository selector**, with linked-worktree change discovery
 - **🧩 Background Tasks**: agent topology + background tasks (exit codes / live output / force-kill)
 - **💬 Side Chat (beta)**: Codex-style side threads — the child inherits the parent's FULL context (completed turns + the pending question + the in-progress turn's assistant output and tool activity, honestly frozen as "interrupted") and runs independently without entering the main conversation; threads support continuous follow-ups (auto-resumed after a DSH restart) and one-click "Save as new session" promotion to a top-level session
+- **SideChat quote drafts**: select text in Files text/Markdown or one settled main-chat message, then choose “Ask SideChat”. Review its source and truncation before explicitly sending it to the real child session. The existing main-composer action and full parent-context inheritance remain. Quotes persist in child history with source navigation after reopening; file navigation reopens the file without precise line positioning. Unsaved snapshots, later main-chat changes and Workbench revision citations are not synced automatically.
 - **🪟 Dual Workbench**: right sidebar + bottom panel; drag tabs to split / merge panes (cross-panel), mobile auto-merges into a full-width drawer
 - **🪟 Free Windows**: drag any tab onto the main conversation area to turn it into a movable / resizable / raiseable floating window (default 390×780); drag it back onto a pane to dock; persisted per session. `features` includes `'floatWindows'` and plugin tabs are supported identically
 - **📌 Pinned Terminals**: right-click a terminal tab to "Pin to Workspace / Pin Globally" — pinned terminals survive session switches and surface inline in the TabBar as virtual tabs (click activates in-place, PTY connects directly to the home session's PTY via WS, no session jump needed); agent terminals exempted from reconcile removal
@@ -546,3 +547,9 @@ A descriptor has `id`, `title`, optional `order`, and a React `component` receiv
 returned disposer with `ctx.effect`. `subscribeExplorerViews/getExplorerViewRevision`
 is independent of the previewer registry. Workspace uploads remain mounted during
 view switches, and removing an extension restores Workspace.
+
+## Views inside Tasks
+
+The `taskViews` capability exposes `registerTaskView/getTaskViews/subscribeTaskViews/getTaskViewRevision`. A descriptor is `{id,title,order?,component}`; its component receives `{ctx,scope,visible,onSubagentJump?}`. Registration adds a choice inside the existing Tasks page, never a rail entry.
+
+Native Tasks remains the default. Changing session or removing the active extension restores it. Hidden extension components unmount and must dispose subscriptions in their React effect cleanup. Native Tasks receives `active=false` while another view is selected, pausing its own polling. Own the registration disposer through `ctx.effect`; duplicate IDs and the reserved `tasks` ID are rejected.

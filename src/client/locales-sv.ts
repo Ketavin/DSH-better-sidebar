@@ -1,4 +1,6 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 export const sv: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Arbetsyta",
   explorerViewFailed: "Den här vyn är inte tillgänglig. Gå tillbaka till arbetsytan.",
   files: 'Filer',

@@ -6,14 +6,14 @@
  * first use of the feature that needs it (see src/client/chunk-loader.ts).
  *
  * Caching contract: every response carries `cache-control: no-cache` plus an
- * ETag (content hash, memoized per file by mtime/size) and honors
+ * ETag (hash of the exact response bytes) and honors
  * If-None-Match — the browser revalidates each fetch, but a 304 avoids
  * re-downloading multi-MB chunks that did not change (page refresh, HMR
  * re-activation). Same browser-trust fence as every other /sidebar route;
  * only allowlisted chunk names are servable (no path traversal).
  */
 import { createHash } from 'node:crypto'
-import { stat, readFile } from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { Context, SidebarHttpRequest, SidebarHttpResponse } from './context-types.ts'
@@ -28,37 +28,6 @@ const LIB_DIR = dirname(fileURLToPath(import.meta.url))
 /** sha1 content hash shortened to 12 hex chars (same shape as the client-modules rev). */
 function shortHash(input: string | Buffer): string {
   return createHash('sha1').update(input).digest('hex').slice(0, 12)
-}
-
-interface ChunkEtag {
-  mtimeMs: number
-  size: number
-  etag: string
-}
-
-/** ETag memo: recompute the content hash only when the file's stat changed. */
-const etags = new Map<string, ChunkEtag>()
-
-/**
- * The chunk file's ETag (quoted hash), or undefined when the file is
- * missing. Hash is recomputed only when mtime/size changed (hashing a
- * multi-MB chunk per request is wasteful).
- */
-async function etagOf(name: ChunkName, chunkDir: string): Promise<string | undefined> {
-  const path = join(chunkDir, `client-${name}.js`)
-  const key = `${chunkDir}:${name}`
-  try {
-    const info = await stat(path)
-    const memo = etags.get(key)
-    if (memo !== undefined && memo.mtimeMs === info.mtimeMs && memo.size === info.size) {
-      return memo.etag
-    }
-    const etag = `"${shortHash(await readFile(path))}"`
-    etags.set(key, { mtimeMs: info.mtimeMs, size: info.size, etag })
-    return etag
-  } catch {
-    return undefined
-  }
 }
 
 /**
@@ -89,13 +58,18 @@ export function createBundleRouteHandler(
       res.end('not found')
       return
     }
-    const etag = await etagOf(name, chunkDir)
-    if (etag === undefined) {
-      // Registered name but unreadable (bundle not built yet): loud 404.
+    let body: Buffer
+    try {
+      body = await readFile(join(chunkDir, `client-${name}.js`))
+    } catch {
       res.writeHead(404)
       res.end('not found')
       return
     }
+    // Equal-length rebuilds can share a filesystem timestamp. Hash the bytes
+    // on revalidation, and send that same buffer so the ETag cannot describe
+    // an earlier read. These three lazy chunks are fetched only on activation.
+    const etag = `"${shortHash(body)}"`
     if (req.headers['if-none-match'] === etag) {
       // Revalidation hit: unchanged chunk, no body — avoids re-downloading
       // multi-MB scripts on page refresh / HMR re-activation.
@@ -103,19 +77,12 @@ export function createBundleRouteHandler(
       res.end()
       return
     }
-    try {
-      const body = await readFile(join(chunkDir, `client-${name}.js`))
-      res.writeHead(200, {
-        'content-type': 'text/javascript; charset=utf-8',
-        'cache-control': 'no-cache',
-        etag,
-      })
-      res.end(body)
-    } catch {
-      // Read raced a delete/rebuild between the stat and the read.
-      res.writeHead(404)
-      res.end('not found')
-    }
+    res.writeHead(200, {
+      'content-type': 'text/javascript; charset=utf-8',
+      'cache-control': 'no-cache',
+      etag,
+    })
+    res.end(req.method === 'HEAD' ? undefined : body)
   }
 }
 

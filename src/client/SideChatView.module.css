@@ -435,3 +435,12 @@
     transition: none;
   }
 }
+
+.sidechatQuote { flex: none; margin: 4px 8px; padding: 8px; border: 1px solid var(--dsw-alias-border-l1); border-radius: 6px; color: var(--dsw-alias-label-secondary); font: var(--dsw-font-xxs-12); max-height: 220px; overflow: auto; overflow-wrap: anywhere; }
+.sidechatQuoteHeader { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.sidechatQuoteHeader strong { flex: 1; }
+.sidechatQuote button { border: 1px solid var(--dsw-alias-border-l1); border-radius: 4px; background: var(--dsw-alias-bg-layer-2); color: var(--dsw-alias-label-primary); font: inherit; cursor: pointer; }
+.sidechatQuote button:focus-visible { outline: 2px solid var(--dsw-alias-label-primary); outline-offset: 2px; }
+.sidechatQuote button:disabled { cursor: default; opacity: .5; }
+.sidechatQuote pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; max-height: 84px; overflow: auto; margin: 6px 0; color: var(--dsw-alias-label-primary); }
+.sidechatQuoteLocation { margin: 4px 0; }

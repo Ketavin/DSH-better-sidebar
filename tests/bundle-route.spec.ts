@@ -6,7 +6,7 @@
  * re-downloading.
  */
 import { describe, expect, it } from 'vitest'
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdtempSync, rmSync, writeFileSync, utimesSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { IncomingMessage, ServerResponse } from 'node:http'
@@ -79,17 +79,36 @@ describe('/sidebar/bundle route', () => {
     }
   })
 
-  it('serves the new body after the file changed (ETag rotates)', async () => {
+  it('serves an equal-length changed body even when the timestamp is unchanged', async () => {
     const { handler, dir, cleanup } = setup()
     try {
+      const file = join(dir, 'client-editor.js')
+      const timestamp = new Date('2026-10-03T00:00:00Z')
+      utimesSync(file, timestamp, timestamp)
       const first = fakeRes()
       await handler(req('GET', '/sidebar/bundle/editor.js'), first as unknown as ServerResponse)
-      writeFileSync(join(dir, 'client-editor.js'), 'window.__ModuleLoader__ && 1;')
+      writeFileSync(file, 'window.__ModuleLoader__ && 1;')
+      utimesSync(file, timestamp, timestamp)
       const second = fakeRes()
       await handler(req('GET', '/sidebar/bundle/editor.js', { 'if-none-match': first.headers.etag! }), second as unknown as ServerResponse)
       expect(second.status).toBe(200)
       expect(second.headers.etag).not.toBe(first.headers.etag)
       expect(second.body).toContain('&& 1')
+    } finally {
+      cleanup()
+    }
+  })
+
+  it('returns the matching GET ETag without a body for HEAD', async () => {
+    const { handler, cleanup } = setup()
+    try {
+      const get = fakeRes()
+      await handler(req('GET', '/sidebar/bundle/editor.js'), get as unknown as ServerResponse)
+      const head = fakeRes()
+      await handler(req('HEAD', '/sidebar/bundle/editor.js'), head as unknown as ServerResponse)
+      expect(head.status).toBe(200)
+      expect(head.headers.etag).toBe(get.headers.etag)
+      expect(head.body).toBe('')
     } finally {
       cleanup()
     }

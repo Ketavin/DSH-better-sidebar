@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, it } from 'vitest'
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, symlinkSync, unlinkSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { writeWorkspaceUpload } from '../src/fs-operations.ts'
@@ -107,7 +107,9 @@ describe('writeWorkspaceUpload', () => {
     const outside = mkdtempSync(join(tmpdir(), 'dsh-sidebar-upload-symlink-outside-'))
     const link = join(root, 'upload-link')
     try {
-      symlinkSync(outside, link)
+      // A directory junction exercises the same canonical-path escape on
+      // Windows without requiring the OS privilege for symbolic links.
+      symlinkSync(outside, link, process.platform === 'win32' ? 'junction' : 'dir')
       await expect(writeWorkspaceUpload({
         cwd: root, dir: link, relativePath: 'x.txt', chunks: chunksOf('x'), limit: 1024,
       })).rejects.toMatchObject({ code: 'forbidden' })
@@ -115,7 +117,7 @@ describe('writeWorkspaceUpload', () => {
         cwd: root, dir: root, relativePath: 'upload-link/x.txt', chunks: chunksOf('x'), limit: 1024,
       })).rejects.toMatchObject({ code: 'forbidden' })
     } finally {
-      rmSync(link, { force: true })
+      if (existsSync(link)) unlinkSync(link)
       rmSync(outside, { recursive: true, force: true })
     }
   })
@@ -148,5 +150,15 @@ describe('writeWorkspaceUpload', () => {
       cwd: root, dir: root, relativePath: 'keep.txt', chunks: chunksOf('0123456789'), limit: 2,
     })).rejects.toMatchObject({ code: 'too-large' })
     expect(readFileSync(target, 'utf8')).toBe('original')
+  })
+
+  it('reports a permanent replacement failure and cleans its temporary file', async () => {
+    const target = join(root, 'occupied-directory')
+    mkdirSync(target)
+    await expect(writeWorkspaceUpload({
+      cwd: root, dir: root, relativePath: 'occupied-directory', chunks: chunksOf('new'), limit: 1024,
+    })).rejects.toBeDefined()
+    expect(readdirSync(target)).toEqual([])
+    expect(tmpLeftovers(root)).toEqual([])
   })
 })

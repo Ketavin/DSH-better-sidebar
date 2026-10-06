@@ -1,3 +1,4 @@
+import { ChatQuoteSelection } from './ChatQuoteSelection.tsx'
 /**
  * The sidebar shell: panels mounted inside the unified panel host — a
  * fixed, viewport-sized containing block ([data-dsh-panel-host]) appended
@@ -42,12 +43,13 @@ import {
   type DropZone, type SidebarState, type SidebarStore, type SidebarTab, type SplitNode,
 } from './state.ts'
 import { activePinnedIdFor, collectPinnedTabs, createPinnedVirtualTab, getPinnedHomeScope, injectPinnedIntoTree, isPinnedVirtualId, isPinnedVirtualTab, parsePinnedVirtualId, shouldRenderPinnedContent, type PinnedTabEntry } from './pinned.ts'
-import { IconPinOutline16 } from './icons.tsx'
+import { IconBrowserWindowOutline16, IconGlobeOutline16, IconPinOutline16, IconRobotPointerOutline16 } from './icons.tsx'
 import { PanelToggleButtons, useHeaderControlsCenter, useHeaderControlsPresent, useHeaderControlsVisible, type HeaderControlPlacement } from './header-panel-controls.tsx'
 import { Workbench, type WorkbenchActions } from './split-pane.tsx'
 import { isNarrowWidth, useViewportSize } from './breakpoints.ts'
 import { layoutPushSize } from './layout-push.ts'
-import { ACTIVITY_RAIL_WIDTH, railPushWidth, railTarget } from './activity-rail.ts'
+import { ACTIVITY_RAIL_WIDTH, railActiveType, railPushWidth, railTarget } from './activity-rail.ts'
+import { BROWSER_ENTRY_TYPE, EGO_BROWSER_TYPE, browserEntryType, browserModes, groupBrowserOptions, isBrowserType } from './browser-entry.ts'
 import { parseDesktopEnv } from './desktop-env.ts'
 import { getWcoSnapshot, subscribeWco } from './wco.ts'
 import { getShellPreset } from './shell-presets.ts'
@@ -168,7 +170,7 @@ const TabContent = memo(function TabContent(props: TabContentProps) {
 function buildNewTabOptions(state: SidebarState | undefined, ctx: Context, scope: SessionScope | undefined): NewTabOption[] {
   const service = ctx.get('betterSidebar')
   if (service === undefined) return []
-  return service.getTabs()
+  const options = service.getTabs()
     .filter(d => !d.hidden && service.isTabEnabled(d.id))
     .sort((a, b) => (a.order ?? 100) - (b.order ?? 100))
     .map(d => ({
@@ -177,6 +179,16 @@ function buildNewTabOptions(state: SidebarState | undefined, ctx: Context, scope
       disabled: state === undefined || scope === undefined || !(d.available?.(ctx, scope, state) ?? true),
       icon: typeof d.icon === 'function' ? d.icon(16) : d.icon,
     }))
+  return groupBrowserOptions(options, {
+    browser: t('browser'), preview: t('browserModePreview'), agent: t('browserModeAgent'),
+  }, {
+    // The family's three marks: the unified entry keeps the neutral globe,
+    // Web preview gets the browser window, Agent browser the robot + pointer
+    // — same outline/currentColor set, distinguishable at 16px without color.
+    browser: <IconGlobeOutline16 />,
+    preview: <IconBrowserWindowOutline16 />,
+    agent: <IconRobotPointerOutline16 />,
+  })
 }
 
 function ActivityRail(props: { options: NewTabOption[]; activeType?: string; onSelect: (id: string) => void }) {
@@ -326,6 +338,26 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
 
   const state = snapshot.state
   const sessionId = snapshot.sessionId
+  // Floating windows have no persisted activePane. Keep focus session-scoped in
+  // the shell so their real tab type can activate the shared Browser rail entry.
+  const [floatFocus, setFloatFocus] = useState<{ sessionId: string; tabId: string } | undefined>(undefined)
+  const focusedFloatTabId = floatFocus?.sessionId === sessionId ? floatFocus?.tabId : undefined
+  const focusedPaneTabId = state === undefined ? undefined
+    : [...allLeaves(state.splits), ...allLeaves(state.bottomSplits)]
+      .find(leaf => leaf.id === state.activePane)?.active
+  useEffect(() => { setFloatFocus(undefined) }, [sessionId, state?.activePane, focusedPaneTabId])
+  const previousFloats = useRef<{ sessionId?: string; ids: string[] }>({ ids: [] })
+  useEffect(() => {
+    const previous = previousFloats.current
+    const ids = state?.floats.map(float => float.tab.id) ?? []
+    previousFloats.current = { sessionId, ids }
+    // A newly floated tab receives focus; removing/docking one must not steal
+    // focus back from the pane merely because another window is now on top.
+    if (sessionId !== undefined && previous.sessionId === sessionId) {
+      const added = ids.filter(id => !previous.ids.includes(id)).at(-1)
+      if (added !== undefined) setFloatFocus({ sessionId, tabId: added })
+    }
+  }, [sessionId, state?.floats])
   const summaryCwd = sessionId === undefined ? undefined : sessionList.byId[sessionId]?.cwd
   const pushedBottomHeight = (bottomOpen: boolean, bottomHeight: number): number => layoutPushSize({
     narrow,
@@ -516,7 +548,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
       socket.onmessage = (event) => {
         if (typeof event.data !== 'string') return
         try {
-          const request = JSON.parse(event.data) as { kind?: unknown; target?: unknown; title?: unknown }
+          const request = JSON.parse(event.data) as { id?: unknown; kind?: unknown; target?: unknown; title?: unknown }
           if (request === null || typeof request !== 'object') return
           if (request.kind !== 'file' && request.kind !== 'folder' && request.kind !== 'url') return
           if (typeof request.target !== 'string' || request.target === '') return
@@ -524,7 +556,12 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
           const scope = { sessionId }
           const title = typeof request.title === 'string' && request.title !== '' ? request.title : undefined
           if (request.kind === 'url') {
-            ctx.get('betterSidebar')?.openTab({ type: 'browser', url: request.target, title }, scope)
+            void ctx.get('betterSidebar')?.openBrowserUrl({
+              url: request.target, title, scope, source: 'sidebar_open',
+              requestId: typeof request.id === 'string' && request.id !== '' ? request.id : crypto.randomUUID(),
+            }).then(result => {
+              if (!result.ok) console.warn('[dsh-better-sidebar] browser URL refused:', result.code)
+            })
           } else if (request.kind === 'folder') {
             ctx.get('betterSidebar')?.openTab({
               type: 'editor',
@@ -1259,9 +1296,13 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
       // Route through the service: same reducer (finds the pane in EITHER
       // tree, sets the active pane) and fires descriptor.onActivate; the
       // session scope (with its cwd) rides to the callback.
+      setFloatFocus(undefined)
       ctx.get('betterSidebar')?.activateTab(tabId, sessionId === undefined ? undefined : { sessionId, cwd })
     },
-    focusPane: (paneId) => { store.reduce(s => ({ ...s, activePane: paneId })) },
+    focusPane: (paneId) => {
+      setFloatFocus(undefined)
+      store.reduce(s => ({ ...s, activePane: paneId }))
+    },
     moveTabToEdge: (payload: TabDragPayload, toPane: string, zone: DropZone) => {
       store.reduce(s => moveTabToEdge(s, payload.paneId, payload.tabId, toPane, zone))
     },
@@ -1440,32 +1481,38 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
   const onNewTab = (optionId: string): void => {
     const service = ctx.get('betterSidebar')
     const descriptor = service?.getTab(optionId)
-    if (service === undefined || descriptor === undefined) return
+    const live = store.getSnapshot()
+    if (service === undefined || descriptor === undefined || descriptor.hidden || !service.isTabEnabled(optionId)
+      || live.sessionId !== sessionId || live.state === undefined
+      || !(descriptor.available?.(ctx, { sessionId, cwd }, live.state) ?? true)) return
     const title = typeof descriptor.title === 'function' ? descriptor.title() : descriptor.title
     // The session scope rides along: lifecycle callbacks receive it (and
     // the open stays in the current session, as before).
     service.openTab({ type: optionId, title }, { sessionId, cwd })
   }
 
-  const railOptions = newTabOptions.map(option => railTarget(state, option.id) === undefined ? option : { ...option, disabled: false })
-  const activeLeaf = [...allLeaves(state.splits), ...allLeaves(state.bottomSplits)].find(leaf => leaf.id === state.activePane)
-  const activeInRight = allLeaves(state.splits).some(leaf => leaf.id === state.activePane)
-  const activeRailType = (activeInRight ? state.panelOpen : state.bottomOpen)
-    ? activeLeaf?.tabs.find(tab => tab.id === activeLeaf.active)?.type
-    : undefined
+  const modes = browserModes(newTabOptions)
+  const browserTypes = modes.map(mode => mode.id)
+  const railOptions = newTabOptions.map(option => railTarget(
+    state, option.id, option.id === BROWSER_ENTRY_TYPE ? browserTypes : [option.id], focusedFloatTabId,
+  ) === undefined ? option : { ...option, disabled: false })
+  const activeRailType = browserEntryType(railActiveType(state, focusedFloatTabId), browserTypes)
   const onRailSelect = (optionId: string): void => {
     const service = ctx.get('betterSidebar')
     const live = store.getSnapshot()
-    const descriptor = service?.getTab(optionId)
-    if (live.sessionId !== sessionId || live.state === undefined || descriptor === undefined
-      || descriptor.hidden || service?.isTabEnabled(optionId) !== true) return
-    const target = railTarget(live.state, optionId)
+    if (live.sessionId !== sessionId || live.state === undefined || service === undefined) return
+    const liveOptions = buildNewTabOptions(live.state, ctx, { sessionId, cwd })
+    const liveModes = browserModes(liveOptions)
+    const liveTypes = optionId === BROWSER_ENTRY_TYPE ? liveModes.map(mode => mode.id)
+      : liveOptions.filter(option => option.id === optionId).map(option => option.id)
+    const target = railTarget(live.state, optionId, liveTypes, focusedFloatTabId)
     if (target !== undefined) {
       // Activation goes through the owner so external plugin lifecycle callbacks still fire.
       const leaf = [...allLeaves(live.state.splits), ...allLeaves(live.state.bottomSplits)]
         .find(leaf => leaf.id === live.state!.activePane)
       const alreadyActive = leaf?.active === target.tabId
       const wasOpen = target.placement === 'top' ? live.state.panelOpen : live.state.bottomOpen
+      setFloatFocus(target.placement === 'float' ? { sessionId, tabId: target.tabId } : undefined)
       service.activateTab(target.tabId, { sessionId, cwd })
       if (target.placement !== 'float') {
         store.reduce(s => target.placement === 'top'
@@ -1474,11 +1521,43 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
       }
       return
     }
+    // Availability gates creation only. Existing targets above must remain
+    // activatable even when every mode has reached its creation limit.
+    const modeId = optionId === BROWSER_ENTRY_TYPE
+      ? liveModes.find(mode => mode.disabled !== true)?.id : optionId
+    const descriptor = modeId === undefined ? undefined : service.getTab(modeId)
+    if (descriptor === undefined || descriptor.hidden || !service.isTabEnabled(descriptor.id)) return
     if (!(descriptor.available?.(ctx, { sessionId, cwd }, live.state) ?? true)) return
     // Launches from the right rail land in the right workbench, even after a bottom-pane focus.
     store.reduce(s => ({ ...s, panelOpen: true,
       activePane: allLeaves(s.splits).some(leaf => leaf.id === s.activePane) ? s.activePane : firstLeaf(s.splits).id }))
-    onNewTab(optionId)
+    setFloatFocus(undefined)
+    onNewTab(descriptor.id)
+  }
+
+  /** Mode switches activate/open the actual descriptor through its owner. */
+  const onBrowserMode = (modeId: string, paneId: string, placement: 'top' | 'bottom' | 'float'): void => {
+    const service = ctx.get('betterSidebar')
+    const live = store.getSnapshot()
+    const descriptor = service?.getTab(modeId)
+    if (!isBrowserType(modeId) || service === undefined || descriptor === undefined || descriptor.hidden
+      || live.sessionId !== sessionId || live.state === undefined || !service.isTabEnabled(modeId)) return
+    const target = railTarget(live.state, modeId, [modeId], focusedFloatTabId)
+    if (target !== undefined) {
+      setFloatFocus(target.placement === 'float' ? { sessionId, tabId: target.tabId } : undefined)
+      service.activateTab(target.tabId, { sessionId, cwd })
+      if (target.placement !== 'float') store.reduce(s => target.placement === 'top'
+        ? { ...s, panelOpen: true } : { ...s, bottomOpen: true })
+      return
+    }
+    if (!(descriptor.available?.(ctx, { sessionId, cwd }, live.state) ?? true)) return
+    setFloatFocus(undefined)
+    store.reduce(s => ({ ...s,
+      activePane: placement === 'float' ? firstLeaf(s.splits).id : paneId,
+      ...(placement === 'bottom' ? { bottomOpen: true } : { panelOpen: true }),
+    }))
+    const title = typeof descriptor.title === 'function' ? descriptor.title() : descriptor.title
+    service.openTab({ type: modeId, title }, { sessionId, cwd })
   }
 
   /**
@@ -1487,10 +1566,15 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
    * ctx and the conversation input service at click time; a missing service
    * or scope degrades to a logged no-op, never a crash.
    */
-  /** The tab icon from the tab-type registry (shared by every workbench). */
+  /** The tab icon from the tab-type registry (shared by every workbench).
+   *  The browser family's Agent mode is a third-party descriptor; its tab
+   *  presents the family's robot glyph so both real family types stay
+   *  visually distinct from each other (only this known type is mapped —
+   *  every other third-party tab keeps its own icon). */
   const tabIconOf = (tab: SidebarTab): ReactNode => {
     const descriptor = ctx.get('betterSidebar')?.getTab(tab.type)
     if (descriptor === undefined) return null
+    if (tab.type === EGO_BROWSER_TYPE) return <IconRobotPointerOutline16 size={14} />
     return typeof descriptor.icon === 'function' ? descriptor.icon(14) : descriptor.icon
   }
 
@@ -1538,7 +1622,7 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
     // is only a display key). Regular tabs: effectiveTabId is undefined (no
     // override), scope is the current session's.
     const home = getPinnedHomeScope(tab)
-    return (
+    const content = (
       <TabContent
         tab={tab}
         effectiveTabId={home?.tabId}
@@ -1564,10 +1648,37 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
         tabsVersion={tabsVersion}
       />
     )
+    if (!isBrowserType(tab.type)) return content
+    return (
+      <div className={css.browserEntry} data-dsh-browser-entry>
+        {modes.length > 1 && (
+          <div className={css.browserModes} role="group" aria-label={t('browserModeLabel')}>
+            {modes.map(mode => (
+              <button
+                key={mode.id}
+                type="button"
+                className={css.browserMode}
+                aria-pressed={tab.type === mode.id}
+                disabled={mode.disabled === true && railTarget(state, mode.id) === undefined}
+                data-dsh-browser-mode={mode.id}
+                onClick={() => { onBrowserMode(mode.id, paneId, placement) }}
+              >
+                {mode.icon === undefined ? null : (
+                  <span className={css.browserModeIcon} aria-hidden="true">{mode.icon}</span>
+                )}
+                {mode.label}
+              </button>
+            ))}
+          </div>
+        )}
+        <div className={css.browserEntryBody}>{content}</div>
+      </div>
+    )
   }
 
   return (
     <div data-dsh-panel-host style={hostStyle} {...osFileDragShield}>
+      <ChatQuoteSelection ctx={ctx} scope={{ sessionId, cwd }} />
       {!narrow && <ActivityRail options={railOptions} activeType={activeRailType} onSelect={onRailSelect} />}
       {/* The corner is retained for legacy/blank headers and for closing a
           narrow drawer that covers the native conversation header. */}
@@ -1819,7 +1930,10 @@ export function Sidebar(props: { ctx: Context; store: SidebarStore; headerContro
           float={float}
           renderTab={(tab, active, paneId) => renderTab(tab, active, paneId, 'float')}
           getTabIcon={tabIconOf}
-          onRaise={() => { store.reduce(s => raiseFloat(s, float.id)) }}
+          onRaise={() => {
+            setFloatFocus({ sessionId, tabId: float.tab.id })
+            store.reduce(s => raiseFloat(s, float.id))
+          }}
           onMove={(x, y) => { store.reduce(s => moveFloat(s, float.id, x, y)) }}
           onResize={(w, h) => { store.reduce(s => resizeFloat(s, float.id, w, h)) }}
           onDock={(paneId) => { store.reduce(s => dockFloat(s, float.id, paneId ?? undefined)) }}

@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * The pl (Polish) dictionary for the betterSidebar namespace.
  *
@@ -18,6 +19,7 @@
 
 /** The pl dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const pl: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Obszar roboczy",
   explorerViewFailed: "Ten widok jest niedostępny. Wróć do obszaru roboczego.",
   files: 'Pliki',

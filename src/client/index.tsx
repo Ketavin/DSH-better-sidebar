@@ -122,7 +122,7 @@ export function apply(ctx: Context): void {
   // file previewers through `ctx.betterSidebar.registerTab/registerFileViewer`.
   // Published before the panel mounts so consumers injecting 'betterSidebar'
   // are ready by the time the sidebar renders.
-  const service = createBetterSidebarService(sidebarStore)
+  const service = createBetterSidebarService(sidebarStore, ctx)
   ctx.provide('betterSidebar', service)
   // Terminal tab titles use the host's effective shell name (e.g. bash/zsh)
   // instead of "Terminal 1". Start with a safe fallback and replace it as
@@ -355,6 +355,7 @@ export function apply(ctx: Context): void {
           return registerLinkInterception({
             takeoverEnabled: (url) => {
               if (sidebarStore.getSuspended()) return false
+              if (sidebarStore.getSnapshot().sessionId === undefined) return false
               const prefs = sidebarStore.getPrefs()
               if (prefs.browserInterceptLinks === false) return false
               const protocolOn = url.protocol === 'https:'
@@ -366,10 +367,12 @@ export function apply(ctx: Context): void {
               return urlTargetOf(url) !== undefined || prefs.tabsEnabled['browser'] !== false
             },
             openInSidebar: (url) => {
-              let title: string | undefined
-              try { title = new URL(url).hostname } catch { /* keep the default title */ }
-              const type = urlTargetOf(new URL(url)) ?? 'browser'
-              ctx.get('betterSidebar')?.openTab({ type, url, title })
+              const sessionId = sidebarStore.getSnapshot().sessionId
+              if (sessionId === undefined) return
+              void service.openBrowserUrl({ url, scope: { sessionId }, source: 'markdown', requestId: crypto.randomUUID() })
+                .then(result => {
+                  if (!result.ok) console.warn('[dsh-better-sidebar] browser URL refused:', result.code)
+                })
             },
             selfOrigin: window.location.origin,
           })

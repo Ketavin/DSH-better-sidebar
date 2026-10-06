@@ -1659,6 +1659,60 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
 
 /* ── Browser tab ──────────────────────────────────────────────────────── */
 
+.browserEntry,
+.browserEntryBody {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.browserModes {
+  flex: none;
+  display: flex;
+  gap: 4px;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+  -webkit-app-region: no-drag;
+}
+
+.browserMode {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary);
+  font: var(--dsw-font-xxs-12);
+  cursor: pointer;
+}
+
+/* The decorative mode glyph sits slightly smaller than the menu/rail scale —
+   the pill is 12px-type chrome, not an icon surface. */
+.browserModeIcon {
+  display: inline-flex;
+  flex: none;
+}
+
+.browserModeIcon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.browserMode:hover,
+.browserMode[aria-pressed='true'] {
+  background: var(--dsw-alias-interactive-bg-hover);
+  color: var(--dsw-alias-label-primary);
+}
+
+.browserMode:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .browser {
   flex: 1;
   min-height: 0;
@@ -3111,3 +3165,8 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
 .explorerViews button:focus-visible { outline: 2px solid var(--dsw-alias-brand-primary); }
 .explorerViewContent { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
 .explorerViewContent[hidden] { display: none; }
+
+.selectionActions { padding: 0; max-width: calc(100vw - 16px); }
+.selectionActions > button { border: 0; background: none; color: inherit; font: inherit; cursor: pointer; padding: 0 8px; height: 100%; }
+.selectionActions > button:hover { background: var(--dsw-alias-interactive-bg-hover); }
+.selectionActions > button:focus-visible { outline: 2px solid var(--dsw-alias-label-primary); outline-offset: -2px; }

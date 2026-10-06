@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * The ar (Arabic) dictionary for the betterSidebar namespace.
  *
@@ -17,6 +18,7 @@
 
 /** The ar dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const ar: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "مساحة العمل",
   explorerViewFailed: "هذا العرض غير متاح. ارجع إلى مساحة العمل.",
   files: 'الملفات',

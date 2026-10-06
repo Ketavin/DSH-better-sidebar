@@ -1,3 +1,4 @@
+import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /**
  * Russian (ru) dictionary for the better-sidebar plugin.
  *
@@ -12,6 +13,7 @@
  */
 
 export const ru: Record<string, string> = {
+  ...sidechatQuoteEnglish,
   explorerWorkspace: "Рабочая область",
   explorerViewFailed: "Это представление недоступно. Вернитесь в рабочую область.",
   files: 'Файлы',

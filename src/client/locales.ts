@@ -23,8 +23,23 @@
 
 /** The zh dictionary (also registered into the DSH locale registry under {@link LOCALE_NS}). */
 export const zh = {
+  sideChatAskSelection: "向 SideChat 提问",
+  sideChatSelectionActions: "划选操作",
+  sideChatQuoteDraft: "引文草稿",
+  sideChatQuotedSource: "本次引文来源",
+  sideChatOpenSourceFile: "打开源文件",
+  sideChatReturnSource: "返回来源",
+  sideChatRemoveQuote: "移除引文",
+  sideChatChatSource: "主对话消息",
+  sideChatSourceUnavailable: "来源当前不可定位，请返回原会话或重新打开来源。",
+  sideChatQuoteTruncated: "已截取 {kept}/{total} 个 UTF-16 字符。",
+  sideChatDraftSource: "来自未保存的编辑快照；打开文件不会恢复此快照或精确定位行号。",
+  sideChatFileSource: "行号属于引用时的快照；打开文件不会精确定位到该行。",
+  sideChatContextSnapshot: "继承创建时的主对话完整上下文；之后的主对话变化不会实时同步。引文仅在发送后交给子会话。",
+
   explorerWorkspace: '工作区',
   explorerViewFailed: '此视图暂时不可用，可切回工作区。',
+  taskViewFailed: '此视图暂时不可用，可切回任务管理。',
   files: '文件',
   explorer: '资源管理器',
   git: '源代码管理',
@@ -262,6 +277,9 @@ export const zh = {
   viewerBinary: '二进制下载',
   viewerHtml: 'HTML',
   browser: '浏览器',
+  browserModeLabel: '浏览器模式',
+  browserModePreview: '网页预览',
+  browserModeAgent: 'Agent 浏览器',
   browserPlaceholder: '输入网址，例如 example.com',
   browserGo: '前往',
   browserBack: '后退',
@@ -381,8 +399,23 @@ export const zh = {
 
 /** The en dictionary (key-set-equal to zh, enforced by the type annotation). */
 export const en: Record<keyof typeof zh, string> = {
+  sideChatAskSelection: "Ask SideChat",
+  sideChatSelectionActions: "Selection actions",
+  sideChatQuoteDraft: "Quote draft",
+  sideChatQuotedSource: "Quoted source",
+  sideChatOpenSourceFile: "Open source file",
+  sideChatReturnSource: "Return to source",
+  sideChatRemoveQuote: "Remove quote",
+  sideChatChatSource: "Main chat message",
+  sideChatSourceUnavailable: "The source cannot be located here. Return to its original chat or reopen the source.",
+  sideChatQuoteTruncated: "Excerpt limited to {kept}/{total} UTF-16 characters.",
+  sideChatDraftSource: "Captured from unsaved edits. Opening the file does not restore this snapshot or jump to its line.",
+  sideChatFileSource: "Line numbers refer to the captured snapshot. Opening the file does not jump to that line.",
+  sideChatContextSnapshot: "Inherits the full main-chat context at creation; later changes are not synced live. The quote reaches the child only when you send.",
+
   explorerWorkspace: 'Workspace',
   explorerViewFailed: 'This view is unavailable. Switch back to Workspace.',
+  taskViewFailed: 'This view is unavailable. Switch back to Tasks.',
   files: 'Files',
   explorer: 'Explorer',
   git: 'Source Control',
@@ -620,6 +653,9 @@ export const en: Record<keyof typeof zh, string> = {
   viewerBinary: 'Binary download',
   viewerHtml: 'HTML',
   browser: 'Browser',
+  browserModeLabel: 'Browser mode',
+  browserModePreview: 'Web preview',
+  browserModeAgent: 'Agent browser',
   browserPlaceholder: 'Enter a URL, e.g. example.com',
   browserGo: 'Go',
   browserBack: 'Back',
@@ -767,25 +803,36 @@ import { zhTW as zhTWDict } from './locales-zh-TW.ts'
 import { zhMO as zhMODict } from './locales-zh-MO.ts'
 
 /** The ja dictionary (key-set-equal to zh, enforced by the type annotation). */
-export const ja: Record<keyof typeof zh, string> = jaDict as Record<keyof typeof zh, string>
-export const de: Record<keyof typeof zh, string> = deDict as Record<keyof typeof zh, string>
-export const fr: Record<keyof typeof zh, string> = frDict as Record<keyof typeof zh, string>
-export const pt: Record<keyof typeof zh, string> = ptDict as Record<keyof typeof zh, string>
-export const ko: Record<keyof typeof zh, string> = koDict as Record<keyof typeof zh, string>
-export const ar: Record<keyof typeof zh, string> = arDict as Record<keyof typeof zh, string>
-export const hi: Record<keyof typeof zh, string> = hiDict as Record<keyof typeof zh, string>
-export const id: Record<keyof typeof zh, string> = idDict as Record<keyof typeof zh, string>
-export const tr: Record<keyof typeof zh, string> = trDict as Record<keyof typeof zh, string>
-export const vi: Record<keyof typeof zh, string> = viDict as Record<keyof typeof zh, string>
-export const th: Record<keyof typeof zh, string> = thDict as Record<keyof typeof zh, string>
-export const ru: Record<keyof typeof zh, string> = ruDict as Record<keyof typeof zh, string>
-export const it: Record<keyof typeof zh, string> = itDict as Record<keyof typeof zh, string>
-export const nl: Record<keyof typeof zh, string> = nlDict as Record<keyof typeof zh, string>
-export const sv: Record<keyof typeof zh, string> = svDict as Record<keyof typeof zh, string>
-export const pl: Record<keyof typeof zh, string> = plDict as Record<keyof typeof zh, string>
-export const zhHK: Record<keyof typeof zh, string> = zhHKDict as Record<keyof typeof zh, string>
-export const zhTW: Record<keyof typeof zh, string> = zhTWDict as Record<keyof typeof zh, string>
-export const zhMO: Record<keyof typeof zh, string> = zhMODict as Record<keyof typeof zh, string>
+export const ja: Record<keyof typeof zh, string> = withBrowserModeFallback(jaDict)
+// Newly introduced extension copy falls back to English until the remaining dictionaries
+// translate it. Preserve their existing entries and their public key-set parity.
+function withBrowserModeFallback(dict: Record<string, string>): Record<keyof typeof zh, string> {
+  return {
+    browserModeLabel: en.browserModeLabel,
+    browserModePreview: en.browserModePreview,
+    browserModeAgent: en.browserModeAgent,
+    taskViewFailed: en.taskViewFailed,
+    ...dict,
+  } as Record<keyof typeof zh, string>
+}
+export const de = withBrowserModeFallback(deDict)
+export const fr = withBrowserModeFallback(frDict)
+export const pt = withBrowserModeFallback(ptDict)
+export const ko = withBrowserModeFallback(koDict)
+export const ar = withBrowserModeFallback(arDict)
+export const hi = withBrowserModeFallback(hiDict)
+export const id = withBrowserModeFallback(idDict)
+export const tr = withBrowserModeFallback(trDict)
+export const vi = withBrowserModeFallback(viDict)
+export const th = withBrowserModeFallback(thDict)
+export const ru = withBrowserModeFallback(ruDict)
+export const it = withBrowserModeFallback(itDict)
+export const nl = withBrowserModeFallback(nlDict)
+export const sv = withBrowserModeFallback(svDict)
+export const pl = withBrowserModeFallback(plDict)
+export const zhHK = withBrowserModeFallback(zhHKDict)
+export const zhTW = withBrowserModeFallback(zhTWDict)
+export const zhMO = withBrowserModeFallback(zhMODict)
 
 /** The DSH locale service attached by the client apply (absent → browser detection). */
 let localeService: { getSnapshot(): { active: string } } | undefined

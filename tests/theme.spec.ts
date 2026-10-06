@@ -14,9 +14,26 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
 import { colorAlpha, effectiveTokenValue, tokenValue } from '../src/client/theme.ts'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 afterEach(() => {
   document.body.removeAttribute('style')
+})
+
+describe('maximized panel theme and stacking contract', () => {
+  it('uses skin tokens and keeps the viewport panel inside the existing host stacking context', () => {
+    const css = readFileSync(resolve('src/client/sidebar.module.css'), 'utf8')
+    const button = css.match(/\.maximizePanel \{([^}]+)\}/)![1]!
+    expect(button).toContain('color: var(--dsw-alias-label-secondary)')
+    expect(button).toContain('background: var(--dsw-alias-bg-layer-1)')
+    expect(css).toContain('.maximizePanel:focus-visible { outline: 2px solid var(--dsw-alias-state-business-primary); }')
+    expect(css).toContain(':global([data-dsh-panel-host][data-dsh-maximized]) > .toggleCluster,')
+    const source = readFileSync(resolve('src/client/Sidebar.tsx'), 'utf8')
+    expect(source).toContain('data-dsh-maximized={maximizedPanel} style={hostStyle}')
+    expect(source).toContain("zIndex: maximizedPanel === 'right' ? 44 : undefined")
+    expect(source).toContain("zIndex: maximizedPanel === 'bottom' ? 44 : undefined")
+  })
 })
 
 describe('colorAlpha', () => {

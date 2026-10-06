@@ -18,6 +18,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** The tr dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const tr: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: 'Paneli büyüt',
+  restorePanel: 'Panel boyutunu geri yükle',
   explorerWorkspace: "Çalışma alanı",
   explorerViewFailed: "Bu görünüm kullanılamıyor. Çalışma alanına dönün.",
   files: 'Dosyalar',

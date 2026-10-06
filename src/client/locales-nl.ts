@@ -16,6 +16,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
  */
 export const nl: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: 'Paneel maximaliseren',
+  restorePanel: 'Paneelgrootte herstellen',
   explorerWorkspace: "Werkruimte",
   explorerViewFailed: "Deze weergave is niet beschikbaar. Ga terug naar de werkruimte.",
   files: 'Bestanden',

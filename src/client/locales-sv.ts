@@ -1,6 +1,8 @@
 import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 export const sv: Record<string, string> = {
   ...sidechatQuoteEnglish,
+  maximizePanel: 'Maximera panelen',
+  restorePanel: 'Återställ panelstorlek',
   explorerWorkspace: "Arbetsyta",
   explorerViewFailed: "Den här vyn är inte tillgänglig. Gå tillbaka till arbetsytan.",
   files: 'Filer',

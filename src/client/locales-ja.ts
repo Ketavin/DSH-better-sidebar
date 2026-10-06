@@ -97,6 +97,8 @@ export const ja: Record<string, string> = {
   pinnedRailLabel: '固定されたターミナル',
   closePinnedTerminal: 'ターミナルを閉じる',
   collapse: 'サイドバーを折りたたむ',
+  maximizePanel: 'パネルを最大化',
+  restorePanel: 'パネルのサイズを戻す',
   expand: 'サイドバーを展開',
   collapseBottomPanel: '下パネルを折りたたむ',
   expandBottomPanel: '下パネルを展開',

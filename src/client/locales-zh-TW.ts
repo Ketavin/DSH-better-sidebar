@@ -33,8 +33,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** The zh-HK dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const zhTW: Record<string, string> = {
   ...sidechatQuoteEnglish,
-  maximizePanel: '最大化面板',
-  restorePanel: '恢復面板大小',
+  maximizePanel: 'Sidebar 內全螢幕（收起工具列）',
+  restorePanel: '顯示工具列',
   explorerWorkspace: "工作區",
   explorerViewFailed: "此檢視暫時無法使用，可切回工作區。",
   files: '檔案',

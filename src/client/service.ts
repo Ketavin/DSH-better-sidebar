@@ -147,6 +147,10 @@ export interface TabComponentProps {
   tab: SidebarTab
   /** Whether this tab is the active one AND the panel is open (live views pause otherwise). */
   visible: boolean
+  /** Content-only presentation inside the existing panel; hide optional
+   * toolbars without unmounting content or changing control ownership.
+   * Missing on older Sidebar hosts means normal presentation. */
+  contentFocus?: boolean
   /** The explorer's expanded directory set (ExplorerView). */
   expanded?: string[]
   /** The explorer's reveal-highlight set (ExplorerView; "Show in folder" targets). */
@@ -543,7 +547,7 @@ export function matchUrlTarget(tabs: readonly TabDescriptor[], url: URL): TabDes
  * The plugin version this service instance reports. Keep in lockstep with
  * `package.json`'s version — `tests/service.spec.ts` asserts the pair.
  */
-export const SIDEBAR_SERVICE_VERSION = '0.17.10'
+export const SIDEBAR_SERVICE_VERSION = '0.17.11'
 
 /**
  * Monotonic capability list consumers use to gate new API usage (features

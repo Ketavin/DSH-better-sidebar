@@ -9,8 +9,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 
 export const it: Record<string, string> = {
   ...sidechatQuoteEnglish,
-  maximizePanel: 'Massimizza pannello',
-  restorePanel: 'Ripristina dimensioni pannello',
+  maximizePanel: 'Riempi pannello (nascondi controlli)',
+  restorePanel: 'Mostra controlli',
   explorerWorkspace: "Area di lavoro",
   explorerViewFailed: "Questa vista non è disponibile. Torna all’area di lavoro.",
   files: 'File',

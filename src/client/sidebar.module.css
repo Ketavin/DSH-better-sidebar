@@ -1395,6 +1395,11 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
 .editorTextView[data-content-focus] > .sandboxStatus,
 .editorTextView[data-content-focus] .tocBar { display: none; }
 
+/* Document Workbench 0.8.0 forwards FileViewerProps to the native PDF viewer
+   but adds its own toolbar. Its public PDF marker scopes this compatibility
+   rule to focused files, preserving the wrapper's text-mode/selection state. */
+.editor[data-content-focus] :global([data-dwb-pdf]) > :global(.dwb-toolbar) { display: none; }
+
 .editorTitle {
   flex: 1;
   min-width: 0;

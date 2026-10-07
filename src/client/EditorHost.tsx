@@ -97,12 +97,13 @@ export function EditorHost(props: {
   scope: SessionScope
   tab: SidebarTab
   visible?: boolean
+  contentFocus?: boolean
   expanded: string[]
   revealed: string[]
   onToggleDir: (path: string) => void
   onReferenceFile: (path: string) => void
 }) {
-  const { ctx, store, scope, tab, expanded, revealed, onToggleDir, onReferenceFile } = props
+  const { ctx, store, scope, tab, contentFocus, expanded, revealed, onToggleDir, onReferenceFile } = props
   const path = tab.path ?? ''
   const title = tab.title
   // A folder window: the model's `sidebar_open` (or any caller) opens a
@@ -393,7 +394,7 @@ export function EditorHost(props: {
   // at the folder instead of the session cwd.
   if (treeOnly || folderRoot !== undefined || showEmpty && (service?.getExplorerViews().length ?? 0) > 0) {
     return (
-      <div className={css.editor}>
+      <div className={css.editor} data-content-focus={contentFocus || undefined}>
         <TreePanel
           full
           explorerView={service === undefined ? undefined : { service, ctx, scope, visible: props.visible !== false, onOpenFile: openFileNewTab }}
@@ -417,7 +418,7 @@ export function EditorHost(props: {
   }
 
   return (
-    <div className={css.editor}>
+    <div className={css.editor} data-content-focus={contentFocus || undefined}>
       <div className={css.editorHeader}>
         <EditorPathInput key={path} path={path} cwd={scope.cwd} onOpen={openFile} />
         {toolbar?.modes === true && (
@@ -491,7 +492,7 @@ export function EditorHost(props: {
           {!showEmpty && load.status === 'error' && <div className={css.editorError}>{load.message}</div>}
           {!showEmpty && load.status === 'binary' && <BinaryDownload scope={scope} path={path} />}
           {!showEmpty && load.status === 'ready' && createElement(load.viewer.component, {
-            ctx, store, scope, path, title,
+            ctx, store, scope, path, title, contentFocus,
             viewerId: load.viewer.id,
             content: load.content,
             truncated: load.truncated,

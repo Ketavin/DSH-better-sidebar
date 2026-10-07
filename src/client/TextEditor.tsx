@@ -382,6 +382,7 @@ export function TextEditor(props: FileViewerProps) {
     <div
       ref={zoomHostRef}
       className={css.editorTextView}
+      data-content-focus={props.contentFocus || undefined}
       data-content-zoom={`${Math.round(contentZoom * 100)}%`}
       style={{
         '--dsh-sidebar-content-font-size': `${13 * contentZoom}px`,

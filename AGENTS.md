@@ -426,6 +426,7 @@ interface FileViewerProps {
   path: string
   title: string
   viewerId: string         // 命中 viewer 的 id（如 'code' / 'my-plugin:csv'）
+  contentFocus?: boolean   // Sidebar 内全屏：仅文件内容，收起 viewer 工具栏；保留文档、草稿、沙箱策略和组件身份
   content?: string        // fetchStrategy='fsRead' 时
   truncated?: boolean     // fetchStrategy='fsRead' 时
   mediaUrl?: string       // fetchStrategy='mediaUrl' 时
@@ -437,6 +438,8 @@ interface FileViewerProps {
   onToolbarControls?: (controls: EditorToolbarControls | null) => void
 }
 ```
+
+v0.17.12 起，Files 的面板内全屏通过 `contentFocus` 传到文件 viewer；宿主收起路径栏和 docked 文件树，内置 PDF/HTML/Markdown/图片 viewer 收起自身工具栏。外部 viewer 可消费该可选字段，缺省保持普通展示。PDF 原生工具栏在文档载入时决定，故切换时以缓存 Blob 的新 URL 重新打开，滚动/缩放可能重置；HTML iframe、编辑草稿及沙箱策略不变。见 [文件内容全屏设计](docs/plans/2026-10-07-file-content-focus.md)。
 
 ### 4.3 `fetchStrategy` 对照
 

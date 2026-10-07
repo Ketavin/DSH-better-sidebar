@@ -285,13 +285,16 @@
 .panel[data-dsh-maximizable] .tabBar { padding-right: calc(var(--dsh-toggle-reserve-width, 0px) + 34px); }
 .bottomPanel[data-dsh-maximizable] .tabBar { padding-right: 68px; }
 .bottomPanel .maximizePanel { top: 3px; right: 37px; }
-:global([data-dsh-panel-host][data-dsh-maximized]) > .panel,
-:global([data-dsh-panel-host][data-dsh-maximized]) > .bottomPanel { transition: none; }
-:global([data-dsh-panel-host][data-dsh-maximized="right"]) > .bottomPanel,
-:global([data-dsh-panel-host][data-dsh-maximized="bottom"]) > .panel,
-:global([data-dsh-panel-host][data-dsh-maximized]) > .floatWindow,
-:global([data-dsh-panel-host][data-dsh-maximized]) > .toggleCluster,
-:global([data-dsh-panel-host][data-dsh-maximized]) > :global([data-dsh-sidebar-rail]) { visibility: hidden; }
+/* In-panel full content: retain the panel's exact geometry and mounted tabs.
+   The restore button stays on top of its content, inside this panel only. */
+.panel[data-dsh-content-focused] .tabBar,
+.bottomPanel[data-dsh-content-focused] .tabBar,
+[data-dsh-content-focused] .browserModes,
+[data-dsh-content-focused] .browserBar,
+.bottomPanel[data-dsh-content-focused] .bottomClose { display: none; }
+.panel[data-dsh-content-focused] .maximizePanel { right: 6px; }
+.bottomPanel[data-dsh-content-focused] .maximizePanel { right: 6px; }
+:global([data-dsh-panel-host][data-dsh-focused-panel="right"]) > .toggleCluster { visibility: hidden; }
 
 .panelResizeActive {
   background: var(--dsw-alias-interactive-bg-hover-accent);

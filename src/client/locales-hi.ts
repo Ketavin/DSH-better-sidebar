@@ -18,8 +18,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** The hi dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const hi: Record<string, string> = {
   ...sidechatQuoteEnglish,
-  maximizePanel: 'पैनल बड़ा करें',
-  restorePanel: 'पैनल का आकार बहाल करें',
+  maximizePanel: 'पैनल भरें (नियंत्रण छिपाएँ)',
+  restorePanel: 'नियंत्रण दिखाएँ',
   explorerWorkspace: "कार्यस्थान",
   explorerViewFailed: "यह दृश्य उपलब्ध नहीं है। कार्यस्थान पर वापस जाएँ।",
   files: 'फ़ाइलें',

@@ -49,6 +49,8 @@ describe('tabContentCompare', () => {
   })
 
   it('invalidates on visible/expanded/session/cwd changes', () => {
+    const key = makeKey()
+    expect(tabContentCompare(key, { ...key, contentFocus: true })).toBe(false)
     expect(tabContentCompare(makeKey(), makeKey({ visible: false }))).toBe(false)
     expect(tabContentCompare(makeKey(), makeKey({ expanded: ['/workspace'] }))).toBe(false)
     expect(tabContentCompare(makeKey(), makeKey({ sessionId: 'session:2' }))).toBe(false)

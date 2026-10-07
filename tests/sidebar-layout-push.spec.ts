@@ -18,7 +18,7 @@ describe('Sidebar layout-push integration', () => {
 
   it('adds the keyboard inset to the conversation push, not the panel height', () => {
     expect(source.match(/height \+ keyboardInset/g)).toHaveLength(2)
-    expect(source).toContain("height: maximizedPanel === 'bottom' ? `calc(100% - ${titleBarStrip}px)` : bottomPanelHeight")
+    expect(source).toContain('height: bottomPanelHeight,')
     expect(source).not.toContain('height: bottomPanelHeight + keyboardInset')
   })
 

@@ -19,8 +19,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** The ar dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const ar: Record<string, string> = {
   ...sidechatQuoteEnglish,
-  maximizePanel: 'تكبير اللوحة',
-  restorePanel: 'استعادة حجم اللوحة',
+  maximizePanel: 'ملء اللوحة (إخفاء الأدوات)',
+  restorePanel: 'إظهار الأدوات',
   explorerWorkspace: "مساحة العمل",
   explorerViewFailed: "هذا العرض غير متاح. ارجع إلى مساحة العمل.",
   files: 'الملفات',

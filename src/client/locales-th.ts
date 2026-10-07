@@ -18,8 +18,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** The th dictionary (key-set-equal to zh, enforced by the type annotation in locales.ts). */
 export const th: Record<string, string> = {
   ...sidechatQuoteEnglish,
-  maximizePanel: 'ขยายแผงให้เต็มหน้าจอ',
-  restorePanel: 'คืนค่าขนาดแผง',
+  maximizePanel: 'เต็มพื้นที่แผง (ซ่อนเครื่องมือ)',
+  restorePanel: 'แสดงเครื่องมือ',
   explorerWorkspace: "พื้นที่ทำงาน",
   explorerViewFailed: "มุมมองนี้ไม่พร้อมใช้งาน โปรดกลับไปที่พื้นที่ทำงาน",
   files: 'ไฟล์',

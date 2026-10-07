@@ -281,6 +281,7 @@ interface TabComponentProps {
   scope: SessionScope          // { sessionId, cwd? }
   tab: SidebarTab              // 当前 tab 实例（含 id/type/title/path?/diff?）
   visible: boolean             // 是否是当前激活 tab 且面板打开（不可见时暂停轮询等）
+  contentFocus?: boolean       // Sidebar 内全屏：收起自有工具栏，保留内容/连接/控制身份；旧宿主缺省为普通布局
   // 以下由内置 tab 使用，外部 tab 可忽略：
   expanded?: string[]          // 文件树的展开目录集
   onToggleDir?: (path: string) => void
@@ -660,7 +661,7 @@ interface OpenTabSeed {
   - **拖拽区退出**：插件交互 chrome（`.toggleCluster` / `.toggleButton` / `.tabBar`）统一 `-webkit-app-region: no-drag`——无边框壳的顶部拖拽带会吞点击（#103/#111），该属性在普通浏览器与无拖拽区壳中惰性无害。
   - `compatibility` 模式与无信号环境不避让。
 - **z-index**：面板宿主层 25、折叠按钮簇 45（host 内部层叠；角手柄在面板内层叠，z-index 2 仅面板内有效）——全部低于 DSH 的 ui-cordis 动态插件面板（fixed，30，其清单/审批面不得被工作台遮挡）与 DSH 浮层栈（100/1000+），任何浮层天然盖住侧边栏。
-- **最大化**：右/底面板标签栏提供最大化/恢复按钮，最大化仅改变该面板显示几何（宿主内 44），不更改持久化尺寸、不搬移或重挂标签。原窗口、连接、草稿与租约保留，其他面板/自由窗口暂时隐于其后；切换会话或关闭面板退出。Esc 在普通区域恢复，编辑器、网页键盘及输入法保留自己的 Esc。宿主层仍为 25，插件审批面与全局浮层始终在上方。
+- **Sidebar 内全屏**：右/底面板标签栏提供收起/显示工具栏按钮。仅收起原面板内的页签栏、浏览器模式栏，并向 tab 传入可选 `contentFocus`；消费插件隐藏自有工具栏并保留内容节点。面板宽高、位置、布局推挤及层级不变，不铺满 DSH，不搬移或重挂标签。恢复按钮浮在原面板右上角；右面板内全屏时仅隐藏可能遮住它的备用折叠按钮簇，其他面板/自由窗口/图标列仍保留。切换会话、活动标签或关闭面板退出。Esc 在普通区域恢复，编辑器、网页键盘及输入法保留自己的 Esc。宿主层仍为 25，插件审批面与全局浮层始终在上方。
 
 ### 8.2 注意事项
 

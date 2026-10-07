@@ -11,8 +11,8 @@ import { sidechatQuoteEnglish } from './sidechat-quote-copy.ts'
 /** fr dictionary for the `betterSidebar` namespace. */
 export const fr: Record<string, string> = {
   ...sidechatQuoteEnglish,
-  maximizePanel: 'Agrandir le panneau',
-  restorePanel: 'Rétablir la taille du panneau',
+  maximizePanel: 'Remplir le panneau (masquer les commandes)',
+  restorePanel: 'Afficher les commandes',
   explorerWorkspace: "Espace de travail",
   explorerViewFailed: "Cette vue est indisponible. Revenez à l’espace de travail.",
   files: 'Fichiers',

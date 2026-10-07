@@ -22,6 +22,8 @@ export interface TabContentMemoKey {
   sessionId: string
   cwd: string | undefined
   visible: boolean
+  /** Collapse the consumer's own chrome without changing visibility/lifetime. */
+  contentFocus?: boolean
   expanded: string[]
   /** Files highlighted in the file tree (the "Show in folder" reveal). */
   revealed: string[]
@@ -46,6 +48,7 @@ export function tabContentCompare(prev: TabContentMemoKey, next: TabContentMemoK
     prev.sessionId === next.sessionId &&
     prev.cwd === next.cwd &&
     prev.visible === next.visible &&
+    prev.contentFocus === next.contentFocus &&
     prev.expanded === next.expanded &&
     prev.revealed === next.revealed &&
     prev.localeRevision === next.localeRevision &&

@@ -5,20 +5,20 @@ import { downloadUrl, mediaUrl, type SessionScope } from './api.ts'
 import { t } from './locales.ts'
 import css from './sidebar.module.css'
 
-export function PdfView(props: { scope: SessionScope; path: string; title: string }) {
-  const { scope, path, title } = props
+export function PdfView(props: { scope: SessionScope; path: string; title: string; contentFocus?: boolean }) {
+  const { scope, path, title, contentFocus } = props
   const [load, setLoad] = useState<
     | { status: 'loading' }
-    | { status: 'ready'; url: string }
+    | { status: 'ready'; blob: Blob }
     | { status: 'error'; message: string }
   >({ status: 'loading' })
   const [interactionBlocked, setInteractionBlocked] = useState(false)
+  const [frameUrl, setFrameUrl] = useState<string>()
   const frameRef = useRef<HTMLIFrameElement>(null)
   const shieldRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const controller = new AbortController()
-    let objectUrl: string | undefined
     setLoad({ status: 'loading' })
     void (async () => {
       try {
@@ -29,8 +29,7 @@ export function PdfView(props: { scope: SessionScope; path: string; title: strin
         // A direct iframe navigation may download when an old host process or
         // proxy cached application/octet-stream. The Blob URL owns an explicit
         // PDF MIME and therefore consistently opens the browser PDF viewer.
-        objectUrl = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }))
-        setLoad({ status: 'ready', url: objectUrl })
+        setLoad({ status: 'ready', blob: new Blob([bytes], { type: 'application/pdf' }) })
       } catch (error) {
         if (controller.signal.aborted) return
         setLoad({ status: 'error', message: error instanceof Error ? error.message : String(error) })
@@ -38,9 +37,20 @@ export function PdfView(props: { scope: SessionScope; path: string; title: strin
     })()
     return () => {
       controller.abort()
-      if (objectUrl !== undefined) URL.revokeObjectURL(objectUrl)
     }
   }, [scope.sessionId, scope.cwd, path])
+
+  const pdfBlob = load.status === 'ready' ? load.blob : undefined
+  const focused = contentFocus === true
+  useEffect(() => {
+    if (pdfBlob === undefined) { setFrameUrl(undefined); return }
+    // Chromium reads toolbar/navpanes on document load, not hash navigation.
+    // A fresh URL for the SAME cached Blob reapplies those parameters without
+    // rereading the file, changing user Chrome settings or replacing our iframe.
+    const objectUrl = URL.createObjectURL(pdfBlob)
+    setFrameUrl(focused ? `${objectUrl}#toolbar=0&navpanes=0` : objectUrl)
+    return () => { URL.revokeObjectURL(objectUrl) }
+  }, [pdfBlob, focused])
 
   useEffect(() => {
     const block = (): void => {
@@ -82,7 +92,7 @@ export function PdfView(props: { scope: SessionScope; path: string; title: strin
   }, [])
 
   return (
-    <div className={css.editorPdf}>
+    <div className={css.editorPdf} data-content-focus={contentFocus || undefined}>
       <div className={css.editorPdfToolbar}>
         <a className={css.editorDownloadLink} href={downloadUrl(scope, path)} download>
           {t('downloadToView')}
@@ -91,11 +101,11 @@ export function PdfView(props: { scope: SessionScope; path: string; title: strin
       <div className={css.editorPdfStage}>
         {load.status === 'loading' && <div className={css.editorPlaceholder}>{t('loading')}</div>}
         {load.status === 'error' && <div className={css.editorError}>{load.message}</div>}
-        {load.status === 'ready' && (
+        {load.status === 'ready' && frameUrl !== undefined && (
           <iframe
             ref={frameRef}
             className={clsx(css.editorPdfFrame, interactionBlocked && css.editorPdfFrameBlocked)}
-            src={load.url}
+            src={frameUrl}
             title={title}
           />
         )}

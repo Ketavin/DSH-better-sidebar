@@ -47,7 +47,7 @@ function setup(): {
 }
 
 /** Mount the host for one tab; returns the container and an unmount helper. */
-function mountHost(ctx: Context, store: ReturnType<typeof createSidebarStore>, tab: () => SidebarTab): {
+function mountHost(ctx: Context, store: ReturnType<typeof createSidebarStore>, tab: () => SidebarTab, focused: () => boolean | undefined = () => undefined): {
   container: HTMLDivElement
   rerender: () => void
   unmount: () => void
@@ -61,6 +61,7 @@ function mountHost(ctx: Context, store: ReturnType<typeof createSidebarStore>, t
       store,
       scope: { sessionId: 'editor-home-session' },
       tab: tab(),
+      contentFocus: focused(),
       expanded: [],
       revealed: [],
       onToggleDir: () => {},
@@ -92,6 +93,40 @@ function typeAndCommit(input: HTMLInputElement, value: string): void {
 }
 
 describe('EditorHost (files window)', () => {
+  it('focuses a custom file viewer without remounting its draft or changing persisted tree state', () => {
+    const { store, ctx } = setup()
+    let focused = false, mounts = 0, unmounts = 0
+    ctx.betterSidebar.registerFileViewer({
+      id: 'test:focus', exts: ['focus'], fetchStrategy: 'none',
+      component: (props) => {
+        useEffect(() => { mounts += 1; return () => { unmounts += 1 } }, [])
+        return createElement('input', { 'aria-label': 'file draft', defaultValue: 'original', 'data-focused': props.contentFocus })
+      },
+    })
+    ctx.betterSidebar.openTab({ type: 'editor', title: 'a.focus', path: '/tmp/a.focus', meta: { treeOpen: true, treeWidth: 275 } })
+    const fileTab = () => allLeaves(store.getSnapshot().state!.splits).flatMap(leaf => leaf.tabs).find(tab => tab.path === '/tmp/a.focus')!
+    const originalMeta = structuredClone(fileTab().meta)
+    const view = mountHost(ctx, store, fileTab, () => focused)
+    try {
+      const input = view.container.querySelector<HTMLInputElement>('[aria-label="file draft"]')!
+      input.value = 'unsaved changes'
+      const pathInput = view.container.querySelector('input')!, dock = view.container.querySelector('[role="separator"]')!.parentElement!
+      focused = true; view.rerender()
+      expect(input.getAttribute('data-focused')).toBe('true')
+      expect(view.container.firstElementChild!.getAttribute('data-content-focus')).toBe('true')
+      expect(view.container.querySelector('[aria-label="file draft"]')).toBe(input)
+      expect(view.container.querySelector('input')).toBe(pathInput)
+      expect(view.container.querySelector('[role="separator"]')!.parentElement).toBe(dock)
+      expect(input.value).toBe('unsaved changes')
+      expect(fileTab().meta).toEqual(originalMeta)
+      expect(mounts).toBe(1); expect(unmounts).toBe(0)
+      focused = false; view.rerender()
+      expect(input.getAttribute('data-focused')).toBe('false')
+      expect(input.value).toBe('unsaved changes')
+      expect(fileTab().meta).toEqual(originalMeta)
+      expect(mounts).toBe(1); expect(unmounts).toBe(0)
+    } finally { view.unmount() }
+  })
   it('a path-less tab renders the empty-state hint with the tree panel open', () => {
     const { store, ctx, homeTab } = setup()
     store.setPrefs({ ...store.getPrefs(), editorExplorer: true })

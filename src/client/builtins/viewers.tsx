@@ -60,7 +60,7 @@ function clampImageScale(scale: number): number {
  * and zoom controls. Scaled images remain inside the editor scrollport, so a
  * large image can be inspected without creating another page-level panel.
  */
-export function ImageView({ url, title }: { url: string; title: string }) {
+export function ImageView({ url, title, contentFocus }: { url: string; title: string; contentFocus?: boolean }) {
   const viewRef = useRef<HTMLDivElement>(null)
   const [natural, setNatural] = useState<{ width: number; height: number } | null>(null)
   const [scale, setScale] = useState<number | null>(null)
@@ -78,7 +78,7 @@ export function ImageView({ url, title }: { url: string; title: string }) {
         maxHeight: 'none',
       }
   return (
-    <div ref={viewRef} className={css.editorImageView} data-image-mode={scale === null ? 'fit' : 'scaled'}>
+    <div ref={viewRef} className={css.editorImageView} data-content-focus={contentFocus || undefined} data-image-mode={scale === null ? 'fit' : 'scaled'}>
       <div className={css.editorImageToolbar} role="toolbar" aria-label={t('viewerImage')}>
         <button
           type="button"
@@ -138,7 +138,7 @@ export function builtinViewers(): readonly FileViewerDescriptor[] {
       icon: (size: number) => <IconImageOutline16 size={size} />,
       exts: ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'ico', 'avif'],
       fetchStrategy: 'mediaUrl',
-      component: ({ mediaUrl: url, title }) => <ImageView url={url ?? ''} title={title} />,
+      component: ({ mediaUrl: url, title, contentFocus }) => <ImageView url={url ?? ''} title={title} contentFocus={contentFocus} />,
     },
     {
       id: 'pdf',
@@ -146,8 +146,8 @@ export function builtinViewers(): readonly FileViewerDescriptor[] {
       icon: (size: number) => <IconPdfOutline16 size={size} />,
       exts: ['pdf'],
       fetchStrategy: 'mediaUrl',
-      component: ({ scope, path, title }) => (
-        <PdfView scope={scope} path={path} title={title} />
+      component: ({ scope, path, title, contentFocus }) => (
+        <PdfView scope={scope} path={path} title={title} contentFocus={contentFocus} />
       ),
     },
     {

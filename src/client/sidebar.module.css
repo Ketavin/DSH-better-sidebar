@@ -1382,6 +1382,19 @@ body[data-dsh-sidebar-dragging] .bottomPanel {
   border-bottom: 1px solid var(--dsw-alias-border-l1);
 }
 
+/* Files use the same in-panel full-content contract as the browser. Keep
+   every content/draft/tree node mounted; only the surrounding chrome is
+   collapsed. The saved tree-open/width and sandbox policy stay untouched. */
+.editor[data-content-focus] > .editorHeader,
+.editor[data-content-focus] > .editorBody > .editorTreeDock,
+.editor[data-content-focus] .editorTreeSearch,
+.editor[data-content-focus] .explorerViews,
+.editorPdf[data-content-focus] > .editorPdfToolbar,
+.editorImageView[data-content-focus] > .editorImageToolbar,
+.editorTextView[data-content-focus] > .editorHeader,
+.editorTextView[data-content-focus] > .sandboxStatus,
+.editorTextView[data-content-focus] .tocBar { display: none; }
+
 .editorTitle {
   flex: 1;
   min-width: 0;
